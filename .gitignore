@@ -30,3 +30,13 @@ hs_err_pid*
 
 \.gradle/
 local.properties
+*.idea/*
+.gradle/*
+.idea/*
+app/app.iml
+MZhengBangPET.iml
+local.properties
+*.apk
+*.json
+
+build/

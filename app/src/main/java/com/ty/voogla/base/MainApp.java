@@ -33,7 +33,7 @@ public class MainApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        context = this;
+        context = getApplicationContext();
 
         mCache = ACache.get(context);
         // 日志 logger 库
@@ -48,9 +48,6 @@ public class MainApp extends Application {
             return;
         }
         LeakCanary.install(this);
-
-        // ObjectBox
-        //boxStore = MyObjectBox.builder().androidContext(this).build();
 
         initHttp();
     }

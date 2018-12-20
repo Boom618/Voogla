@@ -24,6 +24,12 @@ public class VooglaPresenter implements VooglaContract.Presenter {
         this.iView = view;
     }
 
+    public void disposable() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
 
     @Override
     public void getData(String userName, String password) {
@@ -37,16 +43,16 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             @Override
             public void onSuccess(BaseResponse<UserInfo> response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getTag())) {
-                    iView.showView();
+                    iView.showSuccess();
+                } else {
+                    iView.showError(response.getMessage());
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-
+                iView.showError(e.getMessage());
             }
         }, userName, password);
-
-
     }
 }
