@@ -1,0 +1,65 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlin_version = '1.3.11'
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    config = [
+            serviceDevelopUrl   :"\"http://192.168.11.2:3000/\"",    // 徐坤
+            serviceMasterUrl    :"\"http://192.168.11.2:3000/\"" ,  //
+
+
+            nameDevelop     : "ZB_Develop",
+            nameMaster      : "MZhengBangPET",
+
+            iconDevelop     : "",
+    ]
+
+    minSdkVersion               = 21
+    targetSdkVersion            = 28
+    compileSdkVersion           = 28
+    buildToolsVersion           = '28.0.3'
+
+    supportLibraryVersion       = '28.0.0'
+    lifecycleVersion            = '1.1.1'
+    retrofit2Version            = '2.4.0'
+    okhttp3Version              = '3.11.0'
+    butterknifeVersion          = '8.8.1'
+    rx2Version                  = '2.2.0'
+    rx2AndroidVersion           = '2.0.2'
+    googleGsonVersion           = '2.8.5'
+    CircleProgressBarVersion    = '2.0.0'
+    rvadapterVersion            = '3.0.3'
+    PickerViewVersion           = '4.1.6'
+    loggerVersion               = '2.2.0'
+    SmartRefreshVersion         = '1.1.0-alpha-14'
+    glideVersion                = '4.7.1'
+    rxeasyhttpVersion           = '2.1.2'
+    eventbusVersion             = '3.1.1'
+    lifecycle_version           = '2.0.0'
+    bugly_version               = '2.8.6'
+    leakcanary_version          = '1.6.2'
+}
