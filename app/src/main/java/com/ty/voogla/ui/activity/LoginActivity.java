@@ -1,12 +1,14 @@
 package com.ty.voogla.ui.activity;
 
 import android.os.Bundle;
+import com.ty.voogla.R;
 import com.ty.voogla.base.BaseActivity;
 
 /**
  * @author TY on 2018/12/20.
  */
-public class TestActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity {
+
     @Override
     protected void onBaseCreate(Bundle savedInstanceState) {
 
@@ -14,7 +16,7 @@ public class TestActivity extends BaseActivity {
 
     @Override
     protected int getActivityLayout() {
-        return 0;
+        return R.layout.activity_login_voogla;
     }
 
     @Override
