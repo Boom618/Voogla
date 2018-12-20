@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <Button android:layout_width="wrap_content"
+            android:id="@+id/box_link"
+            android:text="箱码关联"
+            android:textSize="18sp"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/warehousing_into"
+            android:layout_height="wrap_content"/>
+
+    <Button android:layout_width="wrap_content"
+            android:id="@+id/warehousing_into"
+            android:text="生产入库"
+            android:textSize="18sp"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toRightOf="@+id/box_link"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_height="wrap_content"/>
+
+
+    <Button android:layout_width="match_parent"
+            android:id="@+id/warehousing_out"
+            android:text="发货出库"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@+id/box_link"
+            android:layout_height="wrap_content"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -20,12 +20,12 @@ public class SessionInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request originalRequest = chain.request();
 
-        String sessionId = "";
-        try {
-            sessionId = SimpleCache.getString(CodeConstant.SESSION_ID_KEY);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        String sessionId = "";
+//        try {
+//            sessionId = SimpleCache.getString(CodeConstant.SESSION_ID_KEY);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         Request authorised = originalRequest.newBuilder()
                 .header(CodeConstant.SESSION_ID_KEY, "27DPMUT_YKcGemZW5glwaDpaAxRPBfhZ")
