@@ -12,11 +12,17 @@ import com.ty.voogla.net.gson.StringDefault0Adapter;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,32 +38,51 @@ public class HttpMethods {
      * 默认超时时间
      */
     private static final int DEFAULT_TIMEOUT = 20;
-    private Retrofit mRetrofit;
+    private static HttpMethods mInstance;
     private ApiService mService;
     private static Gson gson;
-    private String baseUrl = ApiNameConstant.BASE_URL;
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
+    /**
+     * cookie
+     */
+    private ConcurrentHashMap<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
 
     private HttpMethods() {
-        init(baseUrl);
+        init(ApiNameConstant.BASE_URL);
     }
 
+    /**
+     * URL 变更入口
+     *
+     * @param url
+     */
     public HttpMethods(String url) {
         init(url);
     }
 
     private void init(String url) {
-        //创建OKHttpClient
+        // 创建OKHttpClient
         OkHttpClient.Builder client = new OkHttpClient.Builder()
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .cookieJar(new CookieJar() {
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        // 保存 cookie
+                        cookieStore.put(url.host(), cookies);
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        // 加载新的 cookie
+                        List<Cookie> cookies = cookieStore.get(url.host());
+                        return cookies != null ? cookies : new ArrayList<Cookie>();
+                    }
+                })
                 .addInterceptor(new SessionInterceptor())
                 // 日志拦截器
                 .addInterceptor(new LogInterceptor());
 
-        mRetrofit = new Retrofit.Builder()
+        Retrofit mRetrofit = new Retrofit.Builder()
                 .client(client.build())
                 .addConverterFactory(GsonConverterFactory.create(buildGson()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
@@ -66,13 +91,16 @@ public class HttpMethods {
         mService = mRetrofit.create(ApiService.class);
     }
 
-    //构建单例
-    public static class SingletonHolder {
-        static final HttpMethods INSTANCE = new HttpMethods();
-    }
-
     public static HttpMethods getInstance() {
-        return SingletonHolder.INSTANCE;
+
+        if (mInstance == null) {
+            synchronized (HttpMethods.class) {
+                if (mInstance == null) {
+                    mInstance = new HttpMethods();
+                }
+            }
+        }
+        return mInstance;
     }
 
 
@@ -92,7 +120,6 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
-
 
 
     /**

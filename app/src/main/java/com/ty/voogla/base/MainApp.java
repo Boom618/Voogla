@@ -12,6 +12,9 @@ import com.ty.voogla.util.ACache;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.cache.converter.SerializableDiskConverter;
 import com.zhouyou.http.cache.model.CacheMode;
+import com.zhouyou.http.cookie.CookieManger;
+import okhttp3.Cookie;
+import okhttp3.HttpUrl;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -49,7 +52,7 @@ public class MainApp extends Application {
         }
         LeakCanary.install(this);
 
-        initHttp();
+//        initHttp();
     }
 
 
@@ -91,7 +94,12 @@ public class MainApp extends Application {
                 //  .addCommonParams(params)//设置全局公共参数
                 //.addNetworkInterceptor(new NoCacheInterceptor())//设置网络拦截器
                 //.setCallFactory()//局设置Retrofit对象Factory
-                //.setCookieStore()//设置cookie
+                .setCookieStore(new CookieManger(getApplicationContext()){
+                    @Override
+                    public void saveFromResponse(HttpUrl url, Cookie cookie) {
+                        super.saveFromResponse(url, cookie);
+                    }
+                })//设置cookie
                 //.setOkproxy()//设置全局代理
                 //.setOkconnectionPool()//设置请求连接池
                 //.setCallbackExecutor()//全局设置Retrofit callbackExecutor
