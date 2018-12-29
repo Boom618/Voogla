@@ -40,3 +40,5 @@ local.properties
 *.json
 
 build/
+.idea/workspace.xml
+.idea/workspace.xml
