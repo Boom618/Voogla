@@ -27,6 +27,8 @@
         <activity android:name=".ui.activity.BoxLinkActivity"/>
         <activity android:name=".ui.activity.WarehousingIntoActivity"/>
         <activity android:name=".ui.activity.WarehousingOutActivity"/>
+        <activity android:name=".ui.activity.WarehousingIntoDetailActivity"/>
+        <activity android:name=".ui.activity.BoxLinkDetailActivity"/>
     </application>
 
 </manifest>

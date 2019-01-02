@@ -1,9 +1,6 @@
 package com.ty.voogla.ui.activity
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.mvp.contract.VooglaContract

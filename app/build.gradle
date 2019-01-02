@@ -50,7 +50,10 @@ dependencies {
     implementation "com.jakewharton:butterknife:${ZBConfig.butterknifeVersion}"
     kapt "com.jakewharton:butterknife-compiler:${ZBConfig.butterknifeVersion}"
     implementation "org.greenrobot:eventbus:${ZBConfig.eventbusVersion}"
-    implementation 'pub.devrel:easypermissions:1.3.0'
+    // google EasyPermissions
+    implementation 'pub.devrel:easypermissions:2.0.0'
+    // Rx permissions
+    //implementation "com.github.tbruyelle:rxpermissions:${ZBConfig.rxpermissions_version}"
 
     implementation 'com.android.support:multidex:1.0.3'
 

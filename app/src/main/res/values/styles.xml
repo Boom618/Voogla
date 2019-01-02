@@ -6,7 +6,7 @@
         <!-- TooBar 颜色-->
         <item name="colorPrimary">@color/white</item>
         <!-- 状态栏 颜色-->
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <!-- 焦点颜色 颜色-->
         <item name="colorAccent">@color/colorAccent</item>
     </style>
@@ -63,6 +63,12 @@
 
     <style name="itemSizeStyle">
         <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/txt_main_color</item>
+    </style>
+
+    <!-- 箱码  start -->
+    <style name="itemSizeBox">
+        <item name="android:textSize">@dimen/text_26</item>
         <item name="android:textColor">@color/txt_main_color</item>
     </style>
 

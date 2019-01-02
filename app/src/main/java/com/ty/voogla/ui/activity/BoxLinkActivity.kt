@@ -1,17 +1,13 @@
 package com.ty.voogla.ui.activity
 
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
-import android.view.View
-import android.widget.TextView
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.util.NiceDialogUtil
 import kotlinx.android.synthetic.main.activity_box_link.*
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @author TY on 2018/12/20.
@@ -50,6 +46,7 @@ class BoxLinkActivity : BaseActivity(), VooglaContract.View {
             NiceDialogUtil.selectBatch(v.context, batchString, tv_select_batch)
         }
 
+        bt_start.setOnClickListener { gotoActivity(BoxLinkDetailActivity::class.java) }
 
     }
 
