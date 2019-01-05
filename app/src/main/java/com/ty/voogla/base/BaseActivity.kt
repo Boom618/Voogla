@@ -134,6 +134,18 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     /**
+     * 多个 View 设置点击事件
+     * vararg 可变长度
+     */
+    fun setViewOnClickListener(listener: View.OnClickListener, vararg views: View) {
+        if (views.isNotEmpty()) {
+            for (view in views) {
+                view.setOnClickListener(listener)
+            }
+        }
+    }
+
+    /**
      * 重置 ACache 中保存的的数据
      */
     private fun clearCache() {}

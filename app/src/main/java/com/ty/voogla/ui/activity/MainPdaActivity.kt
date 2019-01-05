@@ -8,10 +8,10 @@ import com.ty.voogla.base.BaseActivity
 /**
  * @author TY on 2018/12/20.
  */
-class MainActivity : BaseActivity(){
+class MainPdaActivity : BaseActivity(){
 
     override val activityLayout: Int
-        get() = R.layout.activity_main
+        get() = R.layout.activity_main_pda
 
     override fun onBaseCreate(savedInstanceState: Bundle?) {
 

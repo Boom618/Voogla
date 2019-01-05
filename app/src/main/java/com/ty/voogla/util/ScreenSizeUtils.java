@@ -2,6 +2,7 @@ package com.ty.voogla.util;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.WindowManager;
 
 /**
@@ -37,6 +38,9 @@ public class ScreenSizeUtils {
         manager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         dm = new DisplayMetrics();
         manager.getDefaultDisplay().getMetrics(dm);
+        Display display = manager.getDefaultDisplay();
+
+
 
         // 获取屏幕分辨率宽度
         screenWidth = dm.widthPixels;

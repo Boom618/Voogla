@@ -15,6 +15,7 @@
     <color name="black_light">#363636</color>
     <color name="gray">#dcdcdc</color>
     <color name="black">#000000</color>
+    <color name="user_change_pass">#1FA0C8</color>
 
     <!--// ==================================== -->
 </resources>

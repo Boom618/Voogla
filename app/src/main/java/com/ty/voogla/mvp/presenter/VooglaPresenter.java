@@ -32,7 +32,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
 
     @Override
-    public void getData(String userName, String password) {
+    public void getData(String username, String password) {
 
         httpMethods.userLogin(new SingleObserver<BaseResponse<UserInfo>>() {
             @Override
@@ -42,10 +42,10 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onSuccess(BaseResponse<UserInfo> response) {
-                if (CodeConstant.SERVICE_SUCCESS.equals(response.getTag())) {
+                if (CodeConstant.SERVICE_STATUS == response.getStatus()) {
                     iView.showSuccess();
                 } else {
-                    iView.showError(response.getMessage());
+                    iView.showError(response.getMsg());
                 }
             }
 
@@ -53,6 +53,6 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onError(Throwable e) {
                 iView.showError(e.getMessage());
             }
-        }, userName, password);
+        }, username, password);
     }
 }

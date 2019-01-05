@@ -7,7 +7,7 @@ import java.io.Serializable
  */
 class BaseResponse<T> : Serializable {
 
-    var tag: String? = null
-    var message: String? = null
+    var status: Int? = null
+    var msg: String? = null
     var data: T? = null
 }

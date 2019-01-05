@@ -23,12 +23,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.MainActivity"/>
+        <activity android:name=".ui.activity.MainPdaActivity"/>
         <activity android:name=".ui.activity.BoxLinkActivity"/>
         <activity android:name=".ui.activity.WarehousingIntoActivity"/>
         <activity android:name=".ui.activity.WarehousingOutActivity"/>
         <activity android:name=".ui.activity.WarehousingIntoDetailActivity"/>
         <activity android:name=".ui.activity.BoxLinkDetailActivity"/>
+        <activity android:name=".ui.activity.MainMobActivity"/>
+        <activity android:name=".ui.activity.UserContentActivity"/>
     </application>
 
 </manifest>

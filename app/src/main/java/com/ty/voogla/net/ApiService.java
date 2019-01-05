@@ -6,6 +6,7 @@ import com.ty.voogla.constant.ApiNameConstant;
 import io.reactivex.Single;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 
 /**
@@ -21,13 +22,13 @@ public interface ApiService {
     /**
      * 用户登录
      *
-     * @param userName 用户手机
+     * @param username 用户手机
      * @param password 密码
      * @return
      */
     @FormUrlEncoded
     @POST(ApiNameConstant.USER_LOGIN)
-    Single<BaseResponse<UserInfo>> userLogin(@Field("userName") String userName,
+    Single<BaseResponse<UserInfo>> userLogin(@Field("username") String username,
                                              @Field("password") String password);
 //
 //    /**

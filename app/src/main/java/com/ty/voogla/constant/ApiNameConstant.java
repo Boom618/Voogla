@@ -18,7 +18,7 @@ public class ApiNameConstant {
     /**
      * 少杰
      */
-    public static final String BASE_URL2 = "http://192.168.11.6:3099/";
+    public static final String BASE_URL2 = "http://192.168.11.6:3060/";
 
     /**
      * --------------------------------- 系统登录 ----------------------------------------

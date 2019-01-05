@@ -16,6 +16,7 @@ public final class CodeConstant {
      * 服务器返回成功标识
      */
     public static final String SERVICE_SUCCESS = "success";
+    public static final int SERVICE_STATUS = 200;
 
 
     /**

@@ -48,7 +48,7 @@ public class HttpMethods {
     private ConcurrentHashMap<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
 
     private HttpMethods() {
-        init(ApiNameConstant.BASE_URL);
+        init(ApiNameConstant.BASE_URL2);
     }
 
     /**
@@ -78,7 +78,7 @@ public class HttpMethods {
                         return cookies != null ? cookies : new ArrayList<Cookie>();
                     }
                 })
-                .addInterceptor(new SessionInterceptor())
+//                .addInterceptor(new SessionInterceptor())
                 // 日志拦截器
                 .addInterceptor(new LogInterceptor());
 
@@ -112,11 +112,11 @@ public class HttpMethods {
      * 用户登录
      *
      * @param observer
-     * @param userName
+     * @param username
      * @param password
      */
-    public void userLogin(SingleObserver<BaseResponse<UserInfo>> observer, String userName, String password) {
-        mService.userLogin(userName, password)
+    public void userLogin(SingleObserver<BaseResponse<UserInfo>> observer, String username, String password) {
+        mService.userLogin(username, password)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
