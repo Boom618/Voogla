@@ -2,12 +2,14 @@ package com.ty.voogla.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 import com.google.gson.Gson;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.ty.voogla.constant.CodeConstant;
+import com.ty.voogla.ui.ActivitiesHelper;
 import com.ty.voogla.util.ACache;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.cache.converter.SerializableDiskConverter;
@@ -21,7 +23,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * @author TY
  */
-public class MainApp extends Application {
+//public class MainApp extends Application {
+public class MainApp extends MultiDexApplication {
 
     public static Context context;
     private static Gson gson;
@@ -52,9 +55,13 @@ public class MainApp extends Application {
         }
         LeakCanary.install(this);
 
+        /**
+         * 管理 AC 栈
+         */
+        ActivitiesHelper.init(this);
+
 //        initHttp();
     }
-
 
 
     private void initHttp() {
@@ -94,7 +101,7 @@ public class MainApp extends Application {
                 //  .addCommonParams(params)//设置全局公共参数
                 //.addNetworkInterceptor(new NoCacheInterceptor())//设置网络拦截器
                 //.setCallFactory()//局设置Retrofit对象Factory
-                .setCookieStore(new CookieManger(getApplicationContext()){
+                .setCookieStore(new CookieManger(getApplicationContext()) {
                     @Override
                     public void saveFromResponse(HttpUrl url, Cookie cookie) {
                         super.saveFromResponse(url, cookie);

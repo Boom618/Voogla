@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:id="@+id/tv_number"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/space_15"
+            android:text="1756838695678908765"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_16"
+            android:layout_height="wrap_content"/>
+
+    <ImageView
+            android:id="@+id/image_confirm"
+            android:background="@mipmap/determine_btn"
+            android:layout_width="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_number"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/space_10"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/view_line1"
+            app:layout_constraintTop_toBottomOf="@+id/tv_number"
+            android:background="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/space_10"
+            android:layout_marginEnd="@dimen/space_10"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_height="@dimen/space_2"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/view_line1"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_number"
+            android:text="@string/send_organization"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_send_org"
+            app:layout_constraintTop_toBottomOf="@+id/view_line1"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/image_confirm"
+            android:text="@string/send_organization"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/view_line2"
+            app:layout_constraintTop_toBottomOf="@+id/tv_send_org"
+            android:background="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/space_10"
+            android:layout_marginEnd="@dimen/space_10"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_height="@dimen/space_2"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/view_line2"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_number"
+            android:text="@string/receipt_organization"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_receipt_org"
+            app:layout_constraintTop_toBottomOf="@+id/view_line2"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/image_confirm"
+            android:text="@string/receipt_organization"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/view_line3"
+            app:layout_constraintTop_toBottomOf="@+id/tv_receipt_org"
+            android:background="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/space_10"
+            android:layout_marginEnd="@dimen/space_10"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_height="@dimen/space_2"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/view_line3"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_number"
+            android:text="@string/send_address"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_send_address"
+            app:layout_constraintTop_toBottomOf="@+id/view_line3"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/image_confirm"
+            android:text="@string/send_address"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/view_line4"
+            app:layout_constraintTop_toBottomOf="@+id/tv_send_address"
+            android:background="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/space_10"
+            android:layout_marginEnd="@dimen/space_10"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_height="@dimen/space_2"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/view_line4"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_number"
+            android:text="@string/receipt_address"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_receipt_address"
+            app:layout_constraintTop_toBottomOf="@+id/view_line4"
+            android:layout_marginTop="@dimen/space_10"
+            android:paddingBottom="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/image_confirm"
+            android:text="@string/receipt_address"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -31,6 +31,7 @@
         <activity android:name=".ui.activity.BoxLinkDetailActivity"/>
         <activity android:name=".ui.activity.MainMobActivity"/>
         <activity android:name=".ui.activity.UserContentActivity"/>
+        <activity android:name=".ui.activity.InspectionActivity"/>
     </application>
 
 </manifest>
