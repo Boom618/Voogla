@@ -28,14 +28,13 @@ public class NormalAlertDialog {
     private Button mSingleBtn;
     private TextView mLine;
     private Dialog mDialog;
-    private View mDialogView;
     private Builder mBuilder;
 
     public NormalAlertDialog(Builder builder) {
 
         this.mBuilder = builder;
         mDialog = new Dialog(mBuilder.getContext(), R.style.NormalDialogStyle);
-        mDialogView = View.inflate(mBuilder.getContext(), R.layout.widget_dialog_normal, null);
+        View mDialogView = View.inflate(mBuilder.getContext(), R.layout.widget_dialog_normal, null);
         mTitle = mDialogView.findViewById(R.id.dialog_normal_title);
         mContent = mDialogView.findViewById(R.id.dialog_normal_content);
         mLeftBtn = mDialogView.findViewById(R.id.dialog_normal_leftbtn);

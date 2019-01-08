@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.ui.ActivitiesHelper
+import com.ty.voogla.util.SimpleCache
 import kotlinx.android.synthetic.main.activity_user_content.*
 
 /**
@@ -25,7 +26,9 @@ class UserContentActivity : BaseActivity() {
 
     override fun initTwoView() {
 
-        tv_company_profile.text = "敷尔佳科技发展有限公司"
+        val userInfo = SimpleCache.getUserInfo()
+
+        tv_company_profile.text = userInfo.companyName
 
         image_return.setOnClickListener { finish() }
 

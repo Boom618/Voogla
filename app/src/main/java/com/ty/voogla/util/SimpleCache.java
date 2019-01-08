@@ -1,6 +1,8 @@
 package com.ty.voogla.util;
 
 
+import com.ty.voogla.bean.UserInfo;
+
 /**
  * @author PVer on 2018/12/15.
  * <p>
@@ -19,12 +21,18 @@ public class SimpleCache {
         aCache.put(key, value);
     }
 
+    public static void putUserInfo(UserInfo userInfo){
+        aCache.put("userInfo",userInfo);
+    }
 
 
     public static String getString(String key){
         return aCache.getAsString(key);
     }
 
+    public static UserInfo getUserInfo(){
+        return (UserInfo) aCache.getAsObject("userInfo");
+    }
 
 
     /**

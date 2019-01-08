@@ -75,10 +75,14 @@ class InspectionActivity : BaseActivity() ,EasyPermissions.PermissionCallbacks{
             startActivityForResult(intent, REQUEST_CODE)
         } else {
             // Ask for one permission
+            // 申请权限 Dialog
             EasyPermissions.requestPermissions(
-                this, "需要请求 camera 权限",
-                REQUEST_CAMERA_PERM, Manifest.permission.CAMERA
+                this,
+                "需要请求 camera 权限",
+                REQUEST_CAMERA_PERM,
+                Manifest.permission.CAMERA
             )
+//            EasyPermissions.requestPermissions(Manifest.permission.CAMERA)
         }
     }
 
@@ -115,7 +119,7 @@ class InspectionActivity : BaseActivity() ,EasyPermissions.PermissionCallbacks{
      * 拒绝
      */
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-        ToastUtil.showToast("拒绝l权限")
+        ToastUtil.showToast("拒绝权限")
     }
 
     /**
@@ -123,15 +127,16 @@ class InspectionActivity : BaseActivity() ,EasyPermissions.PermissionCallbacks{
      */
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
 
-        if (EasyPermissions.somePermissionPermanentlyDenied(this,perms)) {
-            AppSettingsDialog.Builder(this)
-                .setTitle("权限申请")
-                .setPositiveButton("确认")
-                .setNegativeButton("取消")
-                .setRequestCode(REQUEST_CAMERA_PERM)
-                .build()
-                .show()
-        }
+        // 权限申请 Dialog ，可以自定义
+//        if (EasyPermissions.somePermissionPermanentlyDenied(this,perms)) {
+//            AppSettingsDialog.Builder(this)
+//                .setTitle("权限申请")
+//                .setPositiveButton("确认")
+//                .setNegativeButton("取消")
+//                .setRequestCode(REQUEST_CAMERA_PERM)
+//                .build()
+//                .show()
+//        }
 
     }
 }

@@ -5,6 +5,7 @@ import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.constant.CodeConstant;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.net.HttpMethods;
+import com.ty.voogla.util.SimpleCache;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 
@@ -43,6 +44,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             @Override
             public void onSuccess(BaseResponse<UserInfo> response) {
                 if (CodeConstant.SERVICE_STATUS == response.getStatus()) {
+                    SimpleCache.putUserInfo(response.getData());
                     iView.showSuccess();
                 } else {
                     iView.showError(response.getMsg());

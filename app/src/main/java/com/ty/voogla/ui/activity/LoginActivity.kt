@@ -45,18 +45,18 @@ class LoginActivity : BaseActivity(), VooglaContract.View {
 
     override fun initTwoView() {
 
-        login.setOnClickListener { _ ->
-            val name = et_user_name!!.text.toString().trim { it <= ' ' }
-            val pass = et_user_pass!!.text.toString().trim { it <= ' ' }
-            gotoActivity(MainMobActivity::class.java, true)
-            //presenter.getData(name, pass);
+        login_mob.setOnClickListener { _ ->
+            val name = et_user_name.text.toString().trim { it <= ' ' }
+            val pass = et_user_pass.text.toString().trim { it <= ' ' }
+//            gotoActivity(MainMobActivity::class.java, true)
+            presenter.getData(name, pass)
         }
 
-        login_mob.setOnClickListener { gotoActivity(MainPdaActivity::class.java, true) }
+        login_pda.setOnClickListener { gotoActivity(MainPdaActivity::class.java, true) }
     }
 
     override fun showSuccess() {
-        gotoActivity(MainPdaActivity::class.java, true)
+        gotoActivity(MainMobActivity::class.java, true)
     }
 
     override fun showError(msg: String) {
