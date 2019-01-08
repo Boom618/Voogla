@@ -1,6 +1,5 @@
 package com.ty.voogla.ui.activity
 
-import android.content.Context
 import android.os.Bundle
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
@@ -22,12 +21,6 @@ class MainMobActivity : BaseActivity() {
     }
 
     override fun initTwoView() {
-        getSharedPreferences("key", Context.MODE_PRIVATE).edit()
-            .putBoolean("kye", false)
-            .apply()
-
-        val string = "www.baidu.com"
-
         iv_jc.setOnClickListener { gotoActivity(InspectionActivity::class.java) }
         iv_user.setOnClickListener { gotoActivity(UserContentActivity::class.java) }
 
