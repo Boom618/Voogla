@@ -2,24 +2,23 @@ package com.ty.voogla.ui.activity
 
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.util.WindowUtil
-import kotlinx.android.synthetic.main.activity_login_voogla.*
+import kotlinx.android.synthetic.main.activity_login_mob.*
 
 /**
  * @author TY on 2018/12/20.
  */
-class LoginActivity : BaseActivity(), VooglaContract.View {
+class LoginMobActivity : BaseActivity(), VooglaContract.View {
 
     private val presenter = VooglaPresenter(this)
 
     override val activityLayout: Int
-        get() = R.layout.activity_login_voogla
+        get() = R.layout.activity_login_mob
 
 
     override fun onBaseCreate(savedInstanceState: Bundle?) {
@@ -52,7 +51,6 @@ class LoginActivity : BaseActivity(), VooglaContract.View {
             presenter.getData(name, pass)
         }
 
-        login_pda.setOnClickListener { gotoActivity(MainPdaActivity::class.java, true) }
     }
 
     override fun showSuccess() {

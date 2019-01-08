@@ -5,7 +5,7 @@ import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.ui.ActivitiesHelper
 import com.ty.voogla.util.SimpleCache
-import kotlinx.android.synthetic.main.activity_user_content.*
+import kotlinx.android.synthetic.main.activity_user_content_mob.*
 
 /**
  * @author TY on 2019/1/5.
@@ -13,7 +13,8 @@ import kotlinx.android.synthetic.main.activity_user_content.*
  */
 class UserContentActivity : BaseActivity() {
     override val activityLayout: Int
-        get() = R.layout.activity_user_content
+//        get() = R.layout.activity_user_content_mob
+        get() = R.layout.activity_user_content_pda
 
     override fun onBaseCreate(savedInstanceState: Bundle?) {
     }

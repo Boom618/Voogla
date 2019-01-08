@@ -1,9 +1,9 @@
 package com.ty.voogla.ui.activity
 
 import android.os.Bundle
-import android.view.View
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
+import kotlinx.android.synthetic.main.activity_main_pda.*
 
 /**
  * @author TY on 2018/12/20.
@@ -23,9 +23,16 @@ class MainPdaActivity : BaseActivity(){
 
     override fun initTwoView() {
 
-        findViewById<View>(R.id.box_link).setOnClickListener{gotoActivity(BoxLinkActivity::class.java)}
-        findViewById<View>(R.id.warehousing_into).setOnClickListener{gotoActivity(WarehousingIntoActivity::class.java)}
-        findViewById<View>(R.id.warehousing_out).setOnClickListener{}
+        image_product.setOnClickListener {
+            gotoActivity(BoxLinkActivity::class.java)
+        }
+
+        image_user.setOnClickListener {
+            gotoActivity(UserContentActivity::class.java)
+        }
+//        findViewById<View>(R.id.box_link).setOnClickListener{gotoActivity(BoxLinkActivity::class.java)}
+//        findViewById<View>(R.id.warehousing_into).setOnClickListener{gotoActivity(WarehousingIntoActivity::class.java)}
+//        findViewById<View>(R.id.warehousing_out).setOnClickListener{}
 
 
     }
