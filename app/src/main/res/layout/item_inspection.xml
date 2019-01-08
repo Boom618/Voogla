@@ -3,7 +3,10 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/space_6"
         android:background="@color/white"
+        android:layout_marginStart="@dimen/space_6"
+        android:layout_marginEnd="@dimen/space_6"
         android:layout_height="wrap_content">
 
     <TextView
@@ -29,12 +32,8 @@
     <View
             android:id="@+id/view_line1"
             app:layout_constraintTop_toBottomOf="@+id/tv_number"
-            android:background="@color/colorAccent"
             android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/space_10"
-            android:layout_marginEnd="@dimen/space_10"
-            android:layout_marginTop="@dimen/space_10"
-            android:layout_height="@dimen/space_2"/>
+            style="@style/lineView"/>
 
     <TextView
             app:layout_constraintTop_toBottomOf="@+id/view_line1"
@@ -58,12 +57,8 @@
     <View
             android:id="@+id/view_line2"
             app:layout_constraintTop_toBottomOf="@+id/tv_send_org"
-            android:background="@color/colorAccent"
             android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/space_10"
-            android:layout_marginEnd="@dimen/space_10"
-            android:layout_marginTop="@dimen/space_10"
-            android:layout_height="@dimen/space_2"/>
+            style="@style/lineView"/>
 
     <TextView
             app:layout_constraintTop_toBottomOf="@+id/view_line2"
@@ -87,12 +82,8 @@
     <View
             android:id="@+id/view_line3"
             app:layout_constraintTop_toBottomOf="@+id/tv_receipt_org"
-            android:background="@color/colorAccent"
             android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/space_10"
-            android:layout_marginEnd="@dimen/space_10"
-            android:layout_marginTop="@dimen/space_10"
-            android:layout_height="@dimen/space_2"/>
+            style="@style/lineView"/>
 
     <TextView
             app:layout_constraintTop_toBottomOf="@+id/view_line3"
@@ -116,12 +107,8 @@
     <View
             android:id="@+id/view_line4"
             app:layout_constraintTop_toBottomOf="@+id/tv_send_address"
-            android:background="@color/colorAccent"
             android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/space_10"
-            android:layout_marginEnd="@dimen/space_10"
-            android:layout_marginTop="@dimen/space_10"
-            android:layout_height="@dimen/space_2"/>
+            style="@style/lineView"/>
 
     <TextView
             app:layout_constraintTop_toBottomOf="@+id/view_line4"
