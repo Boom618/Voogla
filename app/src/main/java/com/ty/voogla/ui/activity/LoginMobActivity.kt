@@ -2,6 +2,7 @@ package com.ty.voogla.ui.activity
 
 import android.os.Bundle
 import android.util.Log
+import com.ty.voogla.BuildConfig
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.mvp.contract.VooglaContract
@@ -54,7 +55,11 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View {
     }
 
     override fun showSuccess() {
-        gotoActivity(MainMobActivity::class.java, true)
+        if (BuildConfig.isPhone) {
+            gotoActivity(MainMobActivity::class.java, true)
+        } else {
+            gotoActivity(MainPdaActivity::class.java, true)
+        }
     }
 
     override fun showError(msg: String) {

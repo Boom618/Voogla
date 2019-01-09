@@ -18,7 +18,7 @@
     <string name="app_name_pda">敷尔佳溯源管理系统</string>
     <string name="phone">手机号</string>
     <string name="password">密码</string>
-    <string name="welcome_ch">欢迎登陆管理系统</string>
+    <string name="welcome_ch">欢迎登录管理系统</string>
     <string name="welcome_ch_check">欢迎登陆稽查系统</string>
     <string name="welcome_en">Welcome to login system</string>
     <string name="change_pass">修改密码</string>

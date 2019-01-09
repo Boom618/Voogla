@@ -30,9 +30,6 @@ class MainPdaActivity : BaseActivity(){
         image_user.setOnClickListener {
             gotoActivity(UserContentActivity::class.java)
         }
-//        findViewById<View>(R.id.box_link).setOnClickListener{gotoActivity(BoxLinkActivity::class.java)}
-//        findViewById<View>(R.id.warehousing_into).setOnClickListener{gotoActivity(WarehousingIntoActivity::class.java)}
-//        findViewById<View>(R.id.warehousing_out).setOnClickListener{}
 
 
     }

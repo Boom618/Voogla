@@ -22,7 +22,8 @@ class UserInfo : Serializable{
     var userNo: String? = null
     var userName: String? = null
     var companyName: String? = null
-    var companyZip: Any? = null
+    var companyZip: String? = null
     var companyAttr: String? = null
     var roleNo: String? = null
+    var sessionID: String? = null
 }

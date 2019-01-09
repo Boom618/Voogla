@@ -43,8 +43,10 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onSuccess(BaseResponse<UserInfo> response) {
-                if (CodeConstant.SERVICE_STATUS == response.getStatus()) {
-                    SimpleCache.putUserInfo(response.getData());
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    UserInfo userInfo = response.getData();
+                    SimpleCache.putString(CodeConstant.SESSION_ID_KEY,userInfo.getSessionID());
+                    SimpleCache.putUserInfo(userInfo);
                     iView.showSuccess();
                 } else {
                     iView.showError(response.getMsg());

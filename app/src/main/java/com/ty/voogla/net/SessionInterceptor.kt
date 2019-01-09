@@ -29,8 +29,8 @@ class SessionInterceptor : Interceptor {
         }
 
         val authorised = originalRequest.newBuilder()
-            .header(CodeConstant.SESSION_ID_KEY, "27DPMUT_YKcGemZW5glwaDpaAxRPBfhZ")
-            .header(CodeConstant.SYSTEM_KEY, CodeConstant.SYSTEM_VALUE)
+            .header(CodeConstant.SESSION_ID_KEY, sessionId)
+//            .header(CodeConstant.SYSTEM_KEY, CodeConstant.SYSTEM_VALUE)
             .build()
         return chain.proceed(authorised)
     }

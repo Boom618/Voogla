@@ -28,7 +28,7 @@
             android:name=".base.MainApp"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".ui.activity.LoginPdaActivity"
+                android:name=".ui.activity.LoginMobActivity"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
         <!--<activity android:name=".ui.activity.LoginPdaActivity"/>-->
-        <activity android:name=".ui.activity.LoginMobActivity"/>
+        <!--<activity android:name=".ui.activity.LoginMobActivity"/>-->
         <activity android:name=".ui.activity.MainPdaActivity"/>
         <activity android:name=".ui.activity.BoxLinkActivity"/>
         <activity android:name=".ui.activity.WarehousingIntoActivity"/>

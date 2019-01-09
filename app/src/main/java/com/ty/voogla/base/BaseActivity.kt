@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.TextView
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.ty.voogla.R
 import com.ty.voogla.util.ACache
 
@@ -15,7 +13,7 @@ import com.ty.voogla.util.ACache
  */
 abstract class BaseActivity : AppCompatActivity() {
 
-    private var mUnbinder: Unbinder? = null
+//    private var mUnbinder: Unbinder? = null
     private var mCache: ACache? = null
 
     /**
@@ -29,7 +27,7 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(activityLayout)
 
-        mUnbinder = ButterKnife.bind(this)
+//        mUnbinder = ButterKnife.bind(this)
         mCache = ACache.get(application)
 
         initOneData()
@@ -137,6 +135,6 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onDestroy()
         clearCache()
 
-        mUnbinder!!.unbind()
+//        mUnbinder!!.unbind()
     }
 }

@@ -24,6 +24,10 @@ class MainMobActivity : BaseActivity() {
         iv_jc.setOnClickListener { gotoActivity(InspectionActivity::class.java) }
         iv_user.setOnClickListener { gotoActivity(UserContentActivity::class.java) }
 
+    }
 
+    override fun onBackPressed() {
+        // exist app 会调用：onPause()和 onStop()
+        moveTaskToBack(true)
     }
 }

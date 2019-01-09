@@ -1,6 +1,8 @@
 package com.ty.voogla.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
+import com.ty.voogla.BuildConfig.*
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.ui.ActivitiesHelper
@@ -13,8 +15,8 @@ import kotlinx.android.synthetic.main.activity_user_content_mob.*
  */
 class UserContentActivity : BaseActivity() {
     override val activityLayout: Int
-//        get() = R.layout.activity_user_content_mob
-        get() = R.layout.activity_user_content_pda
+        get() = getLayout()
+
 
     override fun onBaseCreate(savedInstanceState: Bundle?) {
     }
@@ -22,7 +24,14 @@ class UserContentActivity : BaseActivity() {
     override fun initOneData() {
 
 
+    }
 
+    private fun getLayout(): Int {
+        return if (isPhone) {
+            R.layout.activity_user_content_mob
+        } else {
+            R.layout.activity_user_content_pda
+        }
     }
 
     override fun initTwoView() {
@@ -33,6 +42,18 @@ class UserContentActivity : BaseActivity() {
 
         image_return.setOnClickListener { finish() }
 
-        bt_login_out.setOnClickListener { ActivitiesHelper.get().finishAll() }
+        bt_login_out.setOnClickListener {
+//            if (isPhone) {
+//                val intent = Intent(this, LoginMobActivity::class.java)
+//                startActivity(intent)
+//            } else {
+//                val intent = Intent(this, LoginPdaActivity::class.java)
+//                startActivity(intent)
+//            }
+            val intent = Intent(this, LoginMobActivity::class.java)
+            startActivity(intent)
+            SimpleCache.clearAll()
+            ActivitiesHelper.get().finishAll()
+        }
     }
 }
