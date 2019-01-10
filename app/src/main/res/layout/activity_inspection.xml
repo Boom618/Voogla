@@ -15,6 +15,7 @@
             android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+        <!-- android:imeOptions="actionSearch" -->
         <EditText
                 android:id="@+id/ed_search"
                 android:hint="@string/search_view"
@@ -22,6 +23,7 @@
                 android:drawableEnd="@mipmap/icon_scanning"
                 android:paddingEnd="@dimen/space_15"
                 android:paddingStart="@dimen/space_41"
+                android:maxLines="1"
                 android:background="@mipmap/search_input"
                 android:layout_marginTop="@dimen/space_10"
                 android:layout_width="wrap_content"
@@ -33,7 +35,9 @@
                 android:id="@+id/tv_search"
                 android:layout_marginStart="@dimen/space_25"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/text_14"
+                android:textSize="@dimen/x22"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/space_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

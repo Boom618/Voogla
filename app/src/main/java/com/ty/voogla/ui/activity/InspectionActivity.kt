@@ -1,24 +1,20 @@
 package com.ty.voogla.ui.activity
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.MotionEvent
+import android.view.View
 import com.ty.voogla.R
 import com.ty.voogla.adapter.InspectionAdapter
 import com.ty.voogla.base.BaseActivity
-import com.ty.voogla.bean.InspectionData
-import kotlinx.android.synthetic.main.activity_inspection.*
-import com.uuzuche.lib_zxing.activity.CaptureActivity
-import android.content.Intent
-import android.provider.MediaStore
 import com.ty.voogla.util.ToastUtil
+import com.uuzuche.lib_zxing.activity.CaptureActivity
 import com.uuzuche.lib_zxing.activity.CodeUtils
-import pub.devrel.easypermissions.AppSettingsDialog
-import pub.devrel.easypermissions.EasyPermissions
-import android.Manifest.permission
-import android.R.attr.onClick
+import kotlinx.android.synthetic.main.activity_inspection.*
 import pub.devrel.easypermissions.AfterPermissionGranted
-
+import pub.devrel.easypermissions.EasyPermissions
 
 
 /**
@@ -60,8 +56,36 @@ class InspectionActivity : BaseActivity() ,EasyPermissions.PermissionCallbacks{
 
         recycler_view.adapter = adapter
 
+        ed_search.setOnTouchListener(object :View.OnTouchListener{
+
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
+
+                val drawable = ed_search.compoundDrawables[2]
+
+                if (event.actionMasked == MotionEvent.ACTION_UP) {
+                    if (event.x > (ed_search.width - ed_search.paddingRight - drawable.intrinsicWidth)){
+                        // 打开相机扫码
+                        cameraTask()
+                    }
+                    return false
+                }
+                return false
+            }
+        })
+
+        // XML　设置   android:imeOptions="actionSearch"
+        //            android:singleLine="true"
+//        ed_search.setOnEditorActionListener { textView, actionId, event ->
+//            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//
+//                val tempString = textView.text.toString().trim { it <= ' ' }
+//                ToastUtil.showToast(tempString)
+//            }
+//            true
+//        }
+
         tv_search.setOnClickListener {
-            cameraTask()
+            ToastUtil.showToast("搜索内容：" + ed_search.text.toString())
         }
 
     }
@@ -78,7 +102,7 @@ class InspectionActivity : BaseActivity() ,EasyPermissions.PermissionCallbacks{
             // 申请权限 Dialog
             EasyPermissions.requestPermissions(
                 this,
-                "需要请求 camera 权限",
+                "需要请求相机权限",
                 REQUEST_CAMERA_PERM,
                 Manifest.permission.CAMERA
             )

@@ -139,6 +139,9 @@ dependencies {
     // 时间选择框
     //implementation "com.contrarywind:Android-PickerView:${ZBConfig.PickerViewVersion}"
 
+    // SearchLayout
+    //implementation 'com.carson_ho:SearchLayout:1.0.1'
+
     // log
     //implementation 'com.elvishew:xlog:1.6.1'
     implementation "com.orhanobut:logger:${ZBConfig.loggerVersion}"

@@ -27,6 +27,9 @@ class MainPdaActivity : BaseActivity(){
             gotoActivity(BoxLinkActivity::class.java)
         }
 
+        image_send.setOnClickListener {
+            gotoActivity(BoxLinkActivity::class.java)
+        }
         image_user.setOnClickListener {
             gotoActivity(UserContentActivity::class.java)
         }

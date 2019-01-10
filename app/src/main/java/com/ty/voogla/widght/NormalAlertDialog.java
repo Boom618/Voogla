@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import com.ty.voogla.R;
-import com.ty.voogla.util.ScreenSizeUtils;
 import com.ty.voogla.util.WindowUtil;
 
 

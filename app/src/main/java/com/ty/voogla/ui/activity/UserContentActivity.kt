@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_user_content_mob.*
  */
 class UserContentActivity : BaseActivity() {
     override val activityLayout: Int
-        get() = getLayout()
+        get() = R.layout.activity_user_content_mob
 
 
     override fun onBaseCreate(savedInstanceState: Bundle?) {
@@ -43,13 +43,7 @@ class UserContentActivity : BaseActivity() {
         image_return.setOnClickListener { finish() }
 
         bt_login_out.setOnClickListener {
-//            if (isPhone) {
-//                val intent = Intent(this, LoginMobActivity::class.java)
-//                startActivity(intent)
-//            } else {
-//                val intent = Intent(this, LoginPdaActivity::class.java)
-//                startActivity(intent)
-//            }
+
             val intent = Intent(this, LoginMobActivity::class.java)
             startActivity(intent)
             SimpleCache.clearAll()

@@ -1,10 +1,7 @@
 package com.ty.voogla.util
 
-import android.content.Context
 import android.content.res.Resources
-import android.graphics.Point
-import android.view.WindowManager
-import com.ty.voogla.base.MainApp
+import android.util.TypedValue
 
 /**
  * @author TY on 2019/1/7.
@@ -19,20 +16,19 @@ object WindowUtil {
      * 低（120dpi）、中（160dpi）、高（240dpi）和超高（320dpi）
      */
     fun getScreenWidth(): Int {
-        val wm = MainApp.getContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val point = Point()
-        wm.defaultDisplay.getRealSize(point)
-        return point.x
+        // 方式一： 利用 Context 取值
+//        val wm = MainApp.getContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+//        val point = Point()
+//        wm.defaultDisplay.getRealSize(point)
+        // 方式二： 利用 Resources 取值（Resources 不能获取资源信息）
+        return Resources.getSystem().displayMetrics.widthPixels
     }
 
     /**
      * 获取屏幕高度
      */
     fun getScreenHeight(): Int {
-        val wm = MainApp.getContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val point = Point()
-        wm.defaultDisplay.getRealSize(point)
-        return point.y
+        return Resources.getSystem().displayMetrics.heightPixels
     }
 
     /**
@@ -48,5 +44,12 @@ object WindowUtil {
      */
     fun getScreenDensityDpi(): Int {
         return Resources.getSystem().displayMetrics.densityDpi
+    }
+
+    /**
+     * dp 转 px,不需要 Context
+     */
+    fun dp2px(dp: Float): Float {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().displayMetrics)
     }
 }

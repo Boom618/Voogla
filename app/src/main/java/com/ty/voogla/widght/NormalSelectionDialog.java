@@ -14,8 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.ty.voogla.R;
-import com.ty.voogla.util.ResourceUtil;
-import com.ty.voogla.util.ScreenSizeUtils;
+import com.ty.voogla.util.WindowUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +51,8 @@ public class NormalSelectionDialog {
         //设置dialog的宽
         Window dialogWindow = mDialog.getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        lp.width = (int) (ScreenSizeUtils.getInstance(mBuilder.getContext().getApplicationContext()).getScreenWidth() *
-                builder.getItemWidth());
+        int tempWidth = WindowUtil.INSTANCE.getScreenWidth();
+        lp.width = (int) (tempWidth * builder.getItemWidth());
         lp.gravity = Gravity.BOTTOM;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         dialogWindow.setAttributes(lp);
@@ -85,7 +84,8 @@ public class NormalSelectionDialog {
             title.setTextColor(mBuilder.getTitleTextColor());
             title.setTextSize(mBuilder.getTitleTextSize());
             LinearLayout.LayoutParams l = (LinearLayout.LayoutParams) title.getLayoutParams();
-            l.height = ResourceUtil.dip2px(mBuilder.getTitleHeight());
+//            l.height = ResourceUtil.dip2px(mBuilder.getTitleHeight());
+            l.height = (int) WindowUtil.INSTANCE.dp2px(mBuilder.getTitleHeight());
             title.setLayoutParams(l);
 
             if (datas.size() != 0) {
@@ -242,7 +242,8 @@ public class NormalSelectionDialog {
 
             onItemListener = null;
             // 默认item高度
-            itemHeight = ResourceUtil.dip2px(45);
+//            itemHeight = ResourceUtil.dip2px(45);
+            itemHeight = (int) WindowUtil.INSTANCE.dp2px(45);
             itemWidth = 0.92f;
             // 默认字体颜色
             itemTextColor = ContextCompat.getColor(mContext, R.color.black_light);
@@ -317,7 +318,8 @@ public class NormalSelectionDialog {
         }
 
         public Builder setItemHeight(int dp) {
-            this.itemHeight = ResourceUtil.dip2px(dp);
+//            this.itemHeight = ResourceUtil.dip2px(dp);
+            this.itemHeight = (int) WindowUtil.INSTANCE.dp2px(dp);
             return this;
         }
 
