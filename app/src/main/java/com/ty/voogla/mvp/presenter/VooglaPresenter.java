@@ -1,6 +1,7 @@
 package com.ty.voogla.mvp.presenter;
 
 import com.ty.voogla.base.BaseResponse;
+import com.ty.voogla.bean.ProductIntoData;
 import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.constant.CodeConstant;
 import com.ty.voogla.mvp.contract.VooglaContract;
@@ -45,7 +46,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onSuccess(BaseResponse<UserInfo> response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
                     UserInfo userInfo = response.getData();
-                    SimpleCache.putString(CodeConstant.SESSION_ID_KEY,userInfo.getSessionID());
+                    SimpleCache.putString(CodeConstant.SESSION_ID_KEY, userInfo.getSessionID());
                     SimpleCache.putUserInfo(userInfo);
                     iView.showSuccess();
                 } else {
@@ -59,4 +60,32 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             }
         }, username, password);
     }
+
+    /**
+     * 获取生产入库列表
+     */
+    public void getProduceList() {
+        iView.showSuccess();
+//        httpMethods.getProduceList(new SingleObserver<BaseResponse<ProductIntoData>>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//
+//            }
+//
+//            @Override
+//            public void onSuccess(BaseResponse<ProductIntoData> response) {
+//                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+//                    iView.showSuccess();
+//                } else {
+//                    iView.showError(response.getMsg());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//        });
+    }
+
 }

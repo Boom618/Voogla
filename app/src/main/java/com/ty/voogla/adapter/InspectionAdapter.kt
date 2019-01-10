@@ -3,13 +3,11 @@ package com.ty.voogla.adapter
 import android.content.Context
 import android.widget.ImageView
 import com.ty.voogla.R
-import com.ty.voogla.bean.InspectionData
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
 import com.ty.voogla.widght.NormalAlertDialog
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
-import kotlinx.android.synthetic.main.item_inspection.view.*
 
 /**
  * @author TY on 2019/1/7.

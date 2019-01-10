@@ -12,6 +12,7 @@
     <color name="view_line">#979797</color>
 
     <color name="txt_main_color">#424242</color><!--主字体颜色-->
+    <color name="txt_product_color">#8E8E93</color><!--主字体颜色-->
 
     <!--// Dialog =========================== -->
     <color name="white_light">#dddddd</color>

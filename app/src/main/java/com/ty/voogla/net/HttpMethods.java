@@ -3,6 +3,7 @@ package com.ty.voogla.net;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ty.voogla.base.BaseResponse;
+import com.ty.voogla.bean.ProductIntoData;
 import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.constant.ApiNameConstant;
 import com.ty.voogla.net.gson.DoubleDefault0Adapter;
@@ -111,6 +112,12 @@ public class HttpMethods {
      */
     public void userLogin(SingleObserver<BaseResponse<UserInfo>> observer, String username, String password) {
         mService.userLogin(username, password)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+    public void getProduceList(SingleObserver<BaseResponse<ProductIntoData>> observer){
+        mService.getProductList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }

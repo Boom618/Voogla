@@ -1,6 +1,7 @@
 package com.ty.voogla.net;
 
 import com.ty.voogla.base.BaseResponse;
+import com.ty.voogla.bean.ProductIntoData;
 import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.constant.ApiNameConstant;
 import io.reactivex.Single;
@@ -30,6 +31,14 @@ public interface ApiService {
     @POST(ApiNameConstant.USER_LOGIN)
     Single<BaseResponse<UserInfo>> userLogin(@Field("username") String username,
                                              @Field("password") String password);
+
+    /**
+     * 生产入库列表
+     *
+     * @return
+     */
+    @POST(ApiNameConstant.PRODUCE_LIST)
+    Single<BaseResponse<ProductIntoData>> getProductList();
 //
 //    /**
 //     * 用户登出

@@ -66,6 +66,12 @@
         <item name="android:textColor">@color/txt_main_color</item>
     </style>
 
+    <!--生产入库 -->
+    <style name="itemProductStyle">
+        <item name="android:textSize">@dimen/text_16</item>
+        <item name="android:textColor">@color/txt_product_color</item>
+    </style>
+
     <!-- 箱码  start -->
     <style name="itemSizeBox">
         <item name="android:textSize">@dimen/text_26</item>

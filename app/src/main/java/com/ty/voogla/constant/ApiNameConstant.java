@@ -34,5 +34,10 @@ public class ApiNameConstant {
      */
     public static final String USER_LOGOUT = "sys/user/logout";
 
+    /**
+     * 生产入库列表
+     */
+    public static final String PRODUCE_LIST = "login";
+
 
 }

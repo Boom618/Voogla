@@ -39,7 +39,7 @@
         <!--<activity android:name=".ui.activity.LoginPdaActivity"/>-->
         <!--<activity android:name=".ui.activity.LoginMobActivity"/>-->
         <activity android:name=".ui.activity.MainPdaActivity"/>
-        <activity android:name=".ui.activity.BoxLinkActivity"/>
+        <activity android:name=".ui.activity.ProduceIntoActivity"/>
         <activity android:name=".ui.activity.WarehousingIntoActivity"/>
         <activity android:name=".ui.activity.WarehousingOutActivity"/>
         <activity android:name=".ui.activity.WarehousingIntoDetailActivity"/>

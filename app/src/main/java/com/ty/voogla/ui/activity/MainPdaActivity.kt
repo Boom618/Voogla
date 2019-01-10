@@ -24,11 +24,11 @@ class MainPdaActivity : BaseActivity(){
     override fun initTwoView() {
 
         image_product.setOnClickListener {
-            gotoActivity(BoxLinkActivity::class.java)
+            gotoActivity(ProduceIntoActivity::class.java)
         }
 
         image_send.setOnClickListener {
-            gotoActivity(BoxLinkActivity::class.java)
+            gotoActivity(ProduceIntoActivity::class.java)
         }
         image_user.setOnClickListener {
             gotoActivity(UserContentActivity::class.java)

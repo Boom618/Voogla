@@ -19,7 +19,7 @@ import pub.devrel.easypermissions.EasyPermissions
 
 /**
  * @author TY on 2019/1/7.
- * 稽查主页
+ * 稽查主页(手机端)
  */
 class InspectionActivity : BaseActivity() ,EasyPermissions.PermissionCallbacks{
 
@@ -56,21 +56,17 @@ class InspectionActivity : BaseActivity() ,EasyPermissions.PermissionCallbacks{
 
         recycler_view.adapter = adapter
 
-        ed_search.setOnTouchListener(object :View.OnTouchListener{
+        ed_search.setOnTouchListener(View.OnTouchListener { v, event ->
+            val drawable = ed_search.compoundDrawables[2]
 
-            override fun onTouch(v: View, event: MotionEvent): Boolean {
-
-                val drawable = ed_search.compoundDrawables[2]
-
-                if (event.actionMasked == MotionEvent.ACTION_UP) {
-                    if (event.x > (ed_search.width - ed_search.paddingRight - drawable.intrinsicWidth)){
-                        // 打开相机扫码
-                        cameraTask()
-                    }
-                    return false
+            if (event.actionMasked == MotionEvent.ACTION_UP) {
+                if (event.x > (ed_search.width - ed_search.paddingRight - drawable.intrinsicWidth)){
+                    // 打开相机扫码
+                    cameraTask()
                 }
-                return false
+                return@OnTouchListener false
             }
+            false
         })
 
         // XML　设置   android:imeOptions="actionSearch"
