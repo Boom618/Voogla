@@ -14,6 +14,7 @@
             android:id="@+id/layout_search"
             android:orientation="horizontal"
             android:layout_below="@+id/top"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <EditText
@@ -24,6 +25,7 @@
                 android:background="@mipmap/search_input"
                 android:paddingStart="@dimen/x66"
                 android:layout_marginTop="@dimen/space_6"
+                android:layout_marginBottom="@dimen/space_6"
                 android:layout_marginStart="@dimen/space_20"
                 android:hint="@string/input_product_number"
                 android:textColorHint="@color/text_color"

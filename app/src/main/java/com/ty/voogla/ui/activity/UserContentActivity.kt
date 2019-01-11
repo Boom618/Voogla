@@ -38,6 +38,9 @@ class UserContentActivity : BaseActivity() {
 
         val userInfo = SimpleCache.getUserInfo()
 
+        tv_user_name.text = userInfo.userName
+        tv_user_phone.text = userInfo.companyNo
+
         tv_company_profile.text = userInfo.companyName
 
         image_return.setOnClickListener { finish() }

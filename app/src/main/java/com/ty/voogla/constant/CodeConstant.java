@@ -7,6 +7,7 @@ package com.ty.voogla.constant;
  */
 public final class CodeConstant {
 
+    public static final String DATE_SIMPLE_Y_M_D = "yyyy年MM月dd日";
     public static final String DATE_SIMPLE_H_M = "yyyy-MM-dd HH:mm";
     public static final String DATE_SIMPLE_H_M_S = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_START_TIME = "2010-01-01 00:00";

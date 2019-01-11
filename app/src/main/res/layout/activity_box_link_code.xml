@@ -5,46 +5,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <include
+            android:id="@+id/top"
+            layout="@layout/top_layout"/>
+
 
     <TextView android:layout_width="wrap_content"
-              android:id="@+id/tv_box"
-              android:text="箱码："
+              android:id="@+id/tv_box_type"
+              android:text="@string/box_type"
               style="@style/itemSizeBox"
-              android:layout_margin="@dimen/space_10"
-              app:layout_constraintTop_toTopOf="parent"
+              android:layout_marginTop="@dimen/space_20"
+              android:layout_marginStart="@dimen/x24"
+              app:layout_constraintTop_toBottomOf="@+id/top"
               app:layout_constraintStart_toStartOf="parent"
               android:layout_height="wrap_content"/>
 
     <TextView android:layout_width="wrap_content"
               android:id="@+id/tv_box_code"
-              android:text="0001"
+              android:text="@string/box_number"
               style="@style/itemSizeBox"
-              app:layout_constraintStart_toEndOf="@+id/tv_box"
-              app:layout_constraintBottom_toBottomOf="@+id/tv_box"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintBottom_toBottomOf="@id/tv_box_type"
               android:layout_height="wrap_content"/>
 
     <TextView android:layout_width="wrap_content"
-              android:id="@+id/tv_product"
-              android:text="产品码："
+              android:id="@+id/tv_box_operate"
+              android:text="@string/box_operate"
               style="@style/itemSizeBox"
-              app:layout_constraintTop_toBottomOf="@+id/tv_box"
-              app:layout_constraintStart_toStartOf="@+id/tv_box"
+              android:layout_marginEnd="@dimen/x18"
+              app:layout_constraintBottom_toBottomOf="@id/tv_box_type"
+              app:layout_constraintEnd_toEndOf="parent"
               android:layout_height="wrap_content"/>
 
-    <TextView android:layout_width="wrap_content"
-              android:id="@+id/tv_product_code"
-              android:text="0002"
-              style="@style/itemSizeBox"
-              app:layout_constraintStart_toEndOf="@+id/tv_product"
-              app:layout_constraintBottom_toBottomOf="@+id/tv_product"
-              android:layout_height="wrap_content"/>
-
-    <Button android:layout_width="wrap_content"
-            android:id="@+id/bt_complete"
-            android:text="完成"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_product"
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/box_recycler"
+            app:layout_constraintTop_toBottomOf="@+id/tv_box_type"
+            android:layout_width="match_parent"
+            android:background="@color/white"
             android:layout_height="wrap_content"/>
 
 </android.support.constraint.ConstraintLayout>

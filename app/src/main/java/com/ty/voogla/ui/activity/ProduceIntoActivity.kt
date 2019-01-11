@@ -1,7 +1,6 @@
 package com.ty.voogla.ui.activity
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.inputmethod.EditorInfo
 import com.ty.voogla.R
 import com.ty.voogla.adapter.LayoutInit
@@ -54,15 +53,15 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.View {
 
 
 
-        tv_product.setOnClickListener { gotoActivity(BoxLinkDetailActivity::class.java) }
+        tv_product.setOnClickListener { gotoActivity(ProduceIntoDetailActivity::class.java) }
 
     }
 
     override fun showSuccess() {
 
-//        val list: MutableList<String> = mutableListOf("北京", "上海", "广东", "杭州", "天津")
-        val list: ArrayList<String> = ArrayList(10)
-        list.add("121")
+        val list: MutableList<String> = mutableListOf("北京", "上海", "广东", "杭州", "天津")
+//        val list: ArrayList<String> = ArrayList(10)
+//        list.add("121")
         list.add("121")
 
         LayoutInit.initLayoutManager(this,recycler_view_pro)

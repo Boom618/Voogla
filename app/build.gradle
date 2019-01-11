@@ -137,7 +137,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:${ZBConfig.rx2AndroidVersion}"
 
     // 时间选择框
-    //implementation "com.contrarywind:Android-PickerView:${ZBConfig.PickerViewVersion}"
+    implementation "com.contrarywind:Android-PickerView:${ZBConfig.PickerViewVersion}"
 
     // SearchLayout
     //implementation 'com.carson_ho:SearchLayout:1.0.1'

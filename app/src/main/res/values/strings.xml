@@ -32,7 +32,7 @@
     <string name="receipt_address">收货地址</string>
     <string name="search">搜索</string>
     <string name="login">登录</string>
-    <string name="box_link">箱码绑定</string>
+    <string name="box_link">箱码关联</string>
     <string name="look_detail">查看明细</string>
     <string name="produce_into">生产入库</string>
     <string name="storage_info">已入库信息</string>
@@ -43,4 +43,15 @@
     <string name="product_spec">规格</string>
     <string name="warehousing_address">所在仓库</string>
     <string name="warehousing_user">操作员</string>
+    <string name="product_batch">生产批次号：</string>
+    <string name="select_pro_name">请选择产品名称</string>
+    <string name="select_house">请选择仓库</string>
+    <string name="into_house_time">入库时间</string>
+    <string name="select_spec">规格选择</string>
+    <string name="goto_box_link">前往箱码关联</string>
+    <string name="house_detail">入库明细</string>
+    <string name="current_amount">当前数量：</string>
+    <string name="box_type">类型</string>
+    <string name="box_number">码号</string>
+    <string name="box_operate">操作</string>
 </resources>

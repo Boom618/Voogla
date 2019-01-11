@@ -49,7 +49,9 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View {
             val name = et_user_name.text.toString().trim { it <= ' ' }
             val pass = et_user_pass.text.toString().trim { it <= ' ' }
 //            gotoActivity(MainMobActivity::class.java, true)
-            presenter.getData(name, pass)
+            if (name.isNotEmpty() && pass.isNotEmpty()) {
+                presenter.getData(name, pass)
+            }
         }
 
     }

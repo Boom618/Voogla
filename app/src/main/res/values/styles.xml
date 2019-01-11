@@ -74,7 +74,7 @@
 
     <!-- 箱码  start -->
     <style name="itemSizeBox">
-        <item name="android:textSize">@dimen/text_26</item>
+        <item name="android:textSize">@dimen/text_18</item>
         <item name="android:textColor">@color/txt_main_color</item>
     </style>
 
