@@ -56,7 +56,7 @@ class InspectionActivity : BaseActivity() ,EasyPermissions.PermissionCallbacks{
 
         recycler_view.adapter = adapter
 
-        ed_search.setOnTouchListener(View.OnTouchListener { v, event ->
+        ed_search.setOnTouchListener(View.OnTouchListener { _, event ->
             val drawable = ed_search.compoundDrawables[2]
 
             if (event.actionMasked == MotionEvent.ACTION_UP) {

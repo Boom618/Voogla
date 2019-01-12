@@ -42,7 +42,7 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.View {
         initToolBar(R.string.produce_into)
 
 
-        search_view.setOnEditorActionListener { v, actionId, event ->
+        search_view.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
                 val tempString = v.text.toString().trim { it <= ' ' }

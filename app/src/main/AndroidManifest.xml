@@ -31,7 +31,7 @@
             android:theme="@style/AppTheme">
         <!--<activity android:name=".ui.activity.LoginMobActivity"/>-->
         <activity
-                android:name=".ui.activity.ProduceIntoDetailActivity"
+                android:name=".ui.activity.MainPdaJavaActivity"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.MainPdaActivity"/>
+        <!--<activity android:name=".ui.activity.MainPdaActivity"/>-->
         <activity android:name=".ui.activity.ProduceIntoActivity"/>
         <activity android:name=".ui.activity.WarehousingIntoActivity"/>
         <activity android:name=".ui.activity.WarehousingOutActivity"/>
@@ -49,15 +49,15 @@
         <activity android:name=".ui.activity.MainMobActivity"/>
         <activity android:name=".ui.activity.UserContentActivity"/>
         <activity android:name=".ui.activity.InspectionActivity"/>
-        <!--<activity android:name=".ui.activity.ProduceIntoDetailActivity"/>-->
+        <activity android:name=".ui.activity.ProduceIntoDetailActivity"/>
 
         <!-- 对接 PDA 50k Barcode -->
         <activity
                 android:label="Barcode"
-                android:name=".ui.activity.BoxLinkActivity"
+                android:name=".ui.activity.BoxLinkJavaActivity"
                 android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.AUTOMATICBARCODEACTIVITY"/>
+                <action android:name="android.intent.action.AUTOCODEACTIVITY"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>

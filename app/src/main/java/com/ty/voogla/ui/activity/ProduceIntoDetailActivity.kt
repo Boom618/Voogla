@@ -72,7 +72,7 @@ class ProduceIntoDetailActivity : BaseActivity() {
 
         tv_to_box_link.setOnClickListener {
 //            gotoActivity(BoxLinkActivity::class.java)
-            val intent = Intent("android.intent.action.AUTOMATICBARCODEACTIVITY")
+            val intent = Intent("android.intent.action.AUTOCODEACTIVITY")
             startActivity(intent)
         }
 

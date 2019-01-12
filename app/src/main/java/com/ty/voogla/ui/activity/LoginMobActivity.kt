@@ -60,7 +60,8 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View {
         if (isPhone) {
             gotoActivity(MainMobActivity::class.java, true)
         } else {
-            gotoActivity(MainPdaActivity::class.java, true)
+//            gotoActivity(MainPdaActivity::class.java, true)
+            gotoActivity(MainPdaJavaActivity::class.java, true)
         }
     }
 
