@@ -1,8 +1,10 @@
 package com.ty.voogla.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
 import android.view.View
+import com.honeywell.aidc.AidcManager
+import com.honeywell.aidc.BarcodeReader
 import com.ty.voogla.R
 import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.adapter.ProIntoDetailAdapter
@@ -24,6 +26,9 @@ class ProduceIntoDetailActivity : BaseActivity() {
 
     private lateinit var adapter: ProIntoDetailAdapter
 
+    lateinit var manager: AidcManager
+    private var barcodeReader: BarcodeReader? = null
+
     override val activityLayout: Int
         get() = R.layout.activity_product_into_detail
 
@@ -31,6 +36,12 @@ class ProduceIntoDetailActivity : BaseActivity() {
     }
 
     override fun initOneData() {
+
+        AidcManager.create(this){aidcManager ->
+            manager = aidcManager
+            barcodeReader = manager.createBarcodeReader()
+
+        }
     }
 
     override fun initTwoView() {
@@ -59,12 +70,14 @@ class ProduceIntoDetailActivity : BaseActivity() {
             }
         }
 
-        tv_to_box_link.setOnClickListener { gotoActivity(BoxLinkActivity::class.java) }
+        tv_to_box_link.setOnClickListener {
+//            gotoActivity(BoxLinkActivity::class.java)
+            val intent = Intent("android.intent.action.AUTOMATICBARCODEACTIVITY")
+            startActivity(intent)
+        }
 
         val list = mutableListOf("a", "b", "c")
         LayoutInit.initLayoutManager(this, house_recycler)
-        // 分割线
-        house_recycler.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
 
         adapter = ProIntoDetailAdapter(this, R.layout.item_house_detail, list)
         house_recycler.adapter = adapter

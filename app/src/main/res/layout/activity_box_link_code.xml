@@ -40,6 +40,8 @@
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/box_recycler"
+            android:layout_marginStart="@dimen/x8"
+            android:layout_marginEnd="@dimen/x8"
             app:layout_constraintTop_toBottomOf="@+id/tv_box_type"
             android:layout_width="match_parent"
             android:background="@color/white"
