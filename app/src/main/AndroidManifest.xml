@@ -63,6 +63,8 @@
             </intent-filter>
 
         </activity>
+        <activity android:name=".ui.activity.ProductIntoLookActivity"/>
+        <activity android:name=".ui.activity.BoxLinkLookActivity"/>
         <!--<activity android:name=".ui.activity.scan.AutomaticBarcodeActivity">-->
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.AUTOMATICBARCODEACTIVITY" />-->

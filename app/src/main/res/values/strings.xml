@@ -54,4 +54,5 @@
     <string name="box_type">类型</string>
     <string name="box_number">码号</string>
     <string name="box_operate">操作</string>
+    <string name="look">查看</string>
 </resources>
