@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:paddingBottom="@dimen/x20"
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/x10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:id="@+id/tv_select_pro_name"
+            android:textSize="@dimen/text_12"
+            android:layout_marginTop="@dimen/x16"
+            android:background="@drawable/shape_select"
+            android:layout_marginStart="@dimen/x28"
+            android:layout_marginEnd="@dimen/x28"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="@string/select_pro_name"
+            android:layout_width="match_parent"
+            android:padding="@dimen/x8"
+            android:drawableEnd="@mipmap/ic_bottom"
+            android:drawablePadding="@dimen/x40"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/tv_select_pro_name"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_select_pro_name"
+            android:text="@string/send_amount_wait"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_send_amount_wait"
+            app:layout_constraintTop_toBottomOf="@+id/tv_select_pro_name"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/tv_select_pro_name"
+            android:text="100 箱"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/view_line2"
+            app:layout_constraintTop_toBottomOf="@+id/tv_send_amount_wait"
+            android:layout_width="match_parent"
+            style="@style/lineView"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/view_line2"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_select_pro_name"
+            android:text="@string/box_amount"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_box_amount"
+            app:layout_constraintTop_toBottomOf="@+id/view_line2"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/tv_select_pro_name"
+            android:text="50 箱"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+    <View
+            android:id="@+id/view_line3"
+            app:layout_constraintTop_toBottomOf="@+id/tv_box_amount"
+            android:layout_width="match_parent"
+            style="@style/lineView"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/view_line3"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_select_pro_name"
+            android:text="@string/product_amount"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_product_amount"
+            app:layout_constraintTop_toBottomOf="@+id/view_line3"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/tv_select_pro_name"
+            android:text="2 箱"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_scan_code_box"
+            android:text="@string/scan_code"
+            android:background="@drawable/button_color"
+            android:textColor="@color/theme_color"
+            android:padding="@dimen/x12"
+            android:paddingStart="@dimen/x20"
+            android:paddingEnd="@dimen/x20"
+            android:layout_marginTop="@dimen/x20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+</android.support.constraint.ConstraintLayout>

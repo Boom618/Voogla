@@ -1,6 +1,7 @@
 package com.ty.voogla.widght
 
 import android.content.Context
+import com.ty.voogla.util.ToastUtil
 
 /**
  * @author TY on 2019/1/8.
@@ -25,5 +26,22 @@ object DialogUtil {
             .build()
 
         dialog.show()
+    }
+
+    /**
+     * 选择产品名称
+     */
+    fun selectProName(context: Context, data: MutableList<String>) {
+        val selectDialog = NormalSelectionDialog.Builder(context)
+            .setlTitleVisible(true)
+            .setTitleText("产品名称")
+            .setOnItemListener { dialog, which ->
+                dialog.dismiss()
+                ToastUtil.showToast(data[which])
+
+            }
+            .build()
+            .setDatas(data)
+            .show()
     }
 }

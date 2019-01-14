@@ -29,6 +29,7 @@
     <string name="send_organization">发货组织</string>
     <string name="receipt_organization">收货组织</string>
     <string name="send_address">发货地址</string>
+    <string name="send_address_">发货地址：</string>
     <string name="receipt_address">收货地址</string>
     <string name="search">搜索</string>
     <string name="login">登录</string>
@@ -55,4 +56,16 @@
     <string name="box_number">码号</string>
     <string name="box_operate">操作</string>
     <string name="look">查看</string>
+    <string name="input_send_out_number">输入发货单号</string>
+    <string name="send_out">发货出库</string>
+    <string name="send_out_date">发货日期</string>
+    <string name="send_out_date_">发货日期：</string>
+    <string name="send_out_state">状态</string>
+    <string name="send_out_detail">发货明细</string>
+    <string name="send_amount_wait">待发货数量</string>
+    <string name="box_amount">已扫箱码数</string>
+    <string name="product_amount">已扫产品数</string>
+    <string name="scan_code">扫码出库</string>
+    <string name="send_out_receipt">发货单号：</string>
+    <string name="code_detail">码号明细</string>
 </resources>

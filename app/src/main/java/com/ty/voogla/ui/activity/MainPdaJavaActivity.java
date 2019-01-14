@@ -70,7 +70,7 @@ public class MainPdaJavaActivity extends BaseActivity implements View.OnClickLis
                 gotoActivity(ProduceIntoActivity.class);
                 break;
             case R.id.image_send:
-                gotoActivity(ProduceIntoActivity.class);
+                gotoActivity(SendOutActivity.class);
                 break;
             case R.id.image_user:
                 gotoActivity(UserContentActivity.class);

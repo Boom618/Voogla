@@ -69,4 +69,9 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View {
 
         ToastUtil.showToast(msg)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.disposable()
+    }
 }
