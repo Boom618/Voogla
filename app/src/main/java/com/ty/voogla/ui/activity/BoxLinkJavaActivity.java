@@ -12,6 +12,7 @@ import com.ty.voogla.adapter.BoxLinkAdapter;
 import com.ty.voogla.adapter.LayoutInit;
 import com.ty.voogla.base.BaseActivity;
 import com.ty.voogla.util.ToastUtil;
+import com.ty.voogla.util.scan.ScanSoundUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -142,6 +143,7 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
                 boolean contains = listCode.contains(dataString);
                 if (contains) {
                     ToastUtil.showToast("该数据扫码过");
+                    ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
                 } else {
                     listCode.add(dataString);
                     adapter.notifyDataSetChanged();

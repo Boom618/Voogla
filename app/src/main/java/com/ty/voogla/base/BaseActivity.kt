@@ -1,6 +1,7 @@
 package com.ty.voogla.base
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -129,6 +130,18 @@ abstract class BaseActivity : AppCompatActivity() {
      * 重置 ACache 中保存的的数据
      */
     private fun clearCache() {}
+
+    /**
+     * 语音提示
+     *
+     * @param raw
+     */
+    protected fun showSound(raw: Int) {
+
+        val mediaPlayer = MediaPlayer.create(applicationContext, raw)
+        mediaPlayer.setVolume(0.05f, 0.05f)
+        mediaPlayer.start()
+    }
 
 
     override fun onDestroy() {
