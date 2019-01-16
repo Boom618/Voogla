@@ -61,7 +61,7 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.View<ProductIntoData>
 
     override fun showSuccess(data: ProductIntoData) {
 
-        val list: MutableList<String> = mutableListOf("北京", "上海", "广东")
+        val list: MutableList<String> = mutableListOf("北京")
 
         LayoutInit.initLayoutManager(this,recycler_view_pro)
 //        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

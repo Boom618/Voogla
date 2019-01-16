@@ -277,6 +277,7 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
         }
 
+        // TODO  Thread.sleep 需改进
         try {
             Thread.sleep(1000);
             // 继续扫码

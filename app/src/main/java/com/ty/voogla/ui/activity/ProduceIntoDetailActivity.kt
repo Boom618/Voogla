@@ -14,6 +14,7 @@ import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.net.RequestBodyJson
+import com.ty.voogla.util.NiceDialogUtil
 import com.ty.voogla.util.SimpleCache
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
@@ -39,6 +40,8 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
     // 商品名称
     private var goodsName: MutableList<String> = mutableListOf()
+    // 规格
+    private var goodsSpec: MutableList<String> = mutableListOf()
 
     private val presenter = VooglaPresenter(this)
 
@@ -72,7 +75,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         // 产品选择
         tv_select_pro_name.setOnClickListener {
 
-            DialogUtil.selectProName(it.context, goodsName,tv_select_pro_name)
+            DialogUtil.selectProName(it.context, goodsName,goodsSpec,tv_select_pro_name,tv_select_spec)
         }
 
         // 时间选择
@@ -151,9 +154,10 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     override fun showSuccess(data: ProductListInfoData?) {
         val list = data?.list
         val size = list!!.size
-        for (i in 1..size ){
+        for (i in 0 until size){
 
             goodsName.add(list[i].goodsName!!)
+            goodsSpec.add(list[i].goodsSpec!!)
 
         }
     }

@@ -32,18 +32,19 @@ object DialogUtil {
     /**
      * 选择产品名称(生产入库)
      */
-    fun selectProName(context: Context, data: MutableList<String>,textView: TextView) {
+    fun selectProName(context: Context, goodData: MutableList<String>, specData: MutableList<String>,goodView: TextView,specView: TextView) {
         val selectDialog = NormalSelectionDialog.Builder(context)
-            .setlTitleVisible(true)
-            .setTitleText("产品名称")
+//            .setlTitleVisible(true)
+//            .setTitleText("产品名称")
             .setOnItemListener { dialog, which ->
                 dialog.dismiss()
-                textView.text = data[which]
-                ToastUtil.showToast(data[which])
+                goodView.text = goodData[which]
+                specView.text = specData[which]
+                ToastUtil.showToast(goodData[which])
 
             }
             .build()
-            .setDatas(data)
+            .setDatas(goodData)
             .show()
     }
 
@@ -52,8 +53,8 @@ object DialogUtil {
      */
     fun selectSendName(context: Context, data: MutableList<String>) {
         val selectDialog = NormalSelectionDialog.Builder(context)
-            .setlTitleVisible(true)
-            .setTitleText("产品名称")
+//            .setlTitleVisible(true)
+//            .setTitleText("产品名称")
             .setOnItemListener { dialog, which ->
                 dialog.dismiss()
                 ToastUtil.showToast(data[which])

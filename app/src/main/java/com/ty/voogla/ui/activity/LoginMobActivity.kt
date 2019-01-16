@@ -49,7 +49,6 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View<UserInfo> {
         login_mob.setOnClickListener { _ ->
             val name = et_user_name.text.toString().trim { it <= ' ' }
             val pass = et_user_pass.text.toString().trim { it <= ' ' }
-//            gotoActivity(MainMobActivity::class.java, true)
             if (name.isNotEmpty() && pass.isNotEmpty()) {
                 presenter.getData(name, pass)
             }
@@ -61,7 +60,6 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View<UserInfo> {
         if (isPhone) {
             gotoActivity(MainMobActivity::class.java, true)
         } else {
-//            gotoActivity(MainPdaActivity::class.java, true)
             gotoActivity(MainPdaJavaActivity::class.java, true)
         }
     }

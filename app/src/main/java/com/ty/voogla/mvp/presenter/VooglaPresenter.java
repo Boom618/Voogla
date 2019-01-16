@@ -79,7 +79,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             @Override
             public void onSuccess(BaseResponse<ProductIntoData> response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
-                    iView.showSuccess(response);
+                    iView.showSuccess(response.getData());
                 } else {
                     iView.showError(response.getMsg());
                 }
@@ -107,7 +107,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             @Override
             public void onSuccess(BaseResponse<ProductListInfoData> response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
-                    iView.showSuccess(response);
+                    iView.showSuccess(response.getData());
                 } else {
                     iView.showError(response.getMsg());
                 }
