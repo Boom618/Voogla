@@ -9,7 +9,6 @@ import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.adapter.ProIntoDetailAdapter
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.bean.AddProduct
-import com.ty.voogla.bean.ProductIntoData
 import com.ty.voogla.bean.ProductListInfoData
 import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.mvp.contract.VooglaContract
@@ -17,6 +16,7 @@ import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.net.RequestBodyJson
 import com.ty.voogla.util.SimpleCache
 import com.ty.voogla.util.ToastUtil
+import com.ty.voogla.widght.DialogUtil
 import com.ty.voogla.widght.TimeWidght
 import kotlinx.android.synthetic.main.activity_product_into_detail.*
 import okhttp3.RequestBody
@@ -33,10 +33,12 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
     private lateinit var adapter: ProIntoDetailAdapter
 
-    //    lateinit var manager: AidcManager
 //    private var barcodeReader: BarcodeReader? = null
     private var boxCode: String? = null
     private var qrCodeInfos:MutableList<String>?= null
+
+    // 商品名称
+    private var goodsName: MutableList<String> = mutableListOf()
 
     private val presenter = VooglaPresenter(this)
 
@@ -48,11 +50,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
     override fun initOneData() {
 
-//        AidcManager.create(this){aidcManager ->
-//            manager = aidcManager
-//            barcodeReader = manager.createBarcodeReader()
-//
-//        }
+        presenter.getProductListInfo(SimpleCache.getUserInfo().companyNo)
     }
 
     override fun initTwoView() {
@@ -71,6 +69,12 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             requestHttp(hasFocus)
         }
 
+        // 产品选择
+        tv_select_pro_name.setOnClickListener {
+
+            DialogUtil.selectProName(it.context, goodsName,tv_select_pro_name)
+        }
+
         // 时间选择
         tv_select_time.setOnClickListener { v ->
             TimeWidght.showPickDate(this) { date, _ ->
@@ -82,7 +86,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         }
 
         tv_to_box_link.setOnClickListener {
-            //            gotoActivity(BoxLinkActivity::class.java)
+            // 广播跳转
             val intent = Intent("android.intent.action.AUTOCODEACTIVITY")
             intent.putExtra(CodeConstant.PAGE_STATE, CodeConstant.PAGE_BOX_LINK)
             startActivityForResult(intent, 100)
@@ -145,8 +149,16 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     }
 
     override fun showSuccess(data: ProductListInfoData?) {
+        val list = data?.list
+        val size = list!!.size
+        for (i in 1..size ){
+
+            goodsName.add(list[i].goodsName!!)
+
+        }
     }
 
     override fun showError(msg: String?) {
+        ToastUtil.showToast(msg)
     }
 }

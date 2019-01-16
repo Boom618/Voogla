@@ -49,6 +49,7 @@ class UserContentActivity : BaseActivity() {
 
             val intent = Intent(this, LoginMobActivity::class.java)
             startActivity(intent)
+            // 清数据
             SimpleCache.clearAll()
             ActivitiesHelper.get().finishAll()
         }

@@ -12,7 +12,10 @@ import com.ty.voogla.R;
 import com.ty.voogla.adapter.BoxLinkAdapter;
 import com.ty.voogla.adapter.LayoutInit;
 import com.ty.voogla.base.BaseActivity;
+import com.ty.voogla.bean.DecodeCode;
 import com.ty.voogla.constant.CodeConstant;
+import com.ty.voogla.mvp.contract.VooglaContract;
+import com.ty.voogla.mvp.presenter.VooglaPresenter;
 import com.ty.voogla.ui.activity.scan.BarcodeProperties;
 import com.ty.voogla.util.ToastUtil;
 import com.ty.voogla.util.scan.ScanSoundUtil;
@@ -27,7 +30,7 @@ import java.util.List;
  * 箱码绑定 --> 扫码
  */
 public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.BarcodeListener,
-        BarcodeReader.TriggerListener {
+        BarcodeReader.TriggerListener, VooglaContract.View<DecodeCode> {
 
     private com.honeywell.aidc.BarcodeReader barcodeReader;
     private RecyclerView boxRecycler;
@@ -42,6 +45,8 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
      * 箱码
      */
     private String boxCode;
+
+    private VooglaPresenter presenter = new VooglaPresenter(this);
 
 
     @Override
@@ -62,7 +67,7 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
                     returnActivity();
                 }
             });
-        }else if(CodeConstant.PAGE_SCAN_OUT.equals(type)){
+        } else if (CodeConstant.PAGE_SCAN_OUT.equals(type)) {
             initToolBar(R.string.scan_code, "保存", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -124,9 +129,9 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
      */
     private void returnActivity() {
         Intent intent = new Intent();
-        intent.putExtra("boxCode",boxCode);
-        intent.putStringArrayListExtra("qrCodeInfos",qrCodeInfos);
-        setResult(100,intent);
+        intent.putExtra("boxCode", boxCode);
+        intent.putStringArrayListExtra("qrCodeInfos", qrCodeInfos);
+        setResult(100, intent);
         finish();
 
     }
@@ -140,35 +145,39 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             @Override
             public void run() {
                 // update UI to reflect the data
-                List<String> list = new ArrayList<String>();
-                list.add("Barcode data: " + event.getBarcodeData());
-                list.add("Character Set: " + event.getCharset());
-                list.add("Code ID: " + event.getCodeId());
-                list.add("AIM ID: " + event.getAimId());
-                list.add("Timestamp: " + event.getTimestamp());
+//                List<String> list = new ArrayList<String>();
+//                list.add("Barcode data: " + event.getBarcodeData());
+//                list.add("Character Set: " + event.getCharset());
+//                list.add("Code ID: " + event.getCodeId());
+//                list.add("AIM ID: " + event.getAimId());
+//                list.add("Timestamp: " + event.getTimestamp());
 
                 String dataString = event.getBarcodeData();
-                if (qrCodeInfos.size() < 3) {
-                    boolean contains = qrCodeInfos.contains(dataString);
-                    if (contains) {
-                        ToastUtil.showToast("该数据扫码过");
-                        ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
-                    } else {
-                        qrCodeInfos.add(dataString);
-                        adapter.notifyDataSetChanged();
-                    }
-                    ToastUtil.showToast("已扫码 2 盒,请扫箱码");
-                } else {
-                    boxCode = dataString;
-                }
+
+                presenter.decodeUrlCode(dataString);
+//                if (qrCodeInfos.size() < 4) {
+//                    boolean contains = qrCodeInfos.contains(dataString);
+//                    if (contains) {
+//                        ToastUtil.showToast("该数据扫码过");
+//                        ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
+//                        // 继续扫码
+//                        continuousScanning(true);
+//                    } else {
+//                        presenter.decodeUrlCode(dataString);
+//                    }
+//                }else if(qrCodeInfos.size() == 4){
+//                    ToastUtil.showToast("已扫码 4 盒,请扫箱码");
+//                } else {
+//                    boxCode = dataString;
+//                }
 
 
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                continuousScanning(true);
+//                try {
+//                    Thread.sleep(500);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+
             }
         });
     }
@@ -252,5 +261,36 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             // unregister trigger state change listener
             barcodeReader.removeTriggerListener(this);
         }
+    }
+
+    @Override
+    public void showSuccess(DecodeCode data) {
+
+        String code = data.getResult().getCode();
+        ToastUtil.showToast(code);
+        if (qrCodeInfos.contains(code)) {
+            ToastUtil.showToast("该数据扫码过");
+            ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
+        }else{
+            qrCodeInfos.add(code);
+            adapter.notifyItemInserted(qrCodeInfos.size());
+            adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
+        }
+
+        try {
+            Thread.sleep(1000);
+            // 继续扫码
+            continuousScanning(true);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    public void showError(String msg) {
+        ToastUtil.showToast(msg);
+
     }
 }

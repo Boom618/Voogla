@@ -46,7 +46,7 @@
     <string name="warehousing_user">操作员</string>
     <string name="product_batch">生产批次号：</string>
     <string name="select_pro_name">请选择产品名称</string>
-    <string name="select_house">请选择仓库</string>
+    <string name="select_house">请输入仓库</string>
     <string name="into_house_time">入库时间</string>
     <string name="select_spec">规格选择</string>
     <string name="goto_box_link">前往箱码关联</string>

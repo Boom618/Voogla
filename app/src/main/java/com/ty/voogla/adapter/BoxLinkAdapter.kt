@@ -14,6 +14,7 @@ class BoxLinkAdapter(context: Context, layout: Int, datas: MutableList<String>?)
 
     override fun convert(holder: ViewHolder, t: String?, position: Int) {
 
+        holder.setText(R.id.tv_code,t)
         val deleteView = holder.itemView.findViewById<ImageView>(R.id.image_delete)
 
         deleteView.setOnClickListener {

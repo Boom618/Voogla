@@ -2,6 +2,7 @@ package com.ty.voogla.net;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.honeywell.aidc.BarcodeReadEvent;
 import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
 import com.ty.voogla.bean.DecodeCode;
@@ -13,8 +14,12 @@ import com.ty.voogla.net.gson.DoubleDefault0Adapter;
 import com.ty.voogla.net.gson.IntegerDefault0Adapter;
 import com.ty.voogla.net.gson.LongDefault0Adapter;
 import com.ty.voogla.net.gson.StringDefault0Adapter;
+import io.reactivex.Observable;
 import io.reactivex.SingleObserver;
+import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
@@ -179,6 +184,19 @@ public class HttpMethods {
         mService.decodeUrlCode(secret)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
+    }
+
+    public void decodeUrlCodeMap(String secret) {
+        mService.decodeUrlCode(secret)
+                .map(new Function<DecodeCode, DecodeCode>() {
+                    @Override
+                    public DecodeCode apply(DecodeCode decodeCode) throws Exception {
+                        return decodeCode;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+
     }
 
 

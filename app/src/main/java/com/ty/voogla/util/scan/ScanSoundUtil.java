@@ -5,10 +5,11 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import com.honeywell.aidc.BarcodeReadEvent;
 import com.ty.voogla.R;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
+import com.ty.voogla.bean.DecodeCode;
+import com.ty.voogla.constant.CodeConstant;
+import io.reactivex.*;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -34,6 +35,7 @@ public class ScanSoundUtil {
 
 
         Observable.just(true)
+                .throttleFirst(2, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Boolean>() {
@@ -68,6 +70,16 @@ public class ScanSoundUtil {
                         return barcodeReadEvent.getBarcodeData();
                     }
                 })
+                .flatMap(new Function<String, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(String s) throws Exception {
+                        return new Observable<String>() {
+                            @Override
+                            protected void subscribeActual(Observer<? super String> observer) {
+                            }
+                        };
+                    }
+                })
                 // 被观察者，设置为子线程
                 .subscribeOn(Schedulers.io())
                 .throttleFirst(3, TimeUnit.SECONDS)
@@ -92,6 +104,7 @@ public class ScanSoundUtil {
                 });
 
     }
+
 
     /**
      * 该箱码已扫码

@@ -20,7 +20,7 @@ class SendOutNextAdapter(val context: Context, layout: Int, datas: MutableList<S
 
         holder.itemView.findViewById<TextView>(R.id.tv_select_pro_name).setOnClickListener {
 
-            DialogUtil.selectProName(context, datas)
+            DialogUtil.selectSendName(context, datas)
         }
 
         holder.setText(R.id.tv_send_amount_wait, "1$position 箱")

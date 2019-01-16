@@ -11,7 +11,9 @@ import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.net.HttpMethods;
 import com.ty.voogla.util.SimpleCache;
 import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 
 /**
  * @author TY on 2018/12/20.
@@ -136,7 +138,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onSuccess(DecodeCode decodeCode) {
-                if (CodeConstant.SERVICE_SUCCESS.equals(decodeCode.getMsg())) {
+                if (CodeConstant.SERVICE_STATUS == decodeCode.getStatus()) {
                     iView.showSuccess(decodeCode);
                 } else {
                     iView.showError(decodeCode.getMsg());
@@ -149,6 +151,17 @@ public class VooglaPresenter implements VooglaContract.Presenter {
                 iView.showError(e.getMessage());
             }
         },secret);
+
+    }
+
+    /**
+     * 二维码解码  flatMap 操作
+     */
+    public void decodeUrlCodeMap(SingleObserver<DecodeCode> observer, String secret) {
+
+        // 齐超 地址
+        HttpMethods http = new HttpMethods(ApiNameConstant.BASE_URL3);
+
 
 
     }
