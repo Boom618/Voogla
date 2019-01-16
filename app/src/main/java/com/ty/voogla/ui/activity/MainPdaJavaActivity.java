@@ -79,4 +79,11 @@ public class MainPdaJavaActivity extends BaseActivity implements View.OnClickLis
 
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        moveTaskToBack(true);
+
+    }
 }

@@ -1,8 +1,11 @@
 package com.ty.voogla.mvp.presenter;
 
 import com.ty.voogla.base.BaseResponse;
+import com.ty.voogla.bean.DecodeCode;
 import com.ty.voogla.bean.ProductIntoData;
+import com.ty.voogla.bean.ProductListInfoData;
 import com.ty.voogla.bean.UserInfo;
+import com.ty.voogla.constant.ApiNameConstant;
 import com.ty.voogla.constant.CodeConstant;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.net.HttpMethods;
@@ -48,7 +51,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
                     UserInfo userInfo = response.getData();
                     SimpleCache.putString(CodeConstant.SESSION_ID_KEY, userInfo.getSessionID());
                     SimpleCache.putUserInfo(userInfo);
-                    iView.showSuccess();
+                    iView.showSuccess(userInfo);
                 } else {
                     iView.showError(response.getMsg());
                 }
@@ -64,28 +67,90 @@ public class VooglaPresenter implements VooglaContract.Presenter {
     /**
      * 获取生产入库列表
      */
-    public void getProduceList() {
-        iView.showSuccess();
-//        httpMethods.getProduceList(new SingleObserver<BaseResponse<ProductIntoData>>() {
-//            @Override
-//            public void onSubscribe(Disposable d) {
-//
-//            }
-//
-//            @Override
-//            public void onSuccess(BaseResponse<ProductIntoData> response) {
-//                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
-//                    iView.showSuccess();
-//                } else {
-//                    iView.showError(response.getMsg());
-//                }
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//
-//            }
-//        });
+    public void getProduceList(String companyNo) {
+        httpMethods.getProductList(new SingleObserver<BaseResponse<ProductIntoData>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(BaseResponse<ProductIntoData> response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    iView.showSuccess(response);
+                } else {
+                    iView.showError(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iView.showError(e.getMessage());
+            }
+        }, companyNo);
+    }
+
+    /**
+     * 获取产品列表信息
+     *
+     * @param companyNo
+     */
+    public void getProductListInfo(String companyNo) {
+        httpMethods.getProductListInfo(new SingleObserver<BaseResponse<ProductListInfoData>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(BaseResponse<ProductListInfoData> response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    iView.showSuccess(response);
+                } else {
+                    iView.showError(response.getMsg());
+                }
+
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iView.showError(e.getMessage());
+            }
+        }, companyNo);
+    }
+
+    /**
+     * 二维码解码
+     */
+    public void decodeUrlCode(String secret) {
+
+        // 齐超 地址
+        HttpMethods http = new HttpMethods(ApiNameConstant.BASE_URL3);
+
+        http.decodeUrlCode(new SingleObserver<DecodeCode>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(DecodeCode decodeCode) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(decodeCode.getMsg())) {
+                    iView.showSuccess(decodeCode);
+                } else {
+                    iView.showError(decodeCode.getMsg());
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iView.showError(e.getMessage());
+            }
+        },secret);
+
+
     }
 
 }

@@ -9,7 +9,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder
 /**
  * @author TY on 2019/1/11.
  */
-class BoxLinkAdapter(context: Context, layout: Int, datas: MutableList<String>) :
+class BoxLinkAdapter(context: Context, layout: Int, datas: MutableList<String>?) :
     CommonAdapter<String>(context, layout, datas) {
 
     override fun convert(holder: ViewHolder, t: String?, position: Int) {

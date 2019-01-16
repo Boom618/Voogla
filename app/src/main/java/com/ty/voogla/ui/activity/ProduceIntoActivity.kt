@@ -6,8 +6,10 @@ import com.ty.voogla.R
 import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.adapter.ProductIntoAdapter
 import com.ty.voogla.base.BaseActivity
+import com.ty.voogla.bean.ProductIntoData
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
+import com.ty.voogla.util.SimpleCache
 import com.ty.voogla.util.ToastUtil
 import kotlinx.android.synthetic.main.activity_product_into.*
 
@@ -17,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_product_into.*
  *
  * 生产入库（PDA 端）
  */
-class ProduceIntoActivity : BaseActivity(), VooglaContract.View {
+class ProduceIntoActivity : BaseActivity(), VooglaContract.View<ProductIntoData> {
 
     lateinit var adapter: ProductIntoAdapter
 
@@ -33,7 +35,7 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.View {
     }
 
     override fun initOneData() {
-        presenter.getProduceList()
+        presenter.getProduceList(SimpleCache.getUserInfo().companyNo)
 
     }
 
@@ -57,12 +59,9 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.View {
 
     }
 
-    override fun showSuccess() {
+    override fun showSuccess(data: ProductIntoData) {
 
-        val list: MutableList<String> = mutableListOf("北京", "上海", "广东", "杭州", "天津")
-//        val list: ArrayList<String> = ArrayList(10)
-//        list.add("121")
-        list.add("121")
+        val list: MutableList<String> = mutableListOf("北京", "上海", "广东")
 
         LayoutInit.initLayoutManager(this,recycler_view_pro)
 //        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -74,6 +73,8 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.View {
     }
 
     override fun showError(msg: String) {
+
+        ToastUtil.showToast(msg)
 
     }
 }

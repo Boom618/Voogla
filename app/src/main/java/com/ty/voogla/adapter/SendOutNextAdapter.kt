@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.TextView
 import com.ty.voogla.R
+import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.ui.activity.BoxLinkJavaActivity
 import com.ty.voogla.widght.DialogUtil
 import com.zhy.adapter.recyclerview.CommonAdapter
@@ -28,7 +29,9 @@ class SendOutNextAdapter(val context: Context, layout: Int, datas: MutableList<S
 
         holder.itemView.findViewById<TextView>(R.id.tv_scan_code_box).setOnClickListener {
 
-            context.startActivity(Intent(context, BoxLinkJavaActivity::class.java))
+            val intent = Intent(context, BoxLinkJavaActivity::class.java)
+            intent.putExtra(CodeConstant.PAGE_STATE,CodeConstant.PAGE_SCAN_OUT)
+            context.startActivity(intent)
         }
 
     }

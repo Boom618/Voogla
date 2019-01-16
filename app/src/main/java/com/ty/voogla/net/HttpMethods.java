@@ -3,7 +3,10 @@ package com.ty.voogla.net;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ty.voogla.base.BaseResponse;
+import com.ty.voogla.base.ResponseInfo;
+import com.ty.voogla.bean.DecodeCode;
 import com.ty.voogla.bean.ProductIntoData;
+import com.ty.voogla.bean.ProductListInfoData;
 import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.constant.ApiNameConstant;
 import com.ty.voogla.net.gson.DoubleDefault0Adapter;
@@ -14,6 +17,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -41,7 +45,6 @@ public class HttpMethods {
      * cookie
      */
 //    private ConcurrentHashMap<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
-
     private HttpMethods() {
         init(ApiNameConstant.BASE_URL2);
     }
@@ -116,11 +119,72 @@ public class HttpMethods {
                 .subscribe(observer);
     }
 
-    public void getProduceList(SingleObserver<BaseResponse<ProductIntoData>> observer){
-        mService.getProductList()
+    /**
+     * --------------------------------- 产品入库  ----------------------------------------
+     */
+
+    /**
+     * 入库列表
+     *
+     * @param observer
+     * @param companyNo
+     */
+    public void getProductList(SingleObserver<BaseResponse<ProductIntoData>> observer, String companyNo) {
+        mService.getProductList(companyNo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
+
+    /**
+     * 新增入库
+     *
+     * @param observer
+     * @param body
+     */
+    public void addProduct(SingleObserver<BaseResponse<ResponseInfo>> observer, RequestBody body) {
+        mService.addProduct(body)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+    /**
+     * 删除入库
+     *
+     * @param observer
+     * @param companyNo
+     * @param inBatchNo
+     */
+    public void deleteProduct(SingleObserver<BaseResponse<ResponseInfo>> observer, String companyNo, String inBatchNo) {
+        mService.deleteProduct(companyNo, inBatchNo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+    /**
+     * 产品列表信息
+     */
+    public void getProductListInfo(SingleObserver<BaseResponse<ProductListInfoData>> observer, String companyNo) {
+        mService.getProductListInfo(companyNo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+    /**
+     * 二维码解码
+     *
+     * @param observer
+     * @param secret
+     */
+    public void decodeUrlCode(SingleObserver<DecodeCode> observer, String secret) {
+        mService.decodeUrlCode(secret)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+
+    /**
+     * --------------------------------- 产品出口  ----------------------------------------
+     */
 
 
     /**

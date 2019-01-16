@@ -27,22 +27,13 @@ public final class CodeConstant {
     public static final int KEY_CODE_135 = 135;
     public static final int KEY_CODE_139 = 139;
 
-    /**
-     * 扫码保存的信息
-     */
-    public static final String SCAN_BOX_KEY = "scan";
-
-    /**
-     * 扫码字符集
-     */
-    public static final String UNICODE_STRING = "\ufffd";
-    public static final String CHARSET_UTF8 = "utf8";
-    public static final String CHARSET_GBK = "gbk";
 
     /**
      * 区分箱码绑定页面
      */
     public static final String PAGE_STATE = "state";
+    public static final String PAGE_BOX_LINK = "boxLink";
+    public static final String PAGE_SCAN_OUT = "scanOut";
 
     /**
      * 腾讯 bug ID

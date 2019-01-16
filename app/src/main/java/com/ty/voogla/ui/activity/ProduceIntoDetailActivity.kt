@@ -3,16 +3,23 @@ package com.ty.voogla.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.honeywell.aidc.AidcManager
-import com.honeywell.aidc.BarcodeReader
+import com.google.gson.Gson
 import com.ty.voogla.R
 import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.adapter.ProIntoDetailAdapter
 import com.ty.voogla.base.BaseActivity
+import com.ty.voogla.bean.AddProduct
+import com.ty.voogla.bean.ProductIntoData
+import com.ty.voogla.bean.ProductListInfoData
 import com.ty.voogla.constant.CodeConstant
+import com.ty.voogla.mvp.contract.VooglaContract
+import com.ty.voogla.mvp.presenter.VooglaPresenter
+import com.ty.voogla.net.RequestBodyJson
+import com.ty.voogla.util.SimpleCache
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.TimeWidght
 import kotlinx.android.synthetic.main.activity_product_into_detail.*
+import okhttp3.RequestBody
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,14 +27,18 @@ import java.util.*
  * @author TY on 2019/1/11.
  * 生产入库 详情
  */
-class ProduceIntoDetailActivity : BaseActivity() {
+class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductListInfoData>  {
 
     private lateinit var selectTime: String
 
     private lateinit var adapter: ProIntoDetailAdapter
 
-    lateinit var manager: AidcManager
-    private var barcodeReader: BarcodeReader? = null
+    //    lateinit var manager: AidcManager
+//    private var barcodeReader: BarcodeReader? = null
+    private var boxCode: String? = null
+    private var qrCodeInfos:MutableList<String>?= null
+
+    private val presenter = VooglaPresenter(this)
 
     override val activityLayout: Int
         get() = R.layout.activity_product_into_detail
@@ -37,11 +48,11 @@ class ProduceIntoDetailActivity : BaseActivity() {
 
     override fun initOneData() {
 
-        AidcManager.create(this){aidcManager ->
-            manager = aidcManager
-            barcodeReader = manager.createBarcodeReader()
-
-        }
+//        AidcManager.create(this){aidcManager ->
+//            manager = aidcManager
+//            barcodeReader = manager.createBarcodeReader()
+//
+//        }
     }
 
     override fun initTwoView() {
@@ -62,7 +73,7 @@ class ProduceIntoDetailActivity : BaseActivity() {
 
         // 时间选择
         tv_select_time.setOnClickListener { v ->
-            TimeWidght.showPickDate(v.context) { date, _ ->
+            TimeWidght.showPickDate(this) { date, _ ->
                 selectTime = TimeWidght.getTime(date)
                 tv_select_time.text = selectTime
 
@@ -71,9 +82,10 @@ class ProduceIntoDetailActivity : BaseActivity() {
         }
 
         tv_to_box_link.setOnClickListener {
-//            gotoActivity(BoxLinkActivity::class.java)
+            //            gotoActivity(BoxLinkActivity::class.java)
             val intent = Intent("android.intent.action.AUTOCODEACTIVITY")
-            startActivity(intent)
+            intent.putExtra(CodeConstant.PAGE_STATE, CodeConstant.PAGE_BOX_LINK)
+            startActivityForResult(intent, 100)
         }
 
         val list = mutableListOf("a", "b", "c")
@@ -83,11 +95,41 @@ class ProduceIntoDetailActivity : BaseActivity() {
         house_recycler.adapter = adapter
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 100) {
+            boxCode = data?.getStringExtra("boxCode")
+            qrCodeInfos = data?.getStringArrayListExtra("qrCodeInfos")
+        }
+    }
+
 
     /**
      * 构建请求参数
      */
-    fun initReqBody() {
+    fun initReqBody(): RequestBody {
+
+        val saveBean = AddProduct()
+        val boxInfo:MutableList<AddProduct.InBoxCodeDetailInfosBean> = mutableListOf()
+        val wareInfo = AddProduct.InWareInfoBean()
+
+        // 箱码
+        val boxCodeInfo = AddProduct.InBoxCodeDetailInfosBean()
+        boxCodeInfo.boxCode = boxCode
+        boxCodeInfo.qrCodeInfos = qrCodeInfos
+        boxInfo.add(boxCodeInfo)
+
+        //主信息
+        // 归属单位
+        val userInfo = SimpleCache.getUserInfo()
+        wareInfo.companyAttr = userInfo.companyAttr
+        wareInfo.companyNo = userInfo.companyNo
+
+        saveBean.inBoxCodeDetailInfos = boxInfo
+        saveBean.inWareInfo = wareInfo
+
+        val json = Gson().toJson(saveBean)
+
+        return RequestBodyJson.requestBody(json)
 
 
     }
@@ -100,5 +142,11 @@ class ProduceIntoDetailActivity : BaseActivity() {
         if (!hasFocus && result.isNotEmpty()) {
             ToastUtil.showToast("批次号是 $result")
         }
+    }
+
+    override fun showSuccess(data: ProductListInfoData?) {
+    }
+
+    override fun showError(msg: String?) {
     }
 }

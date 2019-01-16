@@ -5,6 +5,7 @@ import android.util.Log
 import com.ty.voogla.BuildConfig.*
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
+import com.ty.voogla.bean.UserInfo
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.util.ToastUtil
@@ -14,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_login_mob.*
 /**
  * @author TY on 2018/12/20.
  */
-class LoginMobActivity : BaseActivity(), VooglaContract.View {
+class LoginMobActivity : BaseActivity(), VooglaContract.View<UserInfo> {
 
     private val presenter = VooglaPresenter(this)
 
@@ -56,7 +57,7 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View {
 
     }
 
-    override fun showSuccess() {
+    override fun showSuccess(data:UserInfo) {
         if (isPhone) {
             gotoActivity(MainMobActivity::class.java, true)
         } else {

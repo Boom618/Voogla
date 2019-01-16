@@ -1,5 +1,7 @@
 package com.ty.voogla.mvp.contract;
 
+import com.ty.voogla.bean.ProductListInfoData;
+
 /**
  * @author TY on 2018/12/20.
  * <p>
@@ -10,11 +12,11 @@ public interface VooglaContract {
     interface Model {
     }
 
-    interface View {
+    interface View<T> {
         /**
          * Presenter 完成数据加载,该方法展示在 view 上
          */
-        void showSuccess();
+        void showSuccess(T data);
 
         /**
          * 错误信息
