@@ -39,6 +39,11 @@ public class ApiNameConstant {
      */
     public static final String USER_LOGOUT = "sys/user/logout";
 
+
+    /**
+     * --------------------------------- 生产入库 ----------------------------------------
+     */
+
     /**
      * 生产入库列表
      */
@@ -64,6 +69,27 @@ public class ApiNameConstant {
      * 二维码解码
      */
     public static final String DECODE_URL = "deCodeUrl";
+
+    /**
+     * --------------------------------- 发货出库 ----------------------------------------
+     */
+
+    /**
+     * 发货单信息
+     */
+    public static final String SEND_OUT_LIST = "corp/im/commodity-output-list";
+
+
+    /**
+     * 删除入库
+     */
+    public static final String SEND_OUT_DETELE = "corp/im/commodity-output-del";
+
+    /**
+     * 新增出库
+     */
+    public static final String SEND_OUT_ADD = "corp/im/commodity-output-add";
+
 
 
 }

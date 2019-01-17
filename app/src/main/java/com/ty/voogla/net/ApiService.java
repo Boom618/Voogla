@@ -2,10 +2,11 @@ package com.ty.voogla.net;
 
 import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
-import com.ty.voogla.bean.DecodeCode;
-import com.ty.voogla.bean.ProductIntoData;
-import com.ty.voogla.bean.ProductListInfoData;
+import com.ty.voogla.bean.produce.DecodeCode;
+import com.ty.voogla.bean.produce.ProductIntoData;
+import com.ty.voogla.bean.produce.ProductListInfoData;
 import com.ty.voogla.bean.UserInfo;
+import com.ty.voogla.bean.sendout.SendOutListData;
 import com.ty.voogla.constant.ApiNameConstant;
 import io.reactivex.Single;
 import okhttp3.RequestBody;
@@ -43,9 +44,8 @@ public interface ApiService {
     Single<BaseResponse<ProductIntoData>> getProductList(@Field("companyNo") String companyNo);
 
 
-    @FormUrlEncoded
     @POST(ApiNameConstant.PRODUCE_ADD)
-    Single<BaseResponse<ResponseInfo>> addProduct(@Body RequestBody body);
+    Single<ResponseInfo> addProduct(@Body RequestBody body);
 
     @FormUrlEncoded
     @POST(ApiNameConstant.PRODUCE_DELETE)
@@ -67,6 +67,38 @@ public interface ApiService {
      */
     @GET(ApiNameConstant.DECODE_URL)
     Single<DecodeCode> decodeUrlCode(@Query("secret") String secret);
+
+    /**
+     * --------------------------------- 发货出库 ----------------------------------------
+     */
+
+    /**
+     * 获取发货单列表
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(ApiNameConstant.SEND_OUT_LIST)
+    Single<BaseResponse<SendOutListData>> getSendOutList(@Field("companyNo") String companyNo);
+
+    /**
+     * 新增出库
+     *
+     * @return
+     */
+    @POST(ApiNameConstant.SEND_OUT_ADD)
+    Single<ResponseInfo> addSendOut(@Body RequestBody body);
+
+    /**
+     * 删除入库
+     *
+     * @return
+     */
+    @POST(ApiNameConstant.SEND_OUT_DETELE)
+    Single<ResponseInfo> deteleSendOut(@Field("companyNo") String companyNo,
+                                       @Field("deliveryNo") String deliveryNo);
+
+
 //
 //    /**
 //     * 用户登出

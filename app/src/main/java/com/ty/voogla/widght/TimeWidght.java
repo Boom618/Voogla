@@ -21,8 +21,8 @@ public class TimeWidght {
      * @param date
      * @return
      */
-    public static String getTime(Date date) {//可根据需要自行截取数据显示
-        SimpleDateFormat format = new SimpleDateFormat(CodeConstant.DATE_SIMPLE_Y_M_D, Locale.CHINA);
+    public static String getTime(String type,Date date) {//可根据需要自行截取数据显示
+        SimpleDateFormat format = new SimpleDateFormat(type,Locale.CHINA);
         return format.format(date);
     }
 
@@ -35,7 +35,7 @@ public class TimeWidght {
     public static void showPickDate(Context context, OnTimeSelectListener listener) {
         TimePickerView pvTime = new TimePickerBuilder(context, listener)
                 // 默认全部显示
-                .setType(new boolean[]{true, true, true, false, false, false})
+                .setType(new boolean[]{true, true, true, true, true, true})
                 //.setCancelText("Cancel")//取消按钮文字
                 // .setSubmitText("Sure")//确认按钮文字
                 //.setContentSize(18)//滚轮文字大小

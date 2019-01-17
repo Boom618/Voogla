@@ -1,6 +1,6 @@
 package com.ty.voogla.mvp.contract;
 
-import com.ty.voogla.bean.ProductListInfoData;
+import java.util.List;
 
 /**
  * @author TY on 2018/12/20.
@@ -17,6 +17,24 @@ public interface VooglaContract {
          * Presenter 完成数据加载,该方法展示在 view 上
          */
         void showSuccess(T data);
+
+        /**
+         * 错误信息
+         *
+         * @param msg
+         */
+        void showError(String msg);
+    }
+
+    /**
+     * 发货出库 接收 list
+     * @param <T>
+     */
+    interface ListView<T> {
+        /**
+         * Presenter 完成数据加载,该方法展示在 view 上
+         */
+        void showSuccess(List<T> data);
 
         /**
          * 错误信息

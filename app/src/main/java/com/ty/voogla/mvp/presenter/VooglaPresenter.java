@@ -1,19 +1,18 @@
 package com.ty.voogla.mvp.presenter;
 
 import com.ty.voogla.base.BaseResponse;
-import com.ty.voogla.bean.DecodeCode;
-import com.ty.voogla.bean.ProductIntoData;
-import com.ty.voogla.bean.ProductListInfoData;
+import com.ty.voogla.bean.produce.DecodeCode;
+import com.ty.voogla.bean.produce.ProductIntoData;
+import com.ty.voogla.bean.produce.ProductListInfoData;
 import com.ty.voogla.bean.UserInfo;
+import com.ty.voogla.bean.sendout.SendOutListData;
 import com.ty.voogla.constant.ApiNameConstant;
 import com.ty.voogla.constant.CodeConstant;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.net.HttpMethods;
 import com.ty.voogla.util.SimpleCache;
 import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 
 /**
  * @author TY on 2018/12/20.
@@ -24,11 +23,18 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
     private VooglaContract.View iView;
 
+    private VooglaContract.ListView iListView;
+
     private Disposable disposable;
 
     public VooglaPresenter(VooglaContract.View view) {
         httpMethods = HttpMethods.getInstance();
         this.iView = view;
+    }
+
+    public VooglaPresenter(VooglaContract.ListView view) {
+        httpMethods = HttpMethods.getInstance();
+        this.iListView = view;
     }
 
     public void disposable() {
@@ -150,7 +156,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onError(Throwable e) {
                 iView.showError(e.getMessage());
             }
-        },secret);
+        }, secret);
 
     }
 
@@ -163,7 +169,39 @@ public class VooglaPresenter implements VooglaContract.Presenter {
         HttpMethods http = new HttpMethods(ApiNameConstant.BASE_URL3);
 
 
+    }
 
+    /** ------------------------------------  发货出库 ------------------------------------*/
+
+    /**
+     * 获取发货单信息
+     *
+     * @param companyNo
+     */
+    public void getSendOutList(String companyNo) {
+        httpMethods.getSendOutList(new SingleObserver<BaseResponse<SendOutListData>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(BaseResponse<SendOutListData> response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    SendOutListData data = response.getData();
+
+                    iListView.showSuccess(data.getList());
+                } else {
+                    iListView.showError(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iListView.showError(e.getMessage());
+
+            }
+        }, companyNo);
     }
 
 }

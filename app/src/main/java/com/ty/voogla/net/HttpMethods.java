@@ -2,23 +2,20 @@ package com.ty.voogla.net;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.honeywell.aidc.BarcodeReadEvent;
 import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
-import com.ty.voogla.bean.DecodeCode;
-import com.ty.voogla.bean.ProductIntoData;
-import com.ty.voogla.bean.ProductListInfoData;
+import com.ty.voogla.bean.produce.DecodeCode;
+import com.ty.voogla.bean.produce.ProductIntoData;
+import com.ty.voogla.bean.produce.ProductListInfoData;
 import com.ty.voogla.bean.UserInfo;
+import com.ty.voogla.bean.sendout.SendOutListData;
 import com.ty.voogla.constant.ApiNameConstant;
 import com.ty.voogla.net.gson.DoubleDefault0Adapter;
 import com.ty.voogla.net.gson.IntegerDefault0Adapter;
 import com.ty.voogla.net.gson.LongDefault0Adapter;
 import com.ty.voogla.net.gson.StringDefault0Adapter;
-import io.reactivex.Observable;
 import io.reactivex.SingleObserver;
-import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
@@ -146,7 +143,7 @@ public class HttpMethods {
      * @param observer
      * @param body
      */
-    public void addProduct(SingleObserver<BaseResponse<ResponseInfo>> observer, RequestBody body) {
+    public void addProduct(SingleObserver<ResponseInfo> observer, RequestBody body) {
         mService.addProduct(body)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
@@ -201,8 +198,19 @@ public class HttpMethods {
 
 
     /**
-     * --------------------------------- 产品出口  ----------------------------------------
+     * --------------------------------- 产品出库  ----------------------------------------
      */
+
+    /**
+     * 发货单信息
+     * @param observer
+     * @param companyNo
+     */
+    public void getSendOutList(SingleObserver<BaseResponse<SendOutListData>> observer, String companyNo){
+        mService.getSendOutList(companyNo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
 
 
     /**

@@ -30,7 +30,7 @@ class SendOutNextAdapter(val context: Context, layout: Int, datas: MutableList<S
         holder.itemView.findViewById<TextView>(R.id.tv_scan_code_box).setOnClickListener {
 
             val intent = Intent(context, BoxLinkJavaActivity::class.java)
-            intent.putExtra(CodeConstant.PAGE_STATE,CodeConstant.PAGE_SCAN_OUT)
+            intent.putExtra(CodeConstant.PAGE_STATE_KEY,CodeConstant.PAGE_SCAN_OUT)
             context.startActivity(intent)
         }
 

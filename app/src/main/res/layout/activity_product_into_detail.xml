@@ -50,7 +50,7 @@
                 app:layout_constraintStart_toStartOf="@id/tv_product_batch"
                 android:hint="@string/select_pro_name"
                 android:layout_width="match_parent"
-                android:padding="@dimen/x8"
+                android:padding="@dimen/x14"
                 android:drawableEnd="@mipmap/ic_bottom"
                 android:drawablePadding="@dimen/x40"
                 android:gravity="center_vertical"

@@ -2,6 +2,9 @@ package com.ty.voogla.widght
 
 import android.content.Context
 import android.widget.TextView
+import com.ty.voogla.constant.CodeConstant
+import com.ty.voogla.data.SharedP
+import com.ty.voogla.util.SimpleCache
 import com.ty.voogla.util.ToastUtil
 
 /**
@@ -40,6 +43,7 @@ object DialogUtil {
                 dialog.dismiss()
                 goodView.text = goodData[which]
                 specView.text = specData[which]
+                SharedP.putGoodNo(context,which)
                 ToastUtil.showToast(goodData[which])
 
             }

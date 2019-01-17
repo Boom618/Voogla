@@ -8,6 +8,7 @@ package com.ty.voogla.constant;
 public final class CodeConstant {
 
     public static final String DATE_SIMPLE_Y_M_D = "yyyy年MM月dd日";
+    public static final String DATE_SIMPLE_Y_M_D_H_M = "yyyy年MM月dd日 HH:mm:ss";
     public static final String DATE_SIMPLE_H_M = "yyyy-MM-dd HH:mm";
     public static final String DATE_SIMPLE_H_M_S = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_START_TIME = "2010-01-01 00:00";
@@ -31,14 +32,20 @@ public final class CodeConstant {
     /**
      * 区分箱码绑定页面
      */
-    public static final String PAGE_STATE = "state";
+    public static final String PAGE_STATE_KEY = "state";
     public static final String PAGE_BOX_LINK = "boxLink";
+    public static final String PAGE_BOX_LINK_EDIT = "boxLinkEdit";
     public static final String PAGE_SCAN_OUT = "scanOut";
 
     /**
      * 腾讯 bug ID
      */
     public static final String BUGLY_APP_ID = "115fa1897c";
+
+    /**
+     * 商品编号
+     */
+    public static final String GOODS_NO = "goodsNo";
 
 
     /**

@@ -1,4 +1,4 @@
-package com.ty.voogla.bean
+package com.ty.voogla.bean.produce
 
 /**
  * @author TY on 2019/1/16.
