@@ -171,6 +171,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         // 归属单位  缺少产品名称字段
         val userInfo = SimpleCache.getUserInfo()
         val goodsNoStr = goodsNo[SharedP.getGoodNo(this)]
+        val productBatchNo = et_batch_number.text.toString().trim { it <= ' ' }
         val wareName = tv_select_house.text.toString().trim { it <= ' ' }
         val inTime = tv_select_time.text.toString().trim { it <= ' ' }
         val unit = tv_select_spec.text.toString().trim { it <= ' ' }
@@ -183,6 +184,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             return null
         }
 
+        wareInfo.productBatchNo = productBatchNo
         wareInfo.companyAttr = userInfo.companyAttr
         wareInfo.companyNo = userInfo.companyNo
         wareInfo.creator = userInfo.userNo

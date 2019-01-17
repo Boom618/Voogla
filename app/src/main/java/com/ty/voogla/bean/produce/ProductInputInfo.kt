@@ -1,12 +1,13 @@
 package com.ty.voogla.bean.produce
 
 /**
- * @author TY on 2019/1/15.
+ * @author TY on 2019/1/17.
+ * 获取入库详情信息
  */
-class AddProduct {
+class ProductInputInfo {
 
     var inWareInfo: InWareInfoBean? = null
-    var inBoxCodeDetailInfos: List<InBoxCodeDetailInfosBean>? = null
+    var inWareDetailInfos: List<InWareDetailInfosBean>? = null
 
     class InWareInfoBean {
         /**
@@ -19,7 +20,6 @@ class AddProduct {
          * inWareDesc : 入库描述
          * unit : 单位
          * wareName : 仓库名称
-         * productBatchNo : 生产批次号
          */
 
         var companyAttr: String? = null
@@ -34,13 +34,13 @@ class AddProduct {
         var productBatchNo: String? = null
     }
 
-    class InBoxCodeDetailInfosBean {
+    class InWareDetailInfosBean {
         /**
          * boxCode : 箱码
          * qrCodeInfos : ["产品码1","产品码2"]
          */
 
         var boxCode: String? = null
-        var qrCodeInfos: List<String>? = null
+        var qrCodeInfos: MutableList<String>? = null
     }
 }

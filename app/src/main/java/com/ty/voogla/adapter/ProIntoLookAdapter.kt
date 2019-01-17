@@ -16,9 +16,9 @@ import com.zhy.adapter.recyclerview.base.ViewHolder
 class ProIntoLookAdapter(val context: Context, layout: Int, datas: MutableList<String>) :
     CommonAdapter<String>(context, layout, datas) {
 
-    override fun convert(holder: ViewHolder, t: String?, position: Int) {
+    override fun convert(holder: ViewHolder, boxCode: String, position: Int) {
 
-        holder.setText(R.id.tv_code, "280000000 $position")
+        holder.setText(R.id.tv_code, boxCode)
 
         holder.itemView.findViewById<TextView>(R.id.tv_look).setOnClickListener {
             val intent = Intent(context, BoxLinkLookActivity::class.java)

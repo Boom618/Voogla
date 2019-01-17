@@ -18,13 +18,13 @@ object DialogUtil {
      *
      * @param context
      */
-    fun deleteItemDialog(context: Context, listener: NormalAlertDialog.onNormalOnclickListener) {
+    fun deleteItemDialog(context: Context, pointContent: String, listener: NormalAlertDialog.onNormalOnclickListener) {
         val dialog = NormalAlertDialog.Builder(context)
             .setTitleVisible(true)
             .setTitleText("温馨提示？")
             .setRightButtonText("确认")
             .setLeftButtonText("取消")
-            .setContentText("确认窜货")
+            .setContentText(pointContent)
             .setRightListener(listener)
             .setLeftListener { dialog -> dialog.dismiss() }
             .build()
@@ -35,7 +35,13 @@ object DialogUtil {
     /**
      * 选择产品名称(生产入库)
      */
-    fun selectProName(context: Context, goodData: MutableList<String>, specData: MutableList<String>,goodView: TextView,specView: TextView) {
+    fun selectProName(
+        context: Context,
+        goodData: MutableList<String>,
+        specData: MutableList<String>,
+        goodView: TextView,
+        specView: TextView
+    ) {
         val selectDialog = NormalSelectionDialog.Builder(context)
 //            .setlTitleVisible(true)
 //            .setTitleText("产品名称")
@@ -43,7 +49,7 @@ object DialogUtil {
                 dialog.dismiss()
                 goodView.text = goodData[which]
                 specView.text = specData[which]
-                SharedP.putGoodNo(context,which)
+                SharedP.putGoodNo(context, which)
                 ToastUtil.showToast(goodData[which])
 
             }

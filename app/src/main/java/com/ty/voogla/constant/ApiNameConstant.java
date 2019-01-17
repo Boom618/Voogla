@@ -66,6 +66,11 @@ public class ApiNameConstant {
     public static final String PRODUCE_LIST_INFO = "corp/im/commodity-info";
 
     /**
+     * 入库详情信息
+     */
+    public static final String PRODUCE_LIST_INFO_INPUT = "corp/im/commodity-input-info";
+
+    /**
      * 二维码解码
      */
     public static final String DECODE_URL = "deCodeUrl";

@@ -1,6 +1,8 @@
 package com.ty.voogla.ui.activity
 
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import com.ty.voogla.R
 import com.ty.voogla.adapter.LayoutInit
@@ -11,6 +13,9 @@ import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.util.SimpleCache
 import com.ty.voogla.util.ToastUtil
+import com.ty.voogla.widght.DialogUtil
+import com.ty.voogla.widght.NormalAlertDialog
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import kotlinx.android.synthetic.main.activity_product_into.*
 
 /**
@@ -19,10 +24,17 @@ import kotlinx.android.synthetic.main.activity_product_into.*
  *
  * 生产入库（PDA 端）
  */
-class ProduceIntoActivity : BaseActivity(), VooglaContract.View<ProductIntoData> {
+class ProduceIntoActivity : BaseActivity(), VooglaContract.ListView<ProductIntoData.ListBean> {
 
     lateinit var adapter: ProductIntoAdapter
 
+    // 企业编号  归属单位
+    private val companyNo = SimpleCache.getUserInfo().companyNo
+    private val companyAttr = SimpleCache.getUserInfo().companyAttr
+
+    // 回调成功标志
+    private var isDelete = false
+    private var itemPosition = 0
 
     private val presenter = VooglaPresenter(this)
 
@@ -35,8 +47,8 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.View<ProductIntoData>
     }
 
     override fun initOneData() {
-        presenter.getProduceList(SimpleCache.getUserInfo().companyNo)
-
+        presenter.getProduceList(companyNo)
+        isDelete = false
     }
 
     override fun initTwoView() {
@@ -59,16 +71,37 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.View<ProductIntoData>
 
     }
 
-    override fun showSuccess(data: ProductIntoData) {
+    override fun showSuccess(data: MutableList<ProductIntoData.ListBean>) {
 
-        val list: MutableList<String> = mutableListOf("北京")
+        if (isDelete) {
+            data.removeAt(itemPosition)
+            adapter.notifyItemRemoved(itemPosition)
+            adapter.notifyItemRangeChanged(itemPosition, data.size - itemPosition)
+        } else {
+            LayoutInit.initLayoutManager(this, recycler_view_pro)
 
-        LayoutInit.initLayoutManager(this,recycler_view_pro)
-//        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//        recycler_view_pro.layoutManager = layoutManager
+            adapter = ProductIntoAdapter(this, R.layout.item_produce_into, data)
+            recycler_view_pro.adapter = adapter
 
-        adapter = ProductIntoAdapter(this, R.layout.item_produce_into, list)
-        recycler_view_pro.adapter = adapter
+            adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
+                override fun onItemLongClick(view: View, holder: RecyclerView.ViewHolder, position: Int): Boolean {
+
+                    DialogUtil.deleteItemDialog(view.context, "确认删除", NormalAlertDialog.onNormalOnclickListener {
+
+                        presenter.deleteProduct(companyNo, data[position].inBatchNo, companyAttr)
+                        isDelete = true
+                        itemPosition = position
+                        it.dismiss()
+                    })
+                    return true
+                }
+
+                override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
+
+                }
+
+            })
+        }
 
     }
 

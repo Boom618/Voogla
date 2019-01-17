@@ -3,6 +3,7 @@ package com.ty.voogla.net;
 import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
 import com.ty.voogla.bean.produce.DecodeCode;
+import com.ty.voogla.bean.produce.ProductInputInfo;
 import com.ty.voogla.bean.produce.ProductIntoData;
 import com.ty.voogla.bean.produce.ProductListInfoData;
 import com.ty.voogla.bean.UserInfo;
@@ -47,10 +48,18 @@ public interface ApiService {
     @POST(ApiNameConstant.PRODUCE_ADD)
     Single<ResponseInfo> addProduct(@Body RequestBody body);
 
+    /**
+     * 删除入库
+     *
+     * @param companyNo
+     * @param inBatchNo
+     * @return
+     */
     @FormUrlEncoded
     @POST(ApiNameConstant.PRODUCE_DELETE)
-    Single<BaseResponse<ResponseInfo>> deleteProduct(@Field("companyNo") String companyNo,
-                                                     @Field("inBatchNo") String inBatchNo);
+    Single<ResponseInfo> deleteProduct(@Field("companyNo") String companyNo,
+                                       @Field("inBatchNo") String inBatchNo,
+                                       @Field("companyAttr") String companyAttr);
 
     /**
      * 产品列表信息
@@ -58,6 +67,18 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(ApiNameConstant.PRODUCE_LIST_INFO)
     Single<BaseResponse<ProductListInfoData>> getProductListInfo(@Field("companyNo") String companyNo);
+
+    /**
+     * 入库详情信息
+     *
+     * @param companyNo 企业编号
+     * @param inBatchNo 入库批次号
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(ApiNameConstant.PRODUCE_LIST_INFO_INPUT)
+    Single<BaseResponse<ProductInputInfo>> getInputProductInfo(@Field("companyNo") String companyNo,
+                                                               @Field("inBatchNo") String inBatchNo);
 
     /**
      * 二维码检验

@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
 import com.ty.voogla.bean.produce.DecodeCode;
+import com.ty.voogla.bean.produce.ProductInputInfo;
 import com.ty.voogla.bean.produce.ProductIntoData;
 import com.ty.voogla.bean.produce.ProductListInfoData;
 import com.ty.voogla.bean.UserInfo;
@@ -156,8 +157,8 @@ public class HttpMethods {
      * @param companyNo
      * @param inBatchNo
      */
-    public void deleteProduct(SingleObserver<BaseResponse<ResponseInfo>> observer, String companyNo, String inBatchNo) {
-        mService.deleteProduct(companyNo, inBatchNo)
+    public void deleteProduct(SingleObserver<ResponseInfo> observer, String companyNo, String inBatchNo,String companyAttr) {
+        mService.deleteProduct(companyNo, inBatchNo,companyAttr)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
@@ -167,6 +168,20 @@ public class HttpMethods {
      */
     public void getProductListInfo(SingleObserver<BaseResponse<ProductListInfoData>> observer, String companyNo) {
         mService.getProductListInfo(companyNo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+
+    /**
+     * 入库详情信息(查看)
+     *
+     * @param observer
+     * @param companyNo
+     * @param inBatchNo
+     */
+    public void getInputProductInfo(SingleObserver<BaseResponse<ProductInputInfo>> observer, String companyNo, String inBatchNo) {
+        mService.getInputProductInfo(companyNo, inBatchNo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
@@ -203,10 +218,11 @@ public class HttpMethods {
 
     /**
      * 发货单信息
+     *
      * @param observer
      * @param companyNo
      */
-    public void getSendOutList(SingleObserver<BaseResponse<SendOutListData>> observer, String companyNo){
+    public void getSendOutList(SingleObserver<BaseResponse<SendOutListData>> observer, String companyNo) {
         mService.getSendOutList(companyNo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);

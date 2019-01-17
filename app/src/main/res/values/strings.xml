@@ -45,6 +45,7 @@
     <string name="warehousing_address">所在仓库</string>
     <string name="warehousing_user">操作员</string>
     <string name="product_batch">生产批次号：</string>
+    <string name="product_batch_house">入库批次号：</string>
     <string name="select_pro_name">请选择产品名称</string>
     <string name="select_house">请输入仓库</string>
     <string name="into_house_time">入库时间</string>
@@ -68,4 +69,6 @@
     <string name="scan_code">扫码出库</string>
     <string name="send_out_receipt">发货单号：</string>
     <string name="code_detail">码号明细</string>
+    <string name="confirm_the_good">确认窜货</string>
+    <string name="confirm_delete">确认删除</string>
 </resources>

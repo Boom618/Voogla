@@ -25,15 +25,15 @@ class ProIntoDetailAdapter(val context: Context, layout: Int,datas: MutableList<
         val deleteView = holder.itemView.findViewById<ImageView>(R.id.image_delete)
 
         editView.setOnClickListener {
-            val list = ArrayList<String>()
-            list.addAll(datas)
-
-            val intent = Intent(context,BoxLinkJavaActivity::class.java)
-            intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_BOX_LINK_EDIT)
-            // boxCode 箱码  qrCodeInfos 产品 list
-            intent.putExtra("boxCode",boxCode)
-            intent.putStringArrayListExtra("qrCodeInfos",list)
-            context.startActivity(intent)
+//            val list = ArrayList<String>()
+//            list.addAll(datas)
+//
+//            val intent = Intent(context,BoxLinkJavaActivity::class.java)
+//            intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_BOX_LINK_EDIT)
+//            // boxCode 箱码  qrCodeInfos 产品 list
+//            intent.putExtra("boxCode",boxCode)
+//            intent.putStringArrayListExtra("qrCodeInfos",list)
+//            context.startActivity(intent)
             ToastUtil.showToast("修改 $position")
         }
 

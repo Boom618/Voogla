@@ -87,4 +87,13 @@
         <item name="android:layout_marginEnd">@dimen/space_10</item>
         <item name="android:layout_marginTop">@dimen/space_10</item>
     </style>
+
+    <!-- Look product into -->
+    <!-- <item name="android:textColor">@color/txt_product_color</item> -->
+    <style name="LookProductText">
+        <item name="android:textSize">@dimen/text_16</item>
+        <item name="android:layout_marginTop">@dimen/x16</item>
+        <item name="android:layout_marginStart">@dimen/x28</item>
+        <item name="android:layout_marginEnd">@dimen/x28</item>
+    </style>
 </resources>

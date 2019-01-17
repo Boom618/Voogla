@@ -1,7 +1,9 @@
 package com.ty.voogla.mvp.presenter;
 
 import com.ty.voogla.base.BaseResponse;
+import com.ty.voogla.base.ResponseInfo;
 import com.ty.voogla.bean.produce.DecodeCode;
+import com.ty.voogla.bean.produce.ProductInputInfo;
 import com.ty.voogla.bean.produce.ProductIntoData;
 import com.ty.voogla.bean.produce.ProductListInfoData;
 import com.ty.voogla.bean.UserInfo;
@@ -85,17 +87,48 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             @Override
             public void onSuccess(BaseResponse<ProductIntoData> response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
-                    iView.showSuccess(response.getData());
+                    iListView.showSuccess(response.getData().getList());
+                } else {
+                    iListView.showError(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iListView.showError(e.getMessage());
+            }
+        }, companyNo);
+    }
+
+    /**
+     * 删除入库信息
+     *
+     * @param companyNo
+     * @param inBatchNo
+     */
+    public void deleteProduct(String companyNo, String inBatchNo,String companyAttr) {
+
+        httpMethods.deleteProduct(new SingleObserver<ResponseInfo>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(ResponseInfo response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    iView.showSuccess(response);
                 } else {
                     iView.showError(response.getMsg());
                 }
+
             }
 
             @Override
             public void onError(Throwable e) {
                 iView.showError(e.getMessage());
             }
-        }, companyNo);
+        }, companyNo, inBatchNo,companyAttr);
     }
 
     /**
@@ -117,8 +150,6 @@ public class VooglaPresenter implements VooglaContract.Presenter {
                 } else {
                     iView.showError(response.getMsg());
                 }
-
-
             }
 
             @Override
@@ -126,6 +157,37 @@ public class VooglaPresenter implements VooglaContract.Presenter {
                 iView.showError(e.getMessage());
             }
         }, companyNo);
+    }
+
+    /**
+     * 获取入库详情信息
+     */
+    public void getInputProductInfo(String companyNo, String inBatchNo) {
+
+        httpMethods.getInputProductInfo(new SingleObserver<BaseResponse<ProductInputInfo>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+
+            }
+
+            @Override
+            public void onSuccess(BaseResponse<ProductInputInfo> response) {
+
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    iView.showSuccess(response.getData());
+                } else {
+                    iView.showError(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iView.showError(e.getMessage());
+
+            }
+        }, companyNo, inBatchNo);
+
     }
 
     /**
