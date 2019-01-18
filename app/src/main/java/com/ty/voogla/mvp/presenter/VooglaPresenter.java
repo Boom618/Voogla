@@ -7,7 +7,9 @@ import com.ty.voogla.bean.produce.ProductInputInfo;
 import com.ty.voogla.bean.produce.ProductIntoData;
 import com.ty.voogla.bean.produce.ProductListInfoData;
 import com.ty.voogla.bean.UserInfo;
+import com.ty.voogla.bean.sendout.OutPutInfoData;
 import com.ty.voogla.bean.sendout.SendOutListData;
+import com.ty.voogla.bean.sendout.SendOutListInfo;
 import com.ty.voogla.constant.ApiNameConstant;
 import com.ty.voogla.constant.CodeConstant;
 import com.ty.voogla.mvp.contract.VooglaContract;
@@ -15,6 +17,7 @@ import com.ty.voogla.net.HttpMethods;
 import com.ty.voogla.util.SimpleCache;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
+import okhttp3.RequestBody;
 
 /**
  * @author TY on 2018/12/20.
@@ -106,7 +109,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
      * @param companyNo
      * @param inBatchNo
      */
-    public void deleteProduct(String companyNo, String inBatchNo,String companyAttr) {
+    public void deleteProduct(String companyNo, String inBatchNo, String companyAttr) {
 
         httpMethods.deleteProduct(new SingleObserver<ResponseInfo>() {
             @Override
@@ -128,7 +131,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onError(Throwable e) {
                 iView.showError(e.getMessage());
             }
-        }, companyNo, inBatchNo,companyAttr);
+        }, companyNo, inBatchNo, companyAttr);
     }
 
     /**
@@ -264,6 +267,88 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             }
         }, companyNo);
+    }
+
+    /**
+     * 发货单详情
+     */
+    public void getSendOutListInfo(String companyNo, String deliveryNo) {
+        httpMethods.getSendOutListInfo(new SingleObserver<BaseResponse<SendOutListInfo>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(BaseResponse<SendOutListInfo> response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    iView.showSuccess(response.getData());
+                } else {
+                    iView.showError(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iView.showError(e.getMessage());
+            }
+        }, companyNo, deliveryNo);
+
+    }
+
+
+    /**
+     * 获取出库信息(已发货 - 查看)
+     */
+    public void getSendOutPutInfo(String companyNo, String deliveryNo) {
+        httpMethods.getSendOutPutInfo(new SingleObserver<BaseResponse<OutPutInfoData>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(BaseResponse<OutPutInfoData> response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    iView.showSuccess(response.getData());
+                } else {
+                    iView.showError(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iView.showError(e.getMessage());
+            }
+        }, companyNo, deliveryNo);
+
+    }
+
+    /**
+     * 删除出库
+     */
+    public void deleteSendOut(String companyNo, String deliveryNo) {
+        httpMethods.deleteSendOut(new SingleObserver<ResponseInfo>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(ResponseInfo response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    iView.showSuccess(response);
+                } else {
+                    iView.showError(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iView.showError(e.getMessage());
+            }
+        }, companyNo, deliveryNo);
+
     }
 
 }

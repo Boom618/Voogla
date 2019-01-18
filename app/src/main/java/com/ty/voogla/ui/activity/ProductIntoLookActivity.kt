@@ -24,8 +24,8 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
     private var qrCodeInfos: MutableList<String>? = null
 
     // 箱码和产品码 列表
-    private var boxCodeList:MutableList<String> = mutableListOf()
-    private var qrCodeList:SparseArray<MutableList<String>> = SparseArray()
+    private var boxCodeList: MutableList<String> = mutableListOf()
+    private var qrCodeList: SparseArray<MutableList<String>> = SparseArray()
 
     private val presenter = VooglaPresenter(this)
 
@@ -49,10 +49,10 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
 
         tv_select_pro_name.text = "产品名称：$productName"
         tv_select_house.text = "所在仓库：$productHous"
-        tv_select_time.text = productTime
-        tv_select_spec.text = productSpec
+        tv_select_time.text = "入库时间：$productTime"
+        tv_select_spec.text = "产品规格：$productSpec"
 
-        presenter.getInputProductInfo(SimpleCache.getUserInfo().companyNo,batchNumber)
+        presenter.getInputProductInfo(SimpleCache.getUserInfo().companyNo, batchNumber)
 
 
     }
@@ -69,8 +69,8 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
         tv_batch_number.text = wareInfo?.productBatchNo
 
         for (i in 0 until list!!.size) {
-            boxCodeList.add(i,list[i].boxCode!!)
-            qrCodeList.put(i,list[i].qrCodeInfos)
+            boxCodeList.add(i, list[i].boxCode!!)
+            qrCodeList.put(i, list[i].qrCodeInfos)
         }
 
         LayoutInit.initLayoutManager(this, house_look_recycler)

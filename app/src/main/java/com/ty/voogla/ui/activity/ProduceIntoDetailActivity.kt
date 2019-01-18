@@ -102,7 +102,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             // 广播跳转
             val intent = Intent("android.intent.action.AUTOCODEACTIVITY")
             intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_BOX_LINK)
-            startActivityForResult(intent, 100)
+            startActivityForResult(intent, CodeConstant.REQUEST_CODE_INTO)
         }
 
         LayoutInit.initLayoutManager(this, house_recycler)
@@ -112,10 +112,12 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == 100) {
+        if (requestCode == CodeConstant.REQUEST_CODE_INTO && resultCode == CodeConstant.RESULT_CODE) {
             boxCode = data?.getStringExtra("boxCode")
             qrCodeInfos = data?.getStringArrayListExtra("qrCodeInfos")
-            listDetail.addAll(qrCodeInfos!!)
+            if (qrCodeInfos?.isNotEmpty()!!) {
+                listDetail.addAll(qrCodeInfos!!)
+            }
         }
     }
 

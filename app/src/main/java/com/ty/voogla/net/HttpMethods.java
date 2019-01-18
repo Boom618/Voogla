@@ -9,7 +9,9 @@ import com.ty.voogla.bean.produce.ProductInputInfo;
 import com.ty.voogla.bean.produce.ProductIntoData;
 import com.ty.voogla.bean.produce.ProductListInfoData;
 import com.ty.voogla.bean.UserInfo;
+import com.ty.voogla.bean.sendout.OutPutInfoData;
 import com.ty.voogla.bean.sendout.SendOutListData;
+import com.ty.voogla.bean.sendout.SendOutListInfo;
 import com.ty.voogla.constant.ApiNameConstant;
 import com.ty.voogla.net.gson.DoubleDefault0Adapter;
 import com.ty.voogla.net.gson.IntegerDefault0Adapter;
@@ -157,8 +159,8 @@ public class HttpMethods {
      * @param companyNo
      * @param inBatchNo
      */
-    public void deleteProduct(SingleObserver<ResponseInfo> observer, String companyNo, String inBatchNo,String companyAttr) {
-        mService.deleteProduct(companyNo, inBatchNo,companyAttr)
+    public void deleteProduct(SingleObserver<ResponseInfo> observer, String companyNo, String inBatchNo, String companyAttr) {
+        mService.deleteProduct(companyNo, inBatchNo, companyAttr)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
@@ -226,6 +228,52 @@ public class HttpMethods {
         mService.getSendOutList(companyNo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
+    }
+
+    /**
+     * 发货单详情信息
+     * <p>
+     * deliveryNo:发货单号
+     */
+    public void getSendOutListInfo(SingleObserver<BaseResponse<SendOutListInfo>> observer, String companyNo, String deliveryNo) {
+        mService.getSendOutListInfo(companyNo, deliveryNo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+
+    }
+
+    /**
+     * 获取出库信息(已发货 - 查看)
+     * <p>
+     * deliveryNo:发货单号
+     */
+    public void getSendOutPutInfo(SingleObserver<BaseResponse<OutPutInfoData>> observer, String companyNo, String deliveryNo) {
+        mService.getSendOutPutInfo(companyNo, deliveryNo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+
+    }
+
+    /**
+     * 新增出库
+     *
+     * @param observer
+     * @param body
+     */
+    public void addSendOut(SingleObserver<ResponseInfo> observer, RequestBody body) {
+        mService.addSendOut(body)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+    /**
+     * 删除出库
+     */
+    public void deleteSendOut(SingleObserver<ResponseInfo> observer, String companyNo, String deliveryNo) {
+        mService.deleteSendOut(companyNo, deliveryNo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+
     }
 
 

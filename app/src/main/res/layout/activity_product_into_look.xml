@@ -27,7 +27,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:text="@string/product_batch_house"
-                android:textColor="@color/txt_product_color"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         <TextView
@@ -63,37 +62,23 @@
 
         <TextView
                 android:id="@+id/tv_select_time"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_12"
-                android:layout_marginTop="@dimen/x16"
-                android:layout_marginEnd="@dimen/x6"
-                android:background="@drawable/shape_select"
-                android:hint="@string/into_house_time"
-                android:padding="@dimen/x8"
+                style="@style/LookProductText"
+                android:text="@string/into_house_time"
                 android:gravity="center_vertical"
                 app:layout_constraintTop_toBottomOf="@+id/tv_select_house"
-                app:layout_constraintStart_toStartOf="@id/tv_product_batch"
-                app:layout_constraintEnd_toStartOf="@id/tv_select_spec"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+                app:layout_constraintStart_toStartOf="@id/tv_product_batch"/>
 
         <TextView
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_select_spec"
-                android:textSize="@dimen/text_12"
-                android:layout_marginTop="@dimen/x16"
-                android:layout_marginEnd="@dimen/x28"
-                android:layout_marginStart="@dimen/x6"
-                android:background="@drawable/shape_select"
-                android:hint="@string/select_spec"
-                android:padding="@dimen/x8"
-                android:drawablePadding="@dimen/x40"
+                style="@style/LookProductText"
+                android:text="@string/select_spec"
                 android:gravity="center_vertical"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_select_time"
-                app:layout_constraintStart_toEndOf="@id/tv_select_time"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/tv_select_time"
+                app:layout_constraintStart_toStartOf="@id/tv_product_batch"/>
 
 
     </android.support.constraint.ConstraintLayout>

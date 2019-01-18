@@ -44,6 +44,8 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
      */
     private String boxCode;
 
+    private int sendPosition;
+
     private VooglaPresenter presenter = new VooglaPresenter(this);
 
 
@@ -62,28 +64,32 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             initToolBar(R.string.box_link, "保存", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToastUtil.showToast("保存数据");
                     returnActivity();
                 }
             });
         } else if (CodeConstant.PAGE_BOX_LINK_EDIT.equals(type)){
             // 修改编辑
-            qrCodeInfos = getIntent().getStringArrayListExtra("qrCodeInfos");
-            boxCode = getIntent().getStringExtra("boxCode");
+            qrCodeInfos = getIntent().getStringArrayListExtra(CodeConstant.QR_CODE_INFOS);
+            boxCode = getIntent().getStringExtra(CodeConstant.BOX_CODE);
 
             initToolBar(R.string.box_link, "保存", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToastUtil.showToast("保存数据");
                     returnActivity();
                 }
             });
         }else if (CodeConstant.PAGE_SCAN_OUT.equals(type)) {
             // 出库扫码
+            qrCodeInfos = getIntent().getStringArrayListExtra(CodeConstant.QR_CODE_INFOS);
+            if (qrCodeInfos == null) {
+                qrCodeInfos = new ArrayList();
+            }
+            boxCode = getIntent().getStringExtra(CodeConstant.BOX_CODE);
+            sendPosition = getIntent().getIntExtra(CodeConstant.SEND_POSITION,-1);
+
             initToolBar(R.string.scan_code, "保存", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToastUtil.showToast("保存数据");
                     returnActivity();
                 }
             });
@@ -144,9 +150,10 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
      */
     private void returnActivity() {
         Intent intent = new Intent();
-        intent.putExtra("boxCode", boxCode);
-        intent.putStringArrayListExtra("qrCodeInfos", qrCodeInfos);
-        setResult(100, intent);
+        intent.putExtra(CodeConstant.BOX_CODE, boxCode);
+        intent.putExtra(CodeConstant.SEND_POSITION,sendPosition);
+        intent.putStringArrayListExtra(CodeConstant.QR_CODE_INFOS, qrCodeInfos);
+        setResult(CodeConstant.RESULT_CODE, intent);
         finish();
 
     }
@@ -160,16 +167,6 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
 
         presenter.decodeUrlCode(dataString);
 
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                String dataString = event.getBarcodeData();
-//
-//                presenter.decodeUrlCode(dataString);
-//
-//            }
-//        });
     }
 
     public void continuousScanning(boolean bState) {
@@ -275,7 +272,7 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
 
         // TODO  Thread.sleep 需改进
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
             // 继续扫码
             continuousScanning(true);
         } catch (InterruptedException e) {

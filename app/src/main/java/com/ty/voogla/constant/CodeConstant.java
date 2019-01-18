@@ -46,6 +46,22 @@ public final class CodeConstant {
      * 商品编号
      */
     public static final String GOODS_NO = "goodsNo";
+    /**
+     * 发货单编号
+     */
+    public static final String DELIVERY_NO = "deliveryNo";
+
+    /**
+     * 箱码 boxCode
+     * 产品码 qr_CodeInfos
+     */
+    public static final String BOX_CODE = "boxCode";
+    public static final String QR_CODE_INFOS = "qrCodeInfos";
+
+    /**
+     * 发货明细列表 position
+     */
+    public static final String SEND_POSITION = "position";
 
 
     /**
@@ -55,6 +71,20 @@ public final class CodeConstant {
     public static final String SYSTEM_KEY = "system";
     public static final String SYSTEM_VALUE = "android";
     public static final String SESSION_ID_KEY = "sessionId";
+
+    /**
+     * SharedPreferences 文件名
+     */
+    public static final String SP_SHARED = "shared";
+
+    /**
+     * 相机 请求、响应 状态码
+     * REQUEST_CODE_INTO: 入库
+     * REQUEST_CODE_OUT:  出库
+     */
+    public static final int REQUEST_CODE_INTO = 100;
+    public static final int REQUEST_CODE_OUT = 101;
+    public static final int RESULT_CODE = 100;
 
     /**
      * 用户数据

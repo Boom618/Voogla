@@ -84,11 +84,21 @@ public class ApiNameConstant {
      */
     public static final String SEND_OUT_LIST = "corp/im/commodity-output-list";
 
+    /**
+     * 发货单详情信息
+     */
+    public static final String SEND_OUT_LIST_INFO = "corp/im/delivery-info";
+
+
+    /**
+     * 获取出库信息
+     */
+    public static final String SEND_OUTPUT_INFO = "corp/im/commodity-output-info";
 
     /**
      * 删除入库
      */
-    public static final String SEND_OUT_DETELE = "corp/im/commodity-output-del";
+    public static final String SEND_OUT_DELETE = "corp/im/commodity-output-del";
 
     /**
      * 新增出库
