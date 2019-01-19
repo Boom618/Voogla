@@ -1,4 +1,4 @@
-package com.ty.voogla.util;
+package com.ty.voogla.data;
 
 import android.content.Context;
 import android.graphics.Bitmap;

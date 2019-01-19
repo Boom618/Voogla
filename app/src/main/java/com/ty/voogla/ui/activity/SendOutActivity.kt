@@ -8,7 +8,7 @@ import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.bean.sendout.SendOutListData
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
-import com.ty.voogla.util.SimpleCache
+import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.util.ToastUtil
 import kotlinx.android.synthetic.main.activity_send_out.*
 

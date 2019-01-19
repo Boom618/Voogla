@@ -5,6 +5,7 @@ import android.util.Log
 import com.ty.voogla.BuildConfig.*
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
+import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.UserInfo
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
@@ -64,6 +65,9 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View<UserInfo> {
         }
     }
 
+    override fun showResponse(response: ResponseInfo) {
+
+    }
     override fun showError(msg: String) {
 
         ToastUtil.showToast(msg)

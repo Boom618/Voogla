@@ -12,8 +12,11 @@ import com.ty.voogla.R;
 import com.ty.voogla.adapter.BoxLinkAdapter;
 import com.ty.voogla.adapter.LayoutInit;
 import com.ty.voogla.base.BaseActivity;
+import com.ty.voogla.base.ResponseInfo;
 import com.ty.voogla.bean.produce.DecodeCode;
+import com.ty.voogla.bean.sendout.QrCodeListData;
 import com.ty.voogla.constant.CodeConstant;
+import com.ty.voogla.data.SimpleCache;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.mvp.presenter.VooglaPresenter;
 import com.ty.voogla.ui.activity.scan.BarcodeProperties;
@@ -43,8 +46,20 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
      * 箱码
      */
     private String boxCode;
+    /**
+     * 发货出库 箱码产品码
+     */
+    private ArrayList<QrCodeListData> qrCodeList = new ArrayList<>();
 
+    /**
+     * 发货出库-发货明细 item
+     */
     private int sendPosition;
+
+    /**
+     * 是发货出库
+     */
+    private boolean isSendItem = false;
 
     private VooglaPresenter presenter = new VooglaPresenter(this);
 
@@ -80,17 +95,25 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             });
         }else if (CodeConstant.PAGE_SCAN_OUT.equals(type)) {
             // 出库扫码
-            qrCodeInfos = getIntent().getStringArrayListExtra(CodeConstant.QR_CODE_INFOS);
-            if (qrCodeInfos == null) {
-                qrCodeInfos = new ArrayList();
+            isSendItem = true;
+            try {
+                sendPosition = getIntent().getIntExtra(CodeConstant.SEND_POSITION,-1);
+                qrCodeList = SimpleCache.getQrCode();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            boxCode = getIntent().getStringExtra(CodeConstant.BOX_CODE);
-            sendPosition = getIntent().getIntExtra(CodeConstant.SEND_POSITION,-1);
-
+            if (qrCodeList == null) {
+                qrCodeList = new ArrayList();
+            }
             initToolBar(R.string.scan_code, "保存", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    returnActivity();
+                    Intent intent = new Intent();
+                    intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
+                    SimpleCache.putQrCode(qrCodeList);
+
+                    setResult(CodeConstant.RESULT_CODE, intent);
+                    finish();
                 }
             });
         }
@@ -269,6 +292,13 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             adapter.notifyItemInserted(qrCodeInfos.size());
             adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
         }
+        // 发货出库
+        if(isSendItem){
+            QrCodeListData codeData = new QrCodeListData();
+            codeData.setQrCode(code);
+            codeData.setQrCodeClass("产品码");
+            qrCodeList.add(codeData);
+        }
 
         // TODO  Thread.sleep 需改进
         try {
@@ -279,6 +309,12 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             e.printStackTrace();
         }
 
+
+    }
+
+
+    @Override
+    public void showResponse(ResponseInfo response) {
 
     }
 

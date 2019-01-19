@@ -6,8 +6,7 @@ import android.widget.TextView
 import com.ty.voogla.R
 import com.ty.voogla.bean.produce.ProductIntoData
 import com.ty.voogla.ui.activity.ProductIntoLookActivity
-import com.ty.voogla.util.SimpleCache
-import com.ty.voogla.util.ToastUtil
+import com.ty.voogla.data.SimpleCache
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 

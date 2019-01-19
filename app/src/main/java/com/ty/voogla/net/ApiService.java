@@ -2,10 +2,7 @@ package com.ty.voogla.net;
 
 import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
-import com.ty.voogla.bean.produce.DecodeCode;
-import com.ty.voogla.bean.produce.ProductInputInfo;
-import com.ty.voogla.bean.produce.ProductIntoData;
-import com.ty.voogla.bean.produce.ProductListInfoData;
+import com.ty.voogla.bean.produce.*;
 import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.bean.sendout.OutPutInfoData;
 import com.ty.voogla.bean.sendout.SendOutListData;
@@ -92,6 +89,17 @@ public interface ApiService {
     Single<DecodeCode> decodeUrlCode(@Query("secret") String secret);
 
     /**
+     * 箱码校验
+     *
+     * @param companyNo
+     * @param qrCode
+     * @return
+     */
+    @POST(ApiNameConstant.CODE_JUDGE_PRODUCE)
+    Single<BaseResponse<QrCodeJudge>> judegCode(@Field("companyNo") String companyNo,
+                                                @Field("qrCode") String qrCode);
+
+    /**
      * --------------------------------- 发货出库 ----------------------------------------
      */
 
@@ -102,7 +110,8 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(ApiNameConstant.SEND_OUT_LIST)
-    Single<BaseResponse<SendOutListData>> getSendOutList(@Field("companyNo") String companyNo);
+    Single<BaseResponse<SendOutListData>> getSendOutList(@Field("companyNo") String companyNo,
+                                                         @Field("flag") String flag);
 
     /**
      * 发货单详情信息

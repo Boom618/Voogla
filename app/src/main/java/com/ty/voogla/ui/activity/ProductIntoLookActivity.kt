@@ -6,10 +6,11 @@ import com.ty.voogla.R
 import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.adapter.ProIntoLookAdapter
 import com.ty.voogla.base.BaseActivity
+import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.produce.ProductInputInfo
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
-import com.ty.voogla.util.SimpleCache
+import com.ty.voogla.data.SimpleCache
 import kotlinx.android.synthetic.main.activity_product_into_look.*
 
 /**
@@ -76,6 +77,9 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
         LayoutInit.initLayoutManager(this, house_look_recycler)
         // R.layout.item_box_link_look
         house_look_recycler.adapter = ProIntoLookAdapter(this, R.layout.item_house_look, boxCodeList)
+
+    }
+    override fun showResponse(response: ResponseInfo) {
 
     }
 

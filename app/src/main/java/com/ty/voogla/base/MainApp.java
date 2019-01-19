@@ -9,7 +9,7 @@ import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.ty.voogla.constant.CodeConstant;
 import com.ty.voogla.ui.ActivitiesHelper;
-import com.ty.voogla.util.ACache;
+import com.ty.voogla.data.ACache;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 /**

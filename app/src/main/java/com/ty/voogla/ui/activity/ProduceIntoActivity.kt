@@ -11,7 +11,7 @@ import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.bean.produce.ProductIntoData
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
-import com.ty.voogla.util.SimpleCache
+import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
 import com.ty.voogla.widght.NormalAlertDialog

@@ -2,10 +2,7 @@ package com.ty.voogla.mvp.presenter;
 
 import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
-import com.ty.voogla.bean.produce.DecodeCode;
-import com.ty.voogla.bean.produce.ProductInputInfo;
-import com.ty.voogla.bean.produce.ProductIntoData;
-import com.ty.voogla.bean.produce.ProductListInfoData;
+import com.ty.voogla.bean.produce.*;
 import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.bean.sendout.OutPutInfoData;
 import com.ty.voogla.bean.sendout.SendOutListData;
@@ -14,7 +11,7 @@ import com.ty.voogla.constant.ApiNameConstant;
 import com.ty.voogla.constant.CodeConstant;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.net.HttpMethods;
-import com.ty.voogla.util.SimpleCache;
+import com.ty.voogla.data.SimpleCache;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import okhttp3.RequestBody;
@@ -226,6 +223,37 @@ public class VooglaPresenter implements VooglaContract.Presenter {
     }
 
     /**
+     * 校验
+     *
+     * @param companyNo
+     * @param qrCode
+     */
+    public void judegCode(String companyNo, String qrCode) {
+        httpMethods.judegCode(new SingleObserver<BaseResponse<QrCodeJudge>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(BaseResponse<QrCodeJudge> response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+
+                    iView.showSuccess(response.getData());
+                } else {
+                    iView.showError(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iView.showError(e.getMessage());
+
+            }
+        }, companyNo, qrCode);
+    }
+
+    /**
      * 二维码解码  flatMap 操作
      */
     public void decodeUrlCodeMap(SingleObserver<DecodeCode> observer, String secret) {
@@ -337,7 +365,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             @Override
             public void onSuccess(ResponseInfo response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
-                    iView.showSuccess(response);
+                    iView.showResponse(response);
                 } else {
                     iView.showError(response.getMsg());
                 }
@@ -349,6 +377,34 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             }
         }, companyNo, deliveryNo);
 
+    }
+
+    /**
+     * 新增出库
+     *
+     * @param body
+     */
+    public void addSendOut(RequestBody body) {
+        httpMethods.addSendOut(new SingleObserver<ResponseInfo>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(ResponseInfo response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    iView.showSuccess(response);
+                } else {
+                    iView.showError(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iView.showError(e.getMessage());
+            }
+        }, body);
     }
 
 }

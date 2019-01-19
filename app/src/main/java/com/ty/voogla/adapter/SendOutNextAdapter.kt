@@ -2,10 +2,12 @@ package com.ty.voogla.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.widget.TextView
 import com.ty.voogla.R
 import com.ty.voogla.bean.sendout.SendOutListInfo
 import com.ty.voogla.constant.CodeConstant
+import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.ui.activity.BoxLinkJavaActivity
 import com.ty.voogla.ui.activity.SendOutNextActivity
 import com.ty.voogla.widght.DialogUtil
@@ -35,10 +37,9 @@ class SendOutNextAdapter(val context: Context, layout: Int, datas: MutableList<S
         holder.itemView.findViewById<TextView>(R.id.tv_scan_code_box).setOnClickListener {
 
             val intent = Intent(context, BoxLinkJavaActivity::class.java)
-            intent.putExtra(CodeConstant.PAGE_STATE_KEY,CodeConstant.PAGE_SCAN_OUT)
+//            val intent = Intent("android.intent.action.AUTOCODEACTIVITY")
+            intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_SCAN_OUT)
             intent.putExtra(CodeConstant.SEND_POSITION,position)
-            intent.putStringArrayListExtra(CodeConstant.QR_CODE_INFOS,info.qrCode)
-//            context.startActivity(intent)
             (context as SendOutNextActivity).startActivityForResult(intent,CodeConstant.REQUEST_CODE_OUT)
         }
 

@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.TextView
 import com.ty.voogla.R
-import com.ty.voogla.util.ACache
+import com.ty.voogla.data.ACache
 
 /**
  * @author TY

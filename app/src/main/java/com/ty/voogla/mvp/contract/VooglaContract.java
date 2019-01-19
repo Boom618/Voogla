@@ -1,5 +1,7 @@
 package com.ty.voogla.mvp.contract;
 
+import com.ty.voogla.base.ResponseInfo;
+
 import java.util.List;
 
 /**
@@ -15,6 +17,7 @@ public interface VooglaContract {
     interface View<T> {
         /**
          * Presenter 完成数据加载,该方法展示在 view 上
+         * 返回回调数据
          */
         void showSuccess(T data);
 
@@ -24,10 +27,18 @@ public interface VooglaContract {
          * @param msg
          */
         void showError(String msg);
+
+        /**
+         * 返回响应信息（成功 失败）
+         *
+         * @param response
+         */
+        void showResponse(ResponseInfo response);
     }
 
     /**
      * 发货出库 接收 list
+     *
      * @param <T>
      */
     interface ListView<T> {

@@ -17,7 +17,7 @@ import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.net.HttpMethods
 import com.ty.voogla.net.RequestBodyJson
-import com.ty.voogla.util.SimpleCache
+import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
 import com.ty.voogla.widght.TimeWidght
@@ -228,6 +228,9 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             goodsSpec.add(list[i].goodsSpec!!)
             goodsNo.add(list[i].goodsNo!!)
         }
+    }
+    override fun showResponse(response: ResponseInfo) {
+
     }
 
     override fun showError(msg: String?) {

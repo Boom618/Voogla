@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
-import com.ty.voogla.bean.produce.DecodeCode;
-import com.ty.voogla.bean.produce.ProductInputInfo;
-import com.ty.voogla.bean.produce.ProductIntoData;
-import com.ty.voogla.bean.produce.ProductListInfoData;
+import com.ty.voogla.bean.produce.*;
 import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.bean.sendout.OutPutInfoData;
 import com.ty.voogla.bean.sendout.SendOutListData;
@@ -213,6 +210,12 @@ public class HttpMethods {
 
     }
 
+    public void judegCode(SingleObserver<BaseResponse<QrCodeJudge>> observer, String companyNo, String qrCode){
+        mService.judegCode(companyNo,qrCode)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
 
     /**
      * --------------------------------- 产品出库  ----------------------------------------
@@ -225,7 +228,7 @@ public class HttpMethods {
      * @param companyNo
      */
     public void getSendOutList(SingleObserver<BaseResponse<SendOutListData>> observer, String companyNo) {
-        mService.getSendOutList(companyNo)
+        mService.getSendOutList(companyNo,"02")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }

@@ -1,9 +1,8 @@
 package com.ty.voogla.net
 
 import com.ty.voogla.constant.CodeConstant
-import com.ty.voogla.util.SimpleCache
+import com.ty.voogla.data.SimpleCache
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
 
 import java.io.IOException

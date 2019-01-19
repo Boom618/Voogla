@@ -76,6 +76,11 @@ public class ApiNameConstant {
     public static final String DECODE_URL = "deCodeUrl";
 
     /**
+     * 二维码校验
+     */
+    public static final String CODE_JUDGE_PRODUCE = "corp/im/commodity-input-judge";
+
+    /**
      * --------------------------------- 发货出库 ----------------------------------------
      */
 
@@ -105,6 +110,10 @@ public class ApiNameConstant {
      */
     public static final String SEND_OUT_ADD = "corp/im/commodity-output-add";
 
+    /**
+     * 二维码校验
+     */
+    public static final String CODE_JUDGE_SEND = "corp/im/commodity-output-judge";
 
 
 }

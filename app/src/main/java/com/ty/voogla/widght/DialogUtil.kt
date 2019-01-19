@@ -2,9 +2,7 @@ package com.ty.voogla.widght
 
 import android.content.Context
 import android.widget.TextView
-import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.data.SharedP
-import com.ty.voogla.util.SimpleCache
 import com.ty.voogla.util.ToastUtil
 
 /**

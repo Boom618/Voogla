@@ -6,7 +6,7 @@ import com.ty.voogla.BuildConfig.*
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.ui.ActivitiesHelper
-import com.ty.voogla.util.SimpleCache
+import com.ty.voogla.data.SimpleCache
 import kotlinx.android.synthetic.main.activity_user_content_mob.*
 
 /**

@@ -57,6 +57,10 @@ public final class CodeConstant {
      */
     public static final String BOX_CODE = "boxCode";
     public static final String QR_CODE_INFOS = "qrCodeInfos";
+    /**
+     * 发货出库 箱码或产品码集合
+     */
+    public static final String QR_CODE_LIST = "qrCodeList";
 
     /**
      * 发货明细列表 position
