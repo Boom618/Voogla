@@ -44,14 +44,14 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     // 产品码
     private var qrCodeInfos: ArrayList<String>? = null
     // 入库箱码明细列表
-    private val listDetail:MutableList<String> = mutableListOf()
+    private val listDetail: MutableList<String> = mutableListOf()
 
     // 商品名称
     private var goodsName: MutableList<String> = mutableListOf()
     // 规格
     private var goodsSpec: MutableList<String> = mutableListOf()
     // 商品编号
-    private var goodsNo:MutableList<String> = mutableListOf()
+    private var goodsNo: MutableList<String> = mutableListOf()
 
     private val presenter = VooglaPresenter(this)
 
@@ -91,7 +91,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         // 时间选择
         tv_select_time.setOnClickListener { v ->
             TimeWidght.showPickDate(this) { date, _ ->
-                selectTime = TimeWidght.getTime(CodeConstant.DATE_SIMPLE_H_M_S,date)
+                selectTime = TimeWidght.getTime(CodeConstant.DATE_SIMPLE_H_M_S, date)
                 tv_select_time.text = selectTime
 
                 ToastUtil.showToast(selectTime)
@@ -100,9 +100,15 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
         tv_to_box_link.setOnClickListener {
             // 广播跳转
-            val intent = Intent("android.intent.action.AUTOCODEACTIVITY")
-            intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_BOX_LINK)
-            startActivityForResult(intent, CodeConstant.REQUEST_CODE_INTO)
+            val spec = tv_select_spec.text.toString().trim { spec -> spec <= ' ' }
+            if (tv_select_spec.text.isNotEmpty()) {
+                val intent = Intent("android.intent.action.AUTOCODEACTIVITY")
+                intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_BOX_LINK)
+                intent.putExtra("spec",spec)
+                startActivityForResult(intent, CodeConstant.REQUEST_CODE_INTO)
+            } else {
+                ToastUtil.showToast("请选择对应的商品和规格")
+            }
         }
 
         LayoutInit.initLayoutManager(this, house_recycler)
@@ -118,6 +124,8 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             if (qrCodeInfos?.isNotEmpty()!!) {
                 listDetail.addAll(qrCodeInfos!!)
             }
+            val size = listDetail.size
+            tv_number.text = size.toString()
         }
     }
 
@@ -172,7 +180,11 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         //主信息
         // 归属单位  缺少产品名称字段
         val userInfo = SimpleCache.getUserInfo()
-        val goodsNoStr = goodsNo[SharedP.getGoodNo(this)]
+        val position = SharedP.getGoodNo(this)
+        if (position == -1) {
+            return null
+        }
+        val goodsNoStr = goodsNo[position]
         val productBatchNo = et_batch_number.text.toString().trim { it <= ' ' }
         val wareName = tv_select_house.text.toString().trim { it <= ' ' }
         val inTime = tv_select_time.text.toString().trim { it <= ' ' }
@@ -229,6 +241,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             goodsNo.add(list[i].goodsNo!!)
         }
     }
+
     override fun showResponse(response: ResponseInfo) {
 
     }

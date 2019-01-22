@@ -103,7 +103,7 @@
 
     <TextView
             android:id="@+id/tv_number"
-            android:text="100"
+            android:text="0"
             android:textColor="@color/theme_color"
             android:layout_marginEnd="@dimen/x24"
             app:layout_constraintEnd_toEndOf="parent"

@@ -210,8 +210,14 @@ public class HttpMethods {
 
     }
 
-    public void judegCode(SingleObserver<BaseResponse<QrCodeJudge>> observer, String companyNo, String qrCode){
-        mService.judegCode(companyNo,qrCode)
+    /**
+     * 入库 二维码校验
+     * @param observer
+     * @param companyNo
+     * @param qrCode
+     */
+    public void judegCode(SingleObserver<BaseResponse<QrCodeJudge>> observer, String companyNo, String qrCode) {
+        mService.judegCode(companyNo, qrCode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
@@ -228,7 +234,7 @@ public class HttpMethods {
      * @param companyNo
      */
     public void getSendOutList(SingleObserver<BaseResponse<SendOutListData>> observer, String companyNo) {
-        mService.getSendOutList(companyNo,"02")
+        mService.getSendOutList(companyNo, "02")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
@@ -277,6 +283,22 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
 
+    }
+
+    /**
+     * 出库二维码校验
+     *
+     * @param observer
+     * @param companyNo
+     * @param qrCodeClass
+     * @param goodsNo
+     * @param qrCode
+     */
+    public void sendOutjudegCode(SingleObserver<BaseResponse<QrCodeJudge>> observer, String companyNo,
+                                 String qrCodeClass, String goodsNo, String qrCode) {
+        mService.sendOutjudegCode(companyNo, qrCodeClass, goodsNo, qrCode)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
     }
 
 

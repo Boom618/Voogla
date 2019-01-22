@@ -1,6 +1,7 @@
 package com.ty.voogla.data
 
 import android.content.Context
+import android.util.SparseArray
 import com.ty.voogla.constant.CodeConstant
 
 /**
@@ -22,32 +23,19 @@ object SharedP {
     }
 
 
-    /**
-     * 存 点击库位码是否有焦点和位置
-     */
-    fun putHasFocusAndPosition(context: Context, hasFocus: Boolean, position: Int) {
-        context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
-            .edit()
-            .putBoolean("hasFocus", hasFocus)
-            .putInt("position", position)
-            .apply()
-    }
-
-    fun getFocus(context: Context): Boolean {
-        return context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
-            .getBoolean("hasFocus", false)
-    }
 
     fun getGoodNo(context: Context): Int {
         return context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
             .getInt(CodeConstant.GOODS_NO, -1)
     }
 
-    fun clearFocusAndPosition(context: Context) {
-        context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
-            .edit()
-            .putBoolean("hasFocus", false)
-            .putInt("position", -1)
-            .apply()
+
+
+    /**
+     * 存 SparseArray（hashMap）
+     */
+    fun putSparseArray(context: Context,sparseArray: SparseArray<String>){
+
+
     }
 }

@@ -11,6 +11,7 @@ import com.ty.voogla.bean.produce.ProductInputInfo
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.data.SimpleCache
+import com.ty.voogla.data.SparseArrayUtil
 import kotlinx.android.synthetic.main.activity_product_into_look.*
 
 /**
@@ -73,6 +74,8 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
             boxCodeList.add(i, list[i].boxCode!!)
             qrCodeList.put(i, list[i].qrCodeInfos)
         }
+        tv_number.text = boxCodeList.size.toString()
+
 
         LayoutInit.initLayoutManager(this, house_look_recycler)
         // R.layout.item_box_link_look

@@ -7,7 +7,7 @@ package com.ty.voogla.bean.sendout
 class OutPutInfoData {
 
     var goodsDeliveryInfo: GoodsDeliveryInfoBean? = null
-    var outQrCodeDetailInfos: List<OutQrCodeDetailInfosBean>? = null
+    var outQrCodeDetailInfos: MutableList<OutQrCodeDetailInfosBean>? = null
 
     class GoodsDeliveryInfoBean {
         /**
@@ -56,16 +56,16 @@ class OutPutInfoData {
         var outBoxNum: String? = null
         var outGoodsNum: String? = null
         var unit: String? = null
-        var qrCodeInfos: List<QrCodeInfosBean>? = null
+        var qrCodeInfos: MutableList<QrCodeListData>? = null
 
-        class QrCodeInfosBean {
-            /**
-             * qrCodeClass : 二维码分类A0701(箱码)/A0702(产品码)
-             * qrCode : 二维码号
-             */
-
-            var qrCodeClass: String? = null
-            var qrCode: String? = null
-        }
+//        class QrCodeInfosBean {
+//            /**
+//             * qrCodeClass : 二维码分类A0701(箱码)/A0702(产品码)
+//             * qrCode : 二维码号
+//             */
+//
+//            var qrCodeClass: String? = null
+//            var qrCode: String? = null
+//        }
     }
 }

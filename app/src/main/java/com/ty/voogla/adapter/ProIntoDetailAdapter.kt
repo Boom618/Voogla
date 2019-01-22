@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.widget.ImageView
 import com.ty.voogla.R
-import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.ui.activity.BoxLinkJavaActivity
 import com.ty.voogla.util.ToastUtil
 import com.zhy.adapter.recyclerview.CommonAdapter
@@ -28,13 +27,12 @@ class ProIntoDetailAdapter(val context: Context, layout: Int,datas: MutableList<
 //            val list = ArrayList<String>()
 //            list.addAll(datas)
 //
-//            val intent = Intent(context,BoxLinkJavaActivity::class.java)
-//            intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_BOX_LINK_EDIT)
-//            // boxCode 箱码  qrCodeInfos 产品 list
-//            intent.putExtra("boxCode",boxCode)
-//            intent.putStringArrayListExtra("qrCodeInfos",list)
-//            context.startActivity(intent)
-            ToastUtil.showToast("修改 $position")
+            val intent = Intent(context, BoxLinkJavaActivity::class.java)
+            // boxCode 箱码  qrCodeInfos 产品 list
+            intent.putExtra("boxCode",boxCode)
+            intent.putExtra("position",position)
+            context.startActivity(intent)
+            //ToastUtil.showToast("修改 $position")
         }
 
         deleteView.setOnClickListener {

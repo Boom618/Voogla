@@ -95,6 +95,7 @@ public interface ApiService {
      * @param qrCode
      * @return
      */
+    @FormUrlEncoded
     @POST(ApiNameConstant.CODE_JUDGE_PRODUCE)
     Single<BaseResponse<QrCodeJudge>> judegCode(@Field("companyNo") String companyNo,
                                                 @Field("qrCode") String qrCode);
@@ -150,6 +151,21 @@ public interface ApiService {
     @POST(ApiNameConstant.SEND_OUT_DELETE)
     Single<ResponseInfo> deleteSendOut(@Field("companyNo") String companyNo,
                                        @Field("deliveryNo") String deliveryNo);
+
+    /**
+     * 出库 二维码校验
+     * @param companyNo
+     * @param qrCodeClass
+     * @param goodsNo
+     * @param qrCode
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(ApiNameConstant.CODE_JUDGE_SEND)
+    Single<BaseResponse<QrCodeJudge>> sendOutjudegCode(@Field("companyNo") String companyNo,
+                                                       @Field("qrCodeClass") String qrCodeClass,
+                                                       @Field("goodsNo") String goodsNo,
+                                                       @Field("qrCode") String qrCode);
 
 
 //

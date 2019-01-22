@@ -12,18 +12,25 @@ import com.ty.voogla.R;
 import com.ty.voogla.adapter.BoxLinkAdapter;
 import com.ty.voogla.adapter.LayoutInit;
 import com.ty.voogla.base.BaseActivity;
+import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
 import com.ty.voogla.bean.produce.DecodeCode;
+import com.ty.voogla.bean.produce.QrCodeJudge;
 import com.ty.voogla.bean.sendout.QrCodeListData;
 import com.ty.voogla.constant.CodeConstant;
 import com.ty.voogla.data.SimpleCache;
+import com.ty.voogla.data.SparseArrayUtil;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.mvp.presenter.VooglaPresenter;
+import com.ty.voogla.net.HttpMethods;
 import com.ty.voogla.ui.activity.scan.BarcodeProperties;
 import com.ty.voogla.util.ToastUtil;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author TY on 2019/1/12.
@@ -39,9 +46,13 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
 
     private BoxLinkAdapter adapter;
     /**
-     * 产品码
+     * 产品码列表
      */
-    private ArrayList<String> qrCodeInfos = new ArrayList<>();
+    private List<QrCodeListData> qrCodeInfos = new ArrayList<>();
+    /**
+     * 方便对比集合中是否有该二维码,不做数据传递
+     */
+    private ArrayList<String> qrCodeString = new ArrayList<>();
     /**
      * 箱码
      */
@@ -55,6 +66,15 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
      * 发货出库-发货明细 item
      */
     private int sendPosition;
+    /**
+     * 企业编号
+     */
+    private String companyNo;
+
+    /**
+     * 产品规格数量
+     */
+    private int specNumber = 0;
 
     /**
      * 是发货出库
@@ -73,6 +93,7 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
     protected void onBaseCreate(@Nullable Bundle savedInstanceState) {
 
         String type = getIntent().getStringExtra(CodeConstant.PAGE_STATE_KEY);
+        companyNo = SimpleCache.getUserInfo().getCompanyNo();
 
         if (CodeConstant.PAGE_BOX_LINK.equals(type)) {
             // 入库扫码
@@ -82,9 +103,13 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
                     returnActivity();
                 }
             });
-        } else if (CodeConstant.PAGE_BOX_LINK_EDIT.equals(type)){
+            String spec = getIntent().getStringExtra("spec");
+            specNumber = Integer.parseInt(spec);
+        } else if (CodeConstant.PAGE_BOX_LINK_EDIT.equals(type)) {
             // 修改编辑
-            qrCodeInfos = getIntent().getStringArrayListExtra(CodeConstant.QR_CODE_INFOS);
+//            qrCodeInfos = getIntent().getStringArrayListExtra(CodeConstant.QR_CODE_INFOS);
+            int position = getIntent().getIntExtra("position",0);
+            qrCodeInfos = SparseArrayUtil.getQrCodeListData(position);
             boxCode = getIntent().getStringExtra(CodeConstant.BOX_CODE);
 
             initToolBar(R.string.box_link, "保存", new View.OnClickListener() {
@@ -93,11 +118,11 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
                     returnActivity();
                 }
             });
-        }else if (CodeConstant.PAGE_SCAN_OUT.equals(type)) {
+        } else if (CodeConstant.PAGE_SCAN_OUT.equals(type)) {
             // 出库扫码
             isSendItem = true;
             try {
-                sendPosition = getIntent().getIntExtra(CodeConstant.SEND_POSITION,-1);
+                sendPosition = getIntent().getIntExtra(CodeConstant.SEND_POSITION, -1);
                 qrCodeList = SimpleCache.getQrCode();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -154,11 +179,6 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             // 设置 50k 属性
             BarcodeProperties.setProperties(barcodeReader);
         }
-//        boxRecycler = findViewById(R.id.box_recycler);
-//        LayoutInit.INSTANCE.initLayoutManager(this, boxRecycler);
-//        boxRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-//        adapter = new BoxLinkAdapter(this, R.layout.item_box_link, qrCodeInfos);
-//        boxRecycler.setAdapter(adapter);
 
     }
 
@@ -174,8 +194,9 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
     private void returnActivity() {
         Intent intent = new Intent();
         intent.putExtra(CodeConstant.BOX_CODE, boxCode);
-        intent.putExtra(CodeConstant.SEND_POSITION,sendPosition);
-        intent.putStringArrayListExtra(CodeConstant.QR_CODE_INFOS, qrCodeInfos);
+        intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
+        //intent.putStringArrayListExtra(CodeConstant.QR_CODE_INFOS, qrCodeInfos);
+        SparseArrayUtil.putQrCodeListData(0,qrCodeInfos);
         setResult(CodeConstant.RESULT_CODE, intent);
         finish();
 
@@ -276,24 +297,55 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
     @Override
     public void showSuccess(DecodeCode data) {
 
-        String code = data.getResult().getCode();
+        final String code = data.getResult().getCode();
         ToastUtil.showToast(code);
 
-        // TODO 方便测试 规定 4 个产品码
-        if (qrCodeInfos.size() == 4) {
+
+        // 产品码数量由规格控制
+        if (qrCodeInfos.size() == specNumber) {
             boxCode = code;
             return;
         }
-        if (qrCodeInfos.contains(code)) {
+
+        // qrCodeString 只存解析二维码
+        if (qrCodeString.contains(code)) {
             ToastUtil.showToast("该数据扫码过");
             //ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
         } else {
-            qrCodeInfos.add(code);
-            adapter.notifyItemInserted(qrCodeInfos.size());
-            adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
+            HttpMethods.getInstance().judegCode(new SingleObserver<BaseResponse<QrCodeJudge>>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onSuccess(BaseResponse<QrCodeJudge> response) {
+                    if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                        QrCodeJudge.QrCodeInfoBean qrCodeInfo = response.getData().getQrCodeInfo();
+                        // 二维码生成编号( 新增要用 )
+                        String generateNo = qrCodeInfo.getGenerateNo();
+                        QrCodeListData codeQr = new QrCodeListData();
+                        codeQr.setQrCode(code);
+                        codeQr.setGenerateNo(generateNo);
+
+                        qrCodeInfos.add(codeQr);
+
+                        qrCodeString.add(code);
+                        adapter.notifyItemInserted(qrCodeInfos.size());
+                        adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
+                    }
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    ToastUtil.showToast(e.getMessage());
+
+                }
+            }, companyNo, code);
         }
         // 发货出库
-        if(isSendItem){
+        if (isSendItem) {
             QrCodeListData codeData = new QrCodeListData();
             codeData.setQrCode(code);
             codeData.setQrCodeClass("产品码");

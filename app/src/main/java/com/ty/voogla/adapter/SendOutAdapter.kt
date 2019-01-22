@@ -37,7 +37,11 @@ class SendOutAdapter(val context: Context, layout: Int, datas: MutableList<SendO
                     intent.putExtra(CodeConstant.DELIVERY_NO,info.deliveryNo)
                     context.startActivity(intent)
                 }
-                else -> context.startActivity(Intent(context, SendOutLookActivity::class.java))
+                else -> {
+                    val intent = Intent(context,SendOutLookActivity::class.java)
+                    intent.putExtra(CodeConstant.DELIVERY_NO,info.deliveryNo)
+                    context.startActivity(intent)
+                }
             }
         }
 

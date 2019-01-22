@@ -16,6 +16,7 @@ import com.ty.voogla.bean.sendout.AddSendOutData
 import com.ty.voogla.bean.sendout.QrCodeListData
 import com.ty.voogla.bean.sendout.SendOutListInfo
 import com.ty.voogla.constant.CodeConstant
+import com.ty.voogla.data.DateUtil
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.data.SimpleCache
@@ -26,6 +27,7 @@ import com.ty.voogla.widght.NormalAlertDialog
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import kotlinx.android.synthetic.main.activity_send_out_next.*
 import okhttp3.RequestBody
+import java.util.*
 
 /**
  * @author TY on 2019/1/14.
@@ -64,6 +66,10 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
 
     override fun initOneData() {
 
+
+        initToolBar(R.string.send_out_detail, "保存", View.OnClickListener {
+            sendOutSave(initReqBody())
+        })
         // 发货单编号
         deliveryNo = intent.getStringExtra(CodeConstant.DELIVERY_NO)
         companyNo = SimpleCache.getUserInfo()?.companyNo
@@ -75,9 +81,7 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
 
     override fun initTwoView() {
 
-        initToolBar(R.string.send_out_detail, "保存", View.OnClickListener {
-            sendOutSave(initReqBody())
-        })
+
     }
 
     private fun sendOutSave(body: RequestBody?) {
@@ -133,11 +137,12 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
             // 清除箱码数据集合
             qrList.clear()
         }
+        val time = DateUtil.getTime(Date())
 
         goodsInfo.companyNo = userInfo.companyNo
         goodsInfo.creator = userInfo.userNo
         goodsInfo.deliveryNo = deliveryNo
-        goodsInfo.outTime = "2019-01-23 17:23:33"
+        goodsInfo.outTime = time
 
         saveBean.goodsDeliveryInfo = goodsInfo
         saveBean.outQrCodeDetailInfos = qrCodeList

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.TextView
 import com.ty.voogla.R
+import com.ty.voogla.data.SparseArrayUtil
 import com.ty.voogla.ui.activity.BoxLinkLookActivity
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
@@ -22,7 +23,11 @@ class ProIntoLookAdapter(val context: Context, layout: Int, datas: MutableList<S
 
         holder.itemView.findViewById<TextView>(R.id.tv_look).setOnClickListener {
             val intent = Intent(context, BoxLinkLookActivity::class.java)
-            context.startActivity(intent)
+
+            intent.putExtra("position",position)
+            intent.putExtra("type","product")
+//            SparseArrayUtil.putQrCodeListData(0,list)
+//            context.startActivity(intent)
         }
 
 
