@@ -9,7 +9,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder
 /**
  * @author TY on 2019/1/11.
  */
-class BoxLinkLookAdapter(context: Context, layout: Int, datas: MutableList<QrCodeListData>) :
+class BoxLinkLookAdapter(context: Context, layout: Int, datas: List<QrCodeListData>) :
     CommonAdapter<QrCodeListData>(context, layout, datas) {
 
     override fun convert(holder: ViewHolder, info: QrCodeListData, position: Int) {

@@ -29,6 +29,16 @@ object SharedP {
             .getInt(CodeConstant.GOODS_NO, -1)
     }
 
+    /**
+     * 重置 GoodNo
+     */
+    fun clearGoodNo(context: Context){
+        context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
+            .edit()
+            .putInt(CodeConstant.GOODS_NO, -1)
+            .apply()
+    }
+
 
 
     /**

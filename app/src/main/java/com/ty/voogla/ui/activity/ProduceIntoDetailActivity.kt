@@ -2,6 +2,7 @@ package com.ty.voogla.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.SparseArray
 import android.view.View
 import com.google.gson.Gson
 import com.ty.voogla.R
@@ -11,6 +12,7 @@ import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.produce.AddProduct
 import com.ty.voogla.bean.produce.ProductListInfoData
+import com.ty.voogla.bean.sendout.QrCodeListData
 import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.data.SharedP
 import com.ty.voogla.mvp.contract.VooglaContract
@@ -18,6 +20,7 @@ import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.net.HttpMethods
 import com.ty.voogla.net.RequestBodyJson
 import com.ty.voogla.data.SimpleCache
+import com.ty.voogla.data.SparseArrayUtil
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
 import com.ty.voogla.widght.TimeWidght
@@ -41,10 +44,14 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
     // 箱码
     private var boxCode: String? = null
-    // 产品码
-    private var qrCodeInfos: ArrayList<String>? = null
+    // 箱码集合
+    private var boxCodeSparse: SparseArray<String> = SparseArray()
+    /**
+     * 产品码对象
+     */
+    private var qrCodeInfos: List<QrCodeListData> = ArrayList()
     // 入库箱码明细列表
-    private val listDetail: MutableList<String> = mutableListOf()
+    private val listDetail: SparseArray<List<QrCodeListData>> = SparseArray()
 
     // 商品名称
     private var goodsName: MutableList<String> = mutableListOf()
@@ -85,6 +92,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         // 产品选择
         tv_select_pro_name.setOnClickListener {
 
+            //
             DialogUtil.selectProName(it.context, goodsName, goodsSpec, tv_select_pro_name, tv_select_spec)
         }
 
@@ -113,18 +121,20 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
         LayoutInit.initLayoutManager(this, house_recycler)
 
-        adapter = ProIntoDetailAdapter(this, R.layout.item_house_detail, listDetail)
+        adapter = ProIntoDetailAdapter(this, R.layout.item_house_detail, qrCodeInfos)
         house_recycler.adapter = adapter
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == CodeConstant.REQUEST_CODE_INTO && resultCode == CodeConstant.RESULT_CODE) {
             boxCode = data?.getStringExtra("boxCode")
-            qrCodeInfos = data?.getStringArrayListExtra("qrCodeInfos")
-            if (qrCodeInfos?.isNotEmpty()!!) {
-                listDetail.addAll(qrCodeInfos!!)
+            val position = data?.getIntExtra(CodeConstant.SEND_POSITION,0)!!
+            qrCodeInfos = SparseArrayUtil.getQrCodeList(this)
+            if (qrCodeInfos.isNotEmpty()) {
+                listDetail.put(position,qrCodeInfos)
+                boxCodeSparse.put(position,boxCode)
             }
-            val size = listDetail.size
+            val size = listDetail.size()
             tv_number.text = size.toString()
         }
     }
@@ -169,13 +179,17 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         val saveBean = AddProduct()
         val boxInfo: MutableList<AddProduct.InBoxCodeDetailInfosBean> = mutableListOf()
         val wareInfo = AddProduct.InWareInfoBean()
+        val boxSize = listDetail.size()
 
-        // 箱码
-        val boxCodeInfo = AddProduct.InBoxCodeDetailInfosBean()
-//        val temp = Math.random().
-        boxCodeInfo.boxCode = "1901101100182" + ""//boxCode
-        boxCodeInfo.qrCodeInfos = qrCodeInfos
-        boxInfo.add(boxCodeInfo)
+        for (i in 0 until boxSize){
+            // 箱码
+            val boxCodeInfo = AddProduct.InBoxCodeDetailInfosBean()
+
+            boxCodeInfo.boxCode = boxCodeSparse[i]
+            boxCodeInfo.qrCodeInfos = listDetail[i]
+            boxInfo.add(boxCodeInfo)
+        }
+
 
         //主信息
         // 归属单位  缺少产品名称字段
@@ -198,12 +212,12 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             return null
         }
 
-        wareInfo.productBatchNo = productBatchNo
+//        wareInfo.productBatchNo = productBatchNo
         wareInfo.companyAttr = userInfo.companyAttr
         wareInfo.companyNo = userInfo.companyNo
         wareInfo.creator = userInfo.userNo
         wareInfo.goodsNo = goodsNoStr
-        wareInfo.inNum = "1"//"入库数量"
+        wareInfo.inNum = boxSize.toString()//"入库数量"
         wareInfo.inTime = inTime
         wareInfo.unit = unit
         wareInfo.wareName = wareName
@@ -248,5 +262,10 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
     override fun showError(msg: String?) {
         ToastUtil.showToast(msg)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        SharedP.clearGoodNo(this)
     }
 }

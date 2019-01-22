@@ -31,7 +31,7 @@ class SendOutLookAdapter(val context: Context,layout:Int,datas:MutableList<OutPu
             val intent = Intent(context,BoxLinkLookActivity::class.java)
             intent.putExtra("position",position)
             intent.putExtra("type","send_out")
-            SparseArrayUtil.putQrCodeListData(position,list)
+            SparseArrayUtil.putQrCodeList(context,list)
             context.startActivity(intent)
         }
     }

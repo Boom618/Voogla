@@ -25,7 +25,7 @@ class BoxLinkLookActivity : BaseActivity() {
 
         val type = intent.getStringExtra("product")
         val position = intent.getIntExtra("position",0)
-        val qrCodeListData = SparseArrayUtil.getQrCodeListData(position)
+        val qrCodeListData = SparseArrayUtil.getQrCodeList(this)
 
         LayoutInit.initLayoutManager(this, box_look_recycler)
         box_look_recycler.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))

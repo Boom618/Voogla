@@ -44,11 +44,23 @@ object DialogUtil {
 //            .setlTitleVisible(true)
 //            .setTitleText("产品名称")
             .setOnItemListener { dialog, which ->
-                dialog.dismiss()
-                goodView.text = goodData[which]
-                specView.text = specData[which]
-                SharedP.putGoodNo(context, which)
-                ToastUtil.showToast(goodData[which])
+
+                val temp = SharedP.getGoodNo(context)
+                if (temp != -1 && temp != which) {
+
+                    // 选择不同商品
+                    deleteItemDialog(context, "重置数据？", NormalAlertDialog.onNormalOnclickListener {
+                        it.dismiss()
+                        dialog.dismiss()
+                    })
+                } else {
+                    // 首次选择 or 选择的是同一个商品
+                    dialog.dismiss()
+                    goodView.text = goodData[which]
+                    specView.text = specData[which]
+                    SharedP.putGoodNo(context, which)
+                    ToastUtil.showToast(goodData[which])
+                }
 
             }
             .build()

@@ -58,14 +58,5 @@ class OutPutInfoData {
         var unit: String? = null
         var qrCodeInfos: MutableList<QrCodeListData>? = null
 
-//        class QrCodeInfosBean {
-//            /**
-//             * qrCodeClass : 二维码分类A0701(箱码)/A0702(产品码)
-//             * qrCode : 二维码号
-//             */
-//
-//            var qrCodeClass: String? = null
-//            var qrCode: String? = null
-//        }
     }
 }

@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.Toast;
 import com.honeywell.aidc.*;
@@ -104,12 +105,11 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
                 }
             });
             String spec = getIntent().getStringExtra("spec");
-            specNumber = Integer.parseInt(spec);
+            specNumber = Integer.parseInt("3");
         } else if (CodeConstant.PAGE_BOX_LINK_EDIT.equals(type)) {
             // 修改编辑
-//            qrCodeInfos = getIntent().getStringArrayListExtra(CodeConstant.QR_CODE_INFOS);
-            int position = getIntent().getIntExtra("position",0);
-            qrCodeInfos = SparseArrayUtil.getQrCodeListData(position);
+            sendPosition = getIntent().getIntExtra("position",0);
+            qrCodeInfos = SparseArrayUtil.getQrCodeList(this);
             boxCode = getIntent().getStringExtra(CodeConstant.BOX_CODE);
 
             initToolBar(R.string.box_link, "保存", new View.OnClickListener() {
@@ -192,13 +192,21 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
      * 返回上级 Activity
      */
     private void returnActivity() {
-        Intent intent = new Intent();
-        intent.putExtra(CodeConstant.BOX_CODE, boxCode);
-        intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
-        //intent.putStringArrayListExtra(CodeConstant.QR_CODE_INFOS, qrCodeInfos);
-        SparseArrayUtil.putQrCodeListData(0,qrCodeInfos);
-        setResult(CodeConstant.RESULT_CODE, intent);
-        finish();
+
+        // 产品码 + 箱码 = 规格大小 + 1
+        if (qrCodeInfos.size() == specNumber + 1) {
+            Intent intent = new Intent();
+            intent.putExtra(CodeConstant.BOX_CODE, boxCode);
+            intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
+            //SparseArrayUtil.putQrCodeListData(0,qrCodeInfos);
+            SparseArrayUtil.putQrCodeList(this,qrCodeInfos);
+            setResult(CodeConstant.RESULT_CODE, intent);
+            finish();
+        }else{
+            ToastUtil.showToast("产品数量和指定规格不一致");
+        }
+
+
 
     }
 
@@ -302,8 +310,8 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
 
 
         // 产品码数量由规格控制
-        if (qrCodeInfos.size() == specNumber) {
-            boxCode = code;
+        if (qrCodeInfos.size() == specNumber + 1) {
+
             return;
         }
 
@@ -322,12 +330,17 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
                 public void onSuccess(BaseResponse<QrCodeJudge> response) {
                     if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
                         QrCodeJudge.QrCodeInfoBean qrCodeInfo = response.getData().getQrCodeInfo();
+
                         // 二维码生成编号( 新增要用 )
                         String generateNo = qrCodeInfo.getGenerateNo();
                         QrCodeListData codeQr = new QrCodeListData();
                         codeQr.setQrCode(code);
                         codeQr.setGenerateNo(generateNo);
 
+                        // 产品码数量由规格控制
+                        if (qrCodeInfos.size() == specNumber) {
+                            boxCode = code;
+                        }
                         qrCodeInfos.add(codeQr);
 
                         qrCodeString.add(code);
