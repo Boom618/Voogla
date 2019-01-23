@@ -82,11 +82,12 @@ public interface ApiService {
     /**
      * 二维码检验
      *
-     * @param secret
+     * @param encodeUrl
      * @return
      */
-    @GET(ApiNameConstant.DECODE_URL)
-    Single<DecodeCode> decodeUrlCode(@Query("secret") String secret);
+    @FormUrlEncoded
+    @POST(ApiNameConstant.DECODE_URL)
+    Single<DecodeCode> decodeUrlCode(@Field("encodeUrl") String encodeUrl);
 
     /**
      * 箱码校验

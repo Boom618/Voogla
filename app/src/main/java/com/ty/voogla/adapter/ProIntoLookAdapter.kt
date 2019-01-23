@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.widget.TextView
 import com.ty.voogla.R
+import com.ty.voogla.bean.produce.ProductInputInfo
+import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.data.SparseArrayUtil
 import com.ty.voogla.ui.activity.BoxLinkLookActivity
 import com.zhy.adapter.recyclerview.CommonAdapter
@@ -14,20 +16,19 @@ import com.zhy.adapter.recyclerview.base.ViewHolder
  *
  * 生产入库查看
  */
-class ProIntoLookAdapter(val context: Context, layout: Int, datas: MutableList<String>) :
-    CommonAdapter<String>(context, layout, datas) {
+class ProIntoLookAdapter(val context: Context, layout: Int, datas: List<ProductInputInfo.InWareDetailInfosBean>) :
+    CommonAdapter<ProductInputInfo.InWareDetailInfosBean>(context, layout, datas) {
 
-    override fun convert(holder: ViewHolder, boxCode: String, position: Int) {
+    override fun convert(holder: ViewHolder, info: ProductInputInfo.InWareDetailInfosBean, position: Int) {
 
-        holder.setText(R.id.tv_code, boxCode)
+        holder.setText(R.id.tv_code, info.boxCode)
 
         holder.itemView.findViewById<TextView>(R.id.tv_look).setOnClickListener {
             val intent = Intent(context, BoxLinkLookActivity::class.java)
 
-            intent.putExtra("position",position)
-            intent.putExtra("type","product")
-//            SparseArrayUtil.putQrCodeListData(0,list)
-//            context.startActivity(intent)
+            intent.putExtra(CodeConstant.LOOK_TYPE,"product")
+            intent.putStringArrayListExtra("qrCodeInfos",info.qrCodeInfos)
+            context.startActivity(intent)
         }
 
 

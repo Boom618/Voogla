@@ -2,6 +2,7 @@ package com.ty.voogla.widght
 
 import android.content.Context
 import android.widget.TextView
+import com.ty.voogla.connector.SelectGoods
 import com.ty.voogla.data.SharedP
 import com.ty.voogla.util.ToastUtil
 
@@ -19,7 +20,7 @@ object DialogUtil {
     fun deleteItemDialog(context: Context, pointContent: String, listener: NormalAlertDialog.onNormalOnclickListener) {
         val dialog = NormalAlertDialog.Builder(context)
             .setTitleVisible(true)
-            .setTitleText("温馨提示？")
+            .setTitleText("温馨提示")
             .setRightButtonText("确认")
             .setLeftButtonText("取消")
             .setContentText(pointContent)
@@ -38,7 +39,8 @@ object DialogUtil {
         goodData: MutableList<String>,
         specData: MutableList<String>,
         goodView: TextView,
-        specView: TextView
+        specView: TextView,
+        select: SelectGoods
     ) {
         val selectDialog = NormalSelectionDialog.Builder(context)
 //            .setlTitleVisible(true)
@@ -50,8 +52,13 @@ object DialogUtil {
 
                     // 选择不同商品
                     deleteItemDialog(context, "重置数据？", NormalAlertDialog.onNormalOnclickListener {
+                        select.removeGoods()
                         it.dismiss()
                         dialog.dismiss()
+                        goodView.text = goodData[which]
+                        specView.text = specData[which]
+                        SharedP.putGoodNo(context, which)
+                        ToastUtil.showToast(goodData[which])
                     })
                 } else {
                     // 首次选择 or 选择的是同一个商品

@@ -1,6 +1,5 @@
 package com.ty.voogla.bean.produce
 
-import com.ty.voogla.bean.sendout.QrCodeListData
 
 /**
  * @author TY on 2019/1/15.
@@ -32,25 +31,17 @@ class AddProduct {
         var inWareDesc: String? = null
         var unit: String? = null
         var wareName: String? = null
+        var productBatchNo: String? = null
     }
 
-    class InBoxCodeDetailInfosBean {
-        /**
-         * boxCode : 箱码
-         * qrCodeInfos : [{"generateNo":"二维码生成编号","qrCode":"产品码"}]
-         */
-
-        var boxCode: String? = null
-        var qrCodeInfos: List<QrCodeListData>? = null
-
-//        class QrCodeInfosBean {
-//            /**
-//             * generateNo : 二维码生成编号
-//             * qrCode : 产品码
-//             */
+//    class InBoxCodeDetailInfosBean {
+//        /**
+//         * boxCode : 箱码
+//         * qrCodeInfos : [{"generateNo":"二维码生成编号","qrCode":"产品码"}]
+//         */
 //
-//            var generateNo: String? = null
-//            var qrCode: String? = null
-//        }
-    }
+//        var boxCode: String? = null
+//        var qrCodeInfos: List<QrCodeListData>? = null
+//
+//    }
 }

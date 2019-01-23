@@ -41,6 +41,6 @@ class ProductInputInfo {
          */
 
         var boxCode: String? = null
-        var qrCodeInfos: MutableList<String>? = null
+        var qrCodeInfos: ArrayList<String>? = null
     }
 }

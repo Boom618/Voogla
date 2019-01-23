@@ -16,6 +16,7 @@ import com.ty.voogla.base.BaseActivity;
 import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
 import com.ty.voogla.bean.produce.DecodeCode;
+import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean;
 import com.ty.voogla.bean.produce.QrCodeJudge;
 import com.ty.voogla.bean.sendout.QrCodeListData;
 import com.ty.voogla.constant.CodeConstant;
@@ -39,7 +40,7 @@ import java.util.List;
  * 箱码绑定 --> 扫码
  */
 public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.BarcodeListener,
-        BarcodeReader.TriggerListener, VooglaContract.View<DecodeCode> {
+        BarcodeReader.TriggerListener, VooglaContract.View<DecodeCode.ResultBean> {
 
     private com.honeywell.aidc.BarcodeReader barcodeReader;
     private RecyclerView boxRecycler;
@@ -59,7 +60,7 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
      */
     private String boxCode;
     /**
-     * 发货出库 箱码产品码
+     * 发货出库 箱码产品码 (要删)
      */
     private ArrayList<QrCodeListData> qrCodeList = new ArrayList<>();
 
@@ -101,21 +102,23 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             initToolBar(R.string.box_link, "保存", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    returnActivity();
+                    returnActivity("productIn");
                 }
             });
-            String spec = getIntent().getStringExtra("spec");
-            specNumber = Integer.parseInt("3");
+            String spec = SimpleCache.getString(CodeConstant.GOODS_SPEC);
+            specNumber = Integer.parseInt(spec);
         } else if (CodeConstant.PAGE_BOX_LINK_EDIT.equals(type)) {
             // 修改编辑
-            sendPosition = getIntent().getIntExtra("position",0);
+            String spec = SimpleCache.getString(CodeConstant.GOODS_SPEC);
+            specNumber = Integer.parseInt(spec);
+            sendPosition = getIntent().getIntExtra("position", 0);
             qrCodeInfos = SparseArrayUtil.getQrCodeList(this);
             boxCode = getIntent().getStringExtra(CodeConstant.BOX_CODE);
 
             initToolBar(R.string.box_link, "保存", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    returnActivity();
+                    returnActivity("productChange");
                 }
             });
         } else if (CodeConstant.PAGE_SCAN_OUT.equals(type)) {
@@ -191,21 +194,24 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
     /**
      * 返回上级 Activity
      */
-    private void returnActivity() {
+    private void returnActivity(String type) {
+        InBoxCodeDetailInfosBean bean = new InBoxCodeDetailInfosBean();
+        bean.setBoxCode(boxCode);
+        bean.setQrCodeInfos(qrCodeInfos);
 
         // 产品码 + 箱码 = 规格大小 + 1
         if (qrCodeInfos.size() == specNumber + 1) {
             Intent intent = new Intent();
             intent.putExtra(CodeConstant.BOX_CODE, boxCode);
+            intent.putExtra(CodeConstant.RESULT_TYPE, type);
             intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
-            //SparseArrayUtil.putQrCodeListData(0,qrCodeInfos);
-            SparseArrayUtil.putQrCodeList(this,qrCodeInfos);
+//            SparseArrayUtil.putQrCodeList(this, qrCodeInfos);
+            SimpleCache.putInBoxCode(bean);
             setResult(CodeConstant.RESULT_CODE, intent);
             finish();
-        }else{
+        } else {
             ToastUtil.showToast("产品数量和指定规格不一致");
         }
-
 
 
     }
@@ -303,60 +309,45 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
     }
 
     @Override
-    public void showSuccess(DecodeCode data) {
+    public void showSuccess(final DecodeCode.ResultBean result) {
 
-        final String code = data.getResult().getCode();
-        ToastUtil.showToast(code);
+        final String code = result.getCode();
+        String applyNo = result.getApplyNo();
+        String qrCodeType = result.getQrCodeType();
+        final String codeClass = qrCodeType.equals("2") ? "箱码" : "产品码";
 
-
+        int size = qrCodeInfos.size();
         // 产品码数量由规格控制
-        if (qrCodeInfos.size() == specNumber + 1) {
+        if (size == specNumber + 1) {
 
             return;
         }
 
-        // qrCodeString 只存解析二维码
-        if (qrCodeString.contains(code)) {
-            ToastUtil.showToast("该数据扫码过");
-            //ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
+        // TODO  逻辑需要改进
+        // 符合规格数量
+        if (size < specNumber) {
+            // 1 为产品码,2 为箱码
+            if (qrCodeType.equals("1")) {
+                // qrCodeString 只存解析二维码
+                if (qrCodeString.contains(code)) {
+                    ToastUtil.showToast("重复码号");
+                    //ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
+                } else {
+                    // 服务器校验码
+                    httpJudegCode(code,codeClass);
+                }
+            } else {
+                ToastUtil.showToast("请先扫产品码");
+            }
         } else {
-            HttpMethods.getInstance().judegCode(new SingleObserver<BaseResponse<QrCodeJudge>>() {
-                @Override
-                public void onSubscribe(Disposable d) {
-
-                }
-
-                @Override
-                public void onSuccess(BaseResponse<QrCodeJudge> response) {
-                    if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
-                        QrCodeJudge.QrCodeInfoBean qrCodeInfo = response.getData().getQrCodeInfo();
-
-                        // 二维码生成编号( 新增要用 )
-                        String generateNo = qrCodeInfo.getGenerateNo();
-                        QrCodeListData codeQr = new QrCodeListData();
-                        codeQr.setQrCode(code);
-                        codeQr.setGenerateNo(generateNo);
-
-                        // 产品码数量由规格控制
-                        if (qrCodeInfos.size() == specNumber) {
-                            boxCode = code;
-                        }
-                        qrCodeInfos.add(codeQr);
-
-                        qrCodeString.add(code);
-                        adapter.notifyItemInserted(qrCodeInfos.size());
-                        adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
-                    }
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    ToastUtil.showToast(e.getMessage());
-
-                }
-            }, companyNo, code);
+            if (qrCodeType.equals("2")) {
+                httpJudegCode(code,codeClass);
+                boxCode = code;
+            } else {
+                ToastUtil.showToast("请扫箱码");
+            }
         }
+
         // 发货出库
         if (isSendItem) {
             QrCodeListData codeData = new QrCodeListData();
@@ -373,7 +364,46 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
 
+    /**
+     * 校验
+     */
+    private void httpJudegCode(final String code,final String codeClass) {
+        HttpMethods.getInstance().judegCode(new SingleObserver<BaseResponse<QrCodeJudge>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(BaseResponse<QrCodeJudge> response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    QrCodeJudge.QrCodeInfoBean qrCodeInfo = response.getData().getQrCodeInfo();
+
+                    // 二维码生成编号( 新增要用 )
+                    String generateNo = qrCodeInfo.getGenerateNo();
+                    QrCodeListData codeQr = new QrCodeListData();
+                    codeQr.setQrCode(code);
+                    codeQr.setQrCodeClass(codeClass);
+                    codeQr.setGenerateNo(generateNo);
+
+                    qrCodeInfos.add(codeQr);
+
+                    // 判读 spec
+                    qrCodeString.add(code);
+                    adapter.notifyItemInserted(qrCodeInfos.size());
+                    adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtil.showToast(e.getMessage());
+
+            }
+        }, companyNo, code);
 
     }
 

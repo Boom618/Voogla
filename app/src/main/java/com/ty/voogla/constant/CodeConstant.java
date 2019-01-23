@@ -43,9 +43,15 @@ public final class CodeConstant {
     public static final String BUGLY_APP_ID = "115fa1897c";
 
     /**
-     * 商品编号
+     * GOODS_NO 商品编号
+     * GOODS_SPEC 商品规格
+     * LOOK_TYPE  查看类型（入库/出库）
+     * RESULT_TYPE 回传类型（入库/修改/出库）
      */
     public static final String GOODS_NO = "goodsNo";
+    public static final String GOODS_SPEC = "goodSpec";
+    public static final String LOOK_TYPE = "lookType";
+    public static final String RESULT_TYPE = "resultType";
     /**
      * 发货单编号
      */

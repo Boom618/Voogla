@@ -8,6 +8,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder
 
 /**
  * @author TY on 2019/1/11.
+ * 出库查看 含箱码和产品码
  */
 class BoxLinkLookAdapter(context: Context, layout: Int, datas: List<QrCodeListData>) :
     CommonAdapter<QrCodeListData>(context, layout, datas) {

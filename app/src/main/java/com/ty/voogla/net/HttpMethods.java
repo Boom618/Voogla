@@ -189,26 +189,26 @@ public class HttpMethods {
      * 二维码解码
      *
      * @param observer
-     * @param secret
+     * @param encodeUrl
      */
-    public void decodeUrlCode(SingleObserver<DecodeCode> observer, String secret) {
-        mService.decodeUrlCode(secret)
+    public void decodeUrlCode(SingleObserver<DecodeCode> observer, String encodeUrl) {
+        mService.decodeUrlCode(encodeUrl)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
 
-    public void decodeUrlCodeMap(String secret) {
-        mService.decodeUrlCode(secret)
-                .map(new Function<DecodeCode, DecodeCode>() {
-                    @Override
-                    public DecodeCode apply(DecodeCode decodeCode) throws Exception {
-                        return decodeCode;
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-
-    }
+//    public void decodeUrlCodeMap(String secret) {
+//        mService.decodeUrlCode(secret)
+//                .map(new Function<DecodeCode, DecodeCode>() {
+//                    @Override
+//                    public DecodeCode apply(DecodeCode decodeCode) throws Exception {
+//                        return decodeCode;
+//                    }
+//                })
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe();
+//
+//    }
 
     /**
      * 入库 二维码校验

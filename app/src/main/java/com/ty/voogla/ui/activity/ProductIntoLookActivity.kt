@@ -27,7 +27,6 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
 
     // 箱码和产品码 列表
     private var boxCodeList: MutableList<String> = mutableListOf()
-    private var qrCodeList: SparseArray<MutableList<String>> = SparseArray()
 
     private val presenter = VooglaPresenter(this)
 
@@ -67,19 +66,15 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
 
     override fun showSuccess(data: ProductInputInfo) {
         val wareInfo = data.inWareInfo
-        val list = data.inWareDetailInfos
+        val list = data.inWareDetailInfos!!
         tv_batch_number.text = wareInfo?.productBatchNo
 
-        for (i in 0 until list!!.size) {
-            boxCodeList.add(i, list[i].boxCode!!)
-            qrCodeList.put(i, list[i].qrCodeInfos)
-        }
         tv_number.text = boxCodeList.size.toString()
 
 
         LayoutInit.initLayoutManager(this, house_look_recycler)
         // R.layout.item_box_link_look
-        house_look_recycler.adapter = ProIntoLookAdapter(this, R.layout.item_house_look, boxCodeList)
+        house_look_recycler.adapter = ProIntoLookAdapter(this, R.layout.item_house_look, list)
 
     }
     override fun showResponse(response: ResponseInfo) {

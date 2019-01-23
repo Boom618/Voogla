@@ -5,6 +5,7 @@ import android.content.Intent
 import android.util.SparseArray
 import android.widget.ImageView
 import com.ty.voogla.R
+import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean
 import com.ty.voogla.bean.sendout.QrCodeListData
 import com.ty.voogla.ui.activity.BoxLinkJavaActivity
 import com.ty.voogla.util.ToastUtil
@@ -16,11 +17,11 @@ import com.zhy.adapter.recyclerview.base.ViewHolder
  *
  * 生产入库详情
  */
-class ProIntoDetailAdapter(val context: Context, layout: Int,datas: List<QrCodeListData>) :
-    CommonAdapter<QrCodeListData>(context, layout, datas) {
+class ProIntoDetailAdapter(val context: Context, layout: Int,datas: MutableList<InBoxCodeDetailInfosBean>) :
+    CommonAdapter<InBoxCodeDetailInfosBean>(context, layout, datas) {
 
-    override fun convert(holder: ViewHolder, info: QrCodeListData, position: Int) {
-        holder.setText(R.id.tv_code, info.qrCode)
+    override fun convert(holder: ViewHolder, info: InBoxCodeDetailInfosBean, position: Int) {
+        holder.setText(R.id.tv_code, info.boxCode)
 
         val editView = holder.itemView.findViewById<ImageView>(R.id.image_edit)
         val deleteView = holder.itemView.findViewById<ImageView>(R.id.image_delete)
@@ -28,7 +29,7 @@ class ProIntoDetailAdapter(val context: Context, layout: Int,datas: List<QrCodeL
         editView.setOnClickListener {
             val intent = Intent(context, BoxLinkJavaActivity::class.java)
             // boxCode 箱码  qrCodeInfos 产品 list
-            intent.putExtra("boxCode",info.qrCode)
+            intent.putExtra("boxCode",info.boxCode)
             intent.putExtra("position",position)
             context.startActivity(intent)
             //ToastUtil.showToast("修改 $position")

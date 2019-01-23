@@ -11,8 +11,10 @@ import com.ty.voogla.adapter.ProIntoDetailAdapter
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.produce.AddProduct
+import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean
 import com.ty.voogla.bean.produce.ProductListInfoData
 import com.ty.voogla.bean.sendout.QrCodeListData
+import com.ty.voogla.connector.SelectGoods
 import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.data.SharedP
 import com.ty.voogla.mvp.contract.VooglaContract
@@ -36,7 +38,7 @@ import kotlin.collections.ArrayList
  * @author TY on 2019/1/11.
  * 生产入库 详情
  */
-class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductListInfoData> {
+class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductListInfoData>,SelectGoods {
 
     private lateinit var selectTime: String
 
@@ -45,13 +47,14 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     // 箱码
     private var boxCode: String? = null
     // 箱码集合
-    private var boxCodeSparse: SparseArray<String> = SparseArray()
+//    private var boxCodeSparse: SparseArray<String> = SparseArray()
     /**
      * 产品码对象
      */
-    private var qrCodeInfos: List<QrCodeListData> = ArrayList()
+    private var qrCodeInfos: InBoxCodeDetailInfosBean = InBoxCodeDetailInfosBean()
     // 入库箱码明细列表
-    private val listDetail: SparseArray<List<QrCodeListData>> = SparseArray()
+//    private val listDetail: SparseArray<List<QrCodeListData>> = SparseArray()
+    private val listDetail: MutableList<InBoxCodeDetailInfosBean> = mutableListOf()
 
     // 商品名称
     private var goodsName: MutableList<String> = mutableListOf()
@@ -84,16 +87,11 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         selectTime = format.format(Date())
         tv_select_time.text = selectTime
 
-        // 输入批次号
-//        et_batch_number.setOnFocusChangeListener { v, hasFocus ->
-//            requestHttp(hasFocus)
-//        }
-
         // 产品选择
         tv_select_pro_name.setOnClickListener {
 
             //
-            DialogUtil.selectProName(it.context, goodsName, goodsSpec, tv_select_pro_name, tv_select_spec)
+            DialogUtil.selectProName(it.context, goodsName, goodsSpec, tv_select_pro_name, tv_select_spec,this)
         }
 
         // 时间选择
@@ -112,7 +110,8 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             if (tv_select_spec.text.isNotEmpty()) {
                 val intent = Intent("android.intent.action.AUTOCODEACTIVITY")
                 intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_BOX_LINK)
-                intent.putExtra("spec",spec)
+                // 商品规格
+                SimpleCache.putString(CodeConstant.GOODS_SPEC,spec)
                 startActivityForResult(intent, CodeConstant.REQUEST_CODE_INTO)
             } else {
                 ToastUtil.showToast("请选择对应的商品和规格")
@@ -121,20 +120,45 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
         LayoutInit.initLayoutManager(this, house_recycler)
 
-        adapter = ProIntoDetailAdapter(this, R.layout.item_house_detail, qrCodeInfos)
+        adapter = ProIntoDetailAdapter(this, R.layout.item_house_detail, listDetail)
         house_recycler.adapter = adapter
+    }
+
+    /**
+     * 用户更换商品 重置数据
+     */
+    override fun removeGoods() {
+        listDetail.clear()
+        adapter.notifyDataSetChanged()
+
+
+        tv_number.text = "0"
+        ToastUtil.showToast("清空数据")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == CodeConstant.REQUEST_CODE_INTO && resultCode == CodeConstant.RESULT_CODE) {
-            boxCode = data?.getStringExtra("boxCode")
-            val position = data?.getIntExtra(CodeConstant.SEND_POSITION,0)!!
-            qrCodeInfos = SparseArrayUtil.getQrCodeList(this)
-            if (qrCodeInfos.isNotEmpty()) {
-                listDetail.put(position,qrCodeInfos)
-                boxCodeSparse.put(position,boxCode)
+
+            val type = data?.getStringExtra(CodeConstant.RESULT_TYPE)
+            when (type) {
+                "productIn" -> {
+                    boxCode = data.getStringExtra("boxCode")
+//                    qrCodeInfos = SparseArrayUtil.getQrCodeList(this)
+                    qrCodeInfos = SimpleCache.getBoxCode()
+
+                    listDetail.add(qrCodeInfos)
+                }
+                else -> {
+                    // 修改
+                    boxCode = data?.getStringExtra("boxCode")
+                    val position = data?.getIntExtra(CodeConstant.SEND_POSITION,0)!!
+                    qrCodeInfos = SimpleCache.getBoxCode()
+                    listDetail.add(position,qrCodeInfos)
+//                    boxCodeSparse.put(position,boxCode)
+                }
             }
-            val size = listDetail.size()
+
+            val size = listDetail.size
             tv_number.text = size.toString()
         }
     }
@@ -177,16 +201,16 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     private fun initReqBody(): RequestBody? {
 
         val saveBean = AddProduct()
-        val boxInfo: MutableList<AddProduct.InBoxCodeDetailInfosBean> = mutableListOf()
+        val boxInfo: MutableList<InBoxCodeDetailInfosBean> = mutableListOf()
         val wareInfo = AddProduct.InWareInfoBean()
-        val boxSize = listDetail.size()
+        val boxSize = listDetail.size
 
         for (i in 0 until boxSize){
             // 箱码
-            val boxCodeInfo = AddProduct.InBoxCodeDetailInfosBean()
+            val boxCodeInfo = InBoxCodeDetailInfosBean()
 
-            boxCodeInfo.boxCode = boxCodeSparse[i]
-            boxCodeInfo.qrCodeInfos = listDetail[i]
+            boxCodeInfo.boxCode = listDetail[i].boxCode
+            boxCodeInfo.qrCodeInfos = listDetail[i].qrCodeInfos
             boxInfo.add(boxCodeInfo)
         }
 
@@ -212,7 +236,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             return null
         }
 
-//        wareInfo.productBatchNo = productBatchNo
+        wareInfo.productBatchNo = productBatchNo
         wareInfo.companyAttr = userInfo.companyAttr
         wareInfo.companyNo = userInfo.companyNo
         wareInfo.creator = userInfo.userNo

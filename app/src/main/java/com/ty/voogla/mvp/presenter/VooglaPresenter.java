@@ -193,7 +193,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
     /**
      * 二维码解码
      */
-    public void decodeUrlCode(String secret) {
+    public void decodeUrlCode(String encodeUrl) {
 
         // 齐超 地址
         HttpMethods http = new HttpMethods(ApiNameConstant.BASE_URL3);
@@ -207,7 +207,8 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             @Override
             public void onSuccess(DecodeCode decodeCode) {
                 if (CodeConstant.SERVICE_STATUS == decodeCode.getStatus()) {
-                    iView.showSuccess(decodeCode);
+                    DecodeCode.ResultBean result = decodeCode.getResult();
+                    iView.showSuccess(result);
                 } else {
                     iView.showError(decodeCode.getMsg());
                 }
@@ -218,7 +219,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onError(Throwable e) {
                 iView.showError(e.getMessage());
             }
-        }, secret);
+        }, encodeUrl);
 
     }
 

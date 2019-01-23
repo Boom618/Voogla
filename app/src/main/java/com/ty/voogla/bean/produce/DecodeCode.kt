@@ -12,5 +12,9 @@ class DecodeCode {
 
     class ResultBean {
         var code: String? = null
+        // 1 为产品码,2 为箱码
+        var qrCodeType: String? = null
+        // 申请批次
+        var applyNo: String? = null
     }
 }

@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import com.ty.voogla.R
 import com.ty.voogla.adapter.BoxLinkLookAdapter
+import com.ty.voogla.adapter.BoxLinkProLookAdapter
 import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.base.BaseActivity
+import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.data.SparseArrayUtil
 import kotlinx.android.synthetic.main.activity_box_link_code_look.*
 
@@ -23,16 +25,17 @@ class BoxLinkLookActivity : BaseActivity() {
     override fun initOneData() {
 
 
-        val type = intent.getStringExtra("product")
-        val position = intent.getIntExtra("position",0)
-        val qrCodeListData = SparseArrayUtil.getQrCodeList(this)
+        val type = intent.getStringExtra(CodeConstant.LOOK_TYPE)
 
         LayoutInit.initLayoutManager(this, box_look_recycler)
         box_look_recycler.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         if (type == "product") {
-            // 发货查看
+            // 入库查看
+            val qrCodeInfos = intent.getStringArrayListExtra("qrCodeInfos")
+            box_look_recycler.adapter = BoxLinkProLookAdapter(this, R.layout.item_box_link_look,qrCodeInfos)
         }else{
             // 出库查看
+            val qrCodeListData = SparseArrayUtil.getQrCodeList(this)
             box_look_recycler.adapter = BoxLinkLookAdapter(this, R.layout.item_box_link_look, qrCodeListData)
         }
 

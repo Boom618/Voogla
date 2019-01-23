@@ -7,7 +7,15 @@ RxJava 操作符：
 
 - 请求嵌套问题
 - 延迟过滤
+- 入库箱码产品码逻辑需改进
 
+项目说明：
+
+-----
+
+- SharedP ：SharedPreferences 形式存值。GoodNo
+- SimpleCache : ACache 形式存值。存 putString、UserInfo、ArrayList<QrCodeListData>
+- SparseArrayUtil：文件形式存值。 List<QrCodeListData>
 
 RecyclerView 封装：
 

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.widget.TextView
 import com.ty.voogla.R
 import com.ty.voogla.bean.sendout.OutPutInfoData
+import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.data.SparseArrayUtil
 import com.ty.voogla.ui.activity.BoxLinkLookActivity
 import com.zhy.adapter.recyclerview.CommonAdapter
@@ -29,8 +30,7 @@ class SendOutLookAdapter(val context: Context,layout:Int,datas:MutableList<OutPu
             val list = info.qrCodeInfos!!
 
             val intent = Intent(context,BoxLinkLookActivity::class.java)
-            intent.putExtra("position",position)
-            intent.putExtra("type","send_out")
+            intent.putExtra(CodeConstant.LOOK_TYPE,"send_out")
             SparseArrayUtil.putQrCodeList(context,list)
             context.startActivity(intent)
         }
