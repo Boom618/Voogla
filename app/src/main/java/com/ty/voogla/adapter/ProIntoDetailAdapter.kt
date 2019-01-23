@@ -21,7 +21,7 @@ class ProIntoDetailAdapter(val context: Context, layout: Int,datas: MutableList<
     CommonAdapter<InBoxCodeDetailInfosBean>(context, layout, datas) {
 
     override fun convert(holder: ViewHolder, info: InBoxCodeDetailInfosBean, position: Int) {
-        holder.setText(R.id.tv_code, info.boxCode)
+        holder.setText(R.id.tv_code, info.qrCode)
 
         val editView = holder.itemView.findViewById<ImageView>(R.id.image_edit)
         val deleteView = holder.itemView.findViewById<ImageView>(R.id.image_delete)
@@ -29,7 +29,7 @@ class ProIntoDetailAdapter(val context: Context, layout: Int,datas: MutableList<
         editView.setOnClickListener {
             val intent = Intent(context, BoxLinkJavaActivity::class.java)
             // boxCode 箱码  qrCodeInfos 产品 list
-            intent.putExtra("boxCode",info.boxCode)
+            intent.putExtra("boxCode",info.qrCode)
             intent.putExtra("position",position)
             context.startActivity(intent)
             //ToastUtil.showToast("修改 $position")

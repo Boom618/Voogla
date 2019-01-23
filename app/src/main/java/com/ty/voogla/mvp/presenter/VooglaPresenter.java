@@ -16,6 +16,8 @@ import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import okhttp3.RequestBody;
 
+import java.util.ArrayList;
+
 /**
  * @author TY on 2018/12/20.
  */
@@ -262,6 +264,36 @@ public class VooglaPresenter implements VooglaContract.Presenter {
         // 齐超 地址
         HttpMethods http = new HttpMethods(ApiNameConstant.BASE_URL3);
 
+
+    }
+
+
+    /**
+     * 根据箱码获取产品码
+     * @param qrCode
+     */
+    public void getQrCodeList(String qrCode){
+        httpMethods.getQrCodeList(new SingleObserver<BaseResponse<ArrayList<String>>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(BaseResponse<ArrayList<String>> response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    ArrayList<String> data = response.getData();
+                    iListView.showSuccess(data);
+                } else {
+                    iListView.showError(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        }, qrCode);
 
     }
 

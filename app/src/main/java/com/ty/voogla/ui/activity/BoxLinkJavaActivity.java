@@ -196,7 +196,7 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
      */
     private void returnActivity(String type) {
         InBoxCodeDetailInfosBean bean = new InBoxCodeDetailInfosBean();
-        bean.setBoxCode(boxCode);
+        bean.setQrCode(boxCode);
         bean.setQrCodeInfos(qrCodeInfos);
 
         // 产品码 + 箱码 = 规格大小 + 1
@@ -314,7 +314,8 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
         final String code = result.getCode();
         String applyNo = result.getApplyNo();
         String qrCodeType = result.getQrCodeType();
-        final String codeClass = qrCodeType.equals("2") ? "箱码" : "产品码";
+        // 箱码 A0702  产品吗 A0701
+        final String codeClass = qrCodeType.equals("2") ? "A0702" : "A0701";
 
         int size = qrCodeInfos.size();
         // 产品码数量由规格控制

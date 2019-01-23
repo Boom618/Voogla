@@ -26,7 +26,7 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
     private var qrCodeInfos: MutableList<String>? = null
 
     // 箱码和产品码 列表
-    private var boxCodeList: MutableList<String> = mutableListOf()
+//    private var boxCodeList: MutableList<String> = mutableListOf()
 
     private val presenter = VooglaPresenter(this)
 
@@ -48,6 +48,7 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
         val productTime = intent.getStringExtra("productTime")
         val productSpec = intent.getStringExtra("productSpec")
 
+        tv_batch_number.text = batchNumber
         tv_select_pro_name.text = "产品名称：$productName"
         tv_select_house.text = "所在仓库：$productHous"
         tv_select_time.text = "入库时间：$productTime"
@@ -67,9 +68,8 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
     override fun showSuccess(data: ProductInputInfo) {
         val wareInfo = data.inWareInfo
         val list = data.inWareDetailInfos!!
-        tv_batch_number.text = wareInfo?.productBatchNo
 
-        tv_number.text = boxCodeList.size.toString()
+        tv_number.text = list.size.toString()
 
 
         LayoutInit.initLayoutManager(this, house_look_recycler)

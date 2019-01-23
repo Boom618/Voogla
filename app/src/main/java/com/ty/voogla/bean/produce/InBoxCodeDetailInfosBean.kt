@@ -15,6 +15,7 @@ class InBoxCodeDetailInfosBean : Serializable {
      * qrCodeInfos : [{"generateNo":"二维码生成编号","qrCode":"产品码"}]
      */
 
-    var boxCode: String? = null
+    var qrCode: String? = null
+    var qrCodeClass: String? = null
     var qrCodeInfos: MutableList<QrCodeListData>? = null
 }

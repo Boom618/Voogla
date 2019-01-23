@@ -35,12 +35,14 @@ class ProductInputInfo {
     }
 
     class InWareDetailInfosBean {
-        /**
-         * boxCode : 箱码
-         * qrCodeInfos : ["产品码1","产品码2"]
-         */
 
-        var boxCode: String? = null
-        var qrCodeInfos: ArrayList<String>? = null
+
+        var companyNo: String? = null
+        var inBatchNo: String? = null
+        var batchNo: String? = null
+        var goodsNo: String? = null
+        var qrCodeClass: String? = null
+        var qrCode: String? = null
+        var goodsName: String? = null
     }
 }

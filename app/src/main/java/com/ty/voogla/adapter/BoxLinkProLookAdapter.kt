@@ -2,7 +2,6 @@ package com.ty.voogla.adapter
 
 import android.content.Context
 import com.ty.voogla.R
-import com.ty.voogla.bean.sendout.QrCodeListData
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 

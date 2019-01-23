@@ -81,13 +81,18 @@ public class ApiNameConstant {
     public static final String CODE_JUDGE_PRODUCE = "corp/im/commodity-input-judge";
 
     /**
+     * 根据箱码获取产品码
+     */
+    public static final String QR_CODE_LIST = "corp/im/qrcode-info";
+
+    /**
      * --------------------------------- 发货出库 ----------------------------------------
      */
 
     /**
      * 发货单信息
      */
-    public static final String SEND_OUT_LIST = "corp/im/commodity-output-list";
+    public static final String SEND_OUT_LIST = "corp/im/delivery-info-list";
 
     /**
      * 发货单详情信息

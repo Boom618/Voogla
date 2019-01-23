@@ -21,5 +21,7 @@ class ProductListInfoData {
         var goodsNo: String? = null
         var goodsName: String? = null
         var goodsSpec: String? = null
+        var unit: String? = null
+        var unitName: String? = null
     }
 }

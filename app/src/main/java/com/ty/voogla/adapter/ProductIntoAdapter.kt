@@ -25,7 +25,7 @@ class ProductIntoAdapter(val context: Context, layout: Int, datas: MutableList<P
             .setText(R.id.tv_product_name, info.goodsName)
             .setText(R.id.tv_into_user, userName)
             .setText(R.id.tv_product_spec, info.unit)
-            .setText(R.id.tv_into_number, info.inNum.toString())
+            .setText(R.id.tv_into_number, info.inBoxNum.toString())
             .setText(R.id.tv_into_time, info.inTime)
             .setText(R.id.tv_into_address, info.wareName)
 

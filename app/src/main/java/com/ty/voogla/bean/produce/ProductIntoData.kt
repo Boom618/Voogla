@@ -27,8 +27,8 @@ class ProductIntoData {
         var inBatchNo: String? = null
         var wareName: String? = null
         var goodsNo: String? = null
-        var inNum: Int = 0
-        var nowNum: Int = 0
+        var inBoxNum: Int = 0
+        var nowBoxNum: Int = 0
         var unit: String? = null
         var inTime: String? = null
         var inWareDesc: String? = null

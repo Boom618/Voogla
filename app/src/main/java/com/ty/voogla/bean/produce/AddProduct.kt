@@ -7,7 +7,7 @@ package com.ty.voogla.bean.produce
 class AddProduct {
 
     var inWareInfo: InWareInfoBean? = null
-    var inBoxCodeDetailInfos: List<InBoxCodeDetailInfosBean>? = null
+    var inQrCodeDetailInfos: List<InBoxCodeDetailInfosBean>? = null
 
     class InWareInfoBean {
         /**
@@ -26,12 +26,12 @@ class AddProduct {
         var companyNo: String? = null
         var creator: String? = null
         var goodsNo: String? = null
-        var inNum: String? = null
+        var inBoxNum: String? = null
         var inTime: String? = null
         var inWareDesc: String? = null
         var unit: String? = null
         var wareName: String? = null
-        var productBatchNo: String? = null
+        var batchNo: String? = null
     }
 
 //    class InBoxCodeDetailInfosBean {

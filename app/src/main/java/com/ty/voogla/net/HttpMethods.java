@@ -24,6 +24,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -220,6 +221,18 @@ public class HttpMethods {
         mService.judegCode(companyNo, qrCode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
+    }
+
+    /**
+     * 根据箱码获取产品码
+     * @param qrCode
+     * @return
+     */
+    public void getQrCodeList(SingleObserver<BaseResponse<ArrayList<String>>> observer,String qrCode){
+        mService.getQrCodeList(qrCode)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+
     }
 
 

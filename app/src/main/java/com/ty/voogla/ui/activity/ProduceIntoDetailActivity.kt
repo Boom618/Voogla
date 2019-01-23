@@ -60,6 +60,8 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     private var goodsName: MutableList<String> = mutableListOf()
     // 规格
     private var goodsSpec: MutableList<String> = mutableListOf()
+    // 单位
+    private var goodsUnit: MutableList<String> = mutableListOf()
     // 商品编号
     private var goodsNo: MutableList<String> = mutableListOf()
 
@@ -206,10 +208,11 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         val boxSize = listDetail.size
 
         for (i in 0 until boxSize){
-            // 箱码
+            // 箱码 A0702  产品吗 A0701
             val boxCodeInfo = InBoxCodeDetailInfosBean()
 
-            boxCodeInfo.boxCode = listDetail[i].boxCode
+            boxCodeInfo.qrCode = listDetail[i].qrCode
+            boxCodeInfo.qrCodeClass = "A0702"
             boxCodeInfo.qrCodeInfos = listDetail[i].qrCodeInfos
             boxInfo.add(boxCodeInfo)
         }
@@ -223,10 +226,12 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             return null
         }
         val goodsNoStr = goodsNo[position]
+        val unit = goodsUnit[position]
+
         val productBatchNo = et_batch_number.text.toString().trim { it <= ' ' }
         val wareName = tv_select_house.text.toString().trim { it <= ' ' }
         val inTime = tv_select_time.text.toString().trim { it <= ' ' }
-        val unit = tv_select_spec.text.toString().trim { it <= ' ' }
+        //val unit = tv_select_spec.text.toString().trim { it <= ' ' }
 
         if (goodsNo.isNullOrEmpty() ||
             unit.isNullOrEmpty() ||
@@ -236,17 +241,17 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             return null
         }
 
-        wareInfo.productBatchNo = productBatchNo
+        wareInfo.batchNo = productBatchNo
         wareInfo.companyAttr = userInfo.companyAttr
         wareInfo.companyNo = userInfo.companyNo
         wareInfo.creator = userInfo.userNo
         wareInfo.goodsNo = goodsNoStr
-        wareInfo.inNum = boxSize.toString()//"入库数量"
+        wareInfo.inBoxNum = boxSize.toString()//"入库数量"
         wareInfo.inTime = inTime
         wareInfo.unit = unit
         wareInfo.wareName = wareName
 
-        saveBean.inBoxCodeDetailInfos = boxInfo
+        saveBean.inQrCodeDetailInfos = boxInfo
         saveBean.inWareInfo = wareInfo
 
         val json = Gson().toJson(saveBean)
@@ -276,6 +281,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
             goodsName.add(list[i].goodsName!!)
             goodsSpec.add(list[i].goodsSpec!!)
+            goodsUnit.add(list[i].unit!!)
             goodsNo.add(list[i].goodsNo!!)
         }
     }

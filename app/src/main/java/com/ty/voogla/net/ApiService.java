@@ -12,6 +12,8 @@ import io.reactivex.Single;
 import okhttp3.RequestBody;
 import retrofit2.http.*;
 
+import java.util.ArrayList;
+
 /**
  * @author TY
  */
@@ -101,6 +103,14 @@ public interface ApiService {
     Single<BaseResponse<QrCodeJudge>> judegCode(@Field("companyNo") String companyNo,
                                                 @Field("qrCode") String qrCode);
 
+    /**
+     * 根据箱码获取产品码
+     * @param qrCode
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(ApiNameConstant.QR_CODE_LIST)
+    Single<BaseResponse<ArrayList<String>>> getQrCodeList(@Field("qrCode") String qrCode);
     /**
      * --------------------------------- 发货出库 ----------------------------------------
      */

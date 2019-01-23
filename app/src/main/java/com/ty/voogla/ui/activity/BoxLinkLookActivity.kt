@@ -9,13 +9,19 @@ import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.data.SparseArrayUtil
+import com.ty.voogla.mvp.contract.VooglaContract
+import com.ty.voogla.mvp.presenter.VooglaPresenter
 import kotlinx.android.synthetic.main.activity_box_link_code_look.*
 
 /**
  * @author TY on 2019/1/14.
  * 查看箱码关联
  */
-class BoxLinkLookActivity : BaseActivity() {
+class BoxLinkLookActivity : BaseActivity(),VooglaContract.ListView<String> {
+
+
+    private val presenter = VooglaPresenter(this)
+
     override val activityLayout: Int
         get() = R.layout.activity_box_link_code_look
 
@@ -31,16 +37,22 @@ class BoxLinkLookActivity : BaseActivity() {
         box_look_recycler.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         if (type == "product") {
             // 入库查看
-            val qrCodeInfos = intent.getStringArrayListExtra("qrCodeInfos")
-            box_look_recycler.adapter = BoxLinkProLookAdapter(this, R.layout.item_box_link_look,qrCodeInfos)
+            val qrCode = intent.getStringExtra("qrCode")
+            presenter.getQrCodeList(qrCode)
         }else{
             // 出库查看
             val qrCodeListData = SparseArrayUtil.getQrCodeList(this)
             box_look_recycler.adapter = BoxLinkLookAdapter(this, R.layout.item_box_link_look, qrCodeListData)
         }
+    }
 
+    override fun showSuccess(data: MutableList<String>) {
 
+        box_look_recycler.adapter = BoxLinkProLookAdapter(this, R.layout.item_box_link_look,data)
 
+    }
+
+    override fun showError(msg: String?) {
     }
 
     override fun initTwoView() {
