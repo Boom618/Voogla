@@ -7,6 +7,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.honeywell.aidc.*;
 import com.ty.voogla.R;
@@ -27,6 +29,7 @@ import com.ty.voogla.mvp.presenter.VooglaPresenter;
 import com.ty.voogla.net.HttpMethods;
 import com.ty.voogla.ui.activity.scan.BarcodeProperties;
 import com.ty.voogla.util.ToastUtil;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import org.jetbrains.annotations.Nullable;
@@ -84,6 +87,12 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
     private boolean isSendItem = false;
 
     private VooglaPresenter presenter = new VooglaPresenter(this);
+    private Disposable disposable;
+
+    /**
+     * 箱码数量
+     */
+    private TextView numberCode;
 
 
     @Override
@@ -97,6 +106,7 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
         String type = getIntent().getStringExtra(CodeConstant.PAGE_STATE_KEY);
         companyNo = SimpleCache.getUserInfo().getCompanyNo();
 
+        numberCode = findViewById(R.id.tv_code_number);
         if (CodeConstant.PAGE_BOX_LINK.equals(type)) {
             // 入库扫码
             initToolBar(R.string.box_link, "保存", new View.OnClickListener() {
@@ -115,6 +125,7 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             qrCodeInfos = SparseArrayUtil.getQrCodeList(this);
             boxCode = getIntent().getStringExtra(CodeConstant.BOX_CODE);
 
+            numberCode.setText(String.valueOf(qrCodeInfos.size()));
             initToolBar(R.string.box_link, "保存", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -124,12 +135,8 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
         } else if (CodeConstant.PAGE_SCAN_OUT.equals(type)) {
             // 出库扫码
             isSendItem = true;
-            try {
-                sendPosition = getIntent().getIntExtra(CodeConstant.SEND_POSITION, -1);
-                qrCodeList = SimpleCache.getQrCode();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            sendPosition = getIntent().getIntExtra(CodeConstant.SEND_POSITION, -1);
+            qrCodeList = SimpleCache.getQrCode();
             if (qrCodeList == null) {
                 qrCodeList = new ArrayList();
             }
@@ -151,6 +158,30 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
         boxRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter = new BoxLinkAdapter(this, R.layout.item_box_link, qrCodeInfos);
         boxRecycler.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, final int position) {
+
+                ImageView deleteView = holder.itemView.findViewById(R.id.image_delete);
+                deleteView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        numberCode.setText(String.valueOf(qrCodeInfos.size() - 1));
+
+                        qrCodeInfos.remove(position);
+                        adapter.notifyItemRemoved(position);
+                        adapter.notifyItemRangeChanged(position,qrCodeInfos.size() - position);
+                    }
+                });
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
 
     }
 
@@ -306,6 +337,9 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             // unregister trigger state change listener
             barcodeReader.removeTriggerListener(this);
         }
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     @Override
@@ -368,13 +402,13 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
     }
 
     /**
-     * 校验
+     * 入库校验
      */
     private void httpJudegCode(final String code,final String codeClass) {
         HttpMethods.getInstance().judegCode(new SingleObserver<BaseResponse<QrCodeJudge>>() {
             @Override
             public void onSubscribe(Disposable d) {
-
+                disposable = d;
             }
 
             @Override
@@ -391,10 +425,13 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
 
                     qrCodeInfos.add(codeQr);
 
-                    // 判读 spec
+                    // 显示扫码数量
                     qrCodeString.add(code);
+                    numberCode.setText(String.valueOf(qrCodeString.size()));
                     adapter.notifyItemInserted(qrCodeInfos.size());
                     adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
+                }else{
+                    ToastUtil.showToast(response.getMsg());
                 }
 
             }

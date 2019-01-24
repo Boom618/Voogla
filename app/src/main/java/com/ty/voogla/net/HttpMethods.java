@@ -133,8 +133,8 @@ public class HttpMethods {
      * @param observer
      * @param companyNo
      */
-    public void getProductList(SingleObserver<BaseResponse<ProductIntoData>> observer, String companyNo) {
-        mService.getProductList(companyNo)
+    public void getProductList(SingleObserver<BaseResponse<ProductIntoData>> observer, String companyNo,String batchNo) {
+        mService.getProductList(companyNo,batchNo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }

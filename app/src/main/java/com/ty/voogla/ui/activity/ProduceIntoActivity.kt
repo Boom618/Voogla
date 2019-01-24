@@ -47,7 +47,8 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.ListView<ProductIntoD
     }
 
     override fun initOneData() {
-        presenter.getProduceList(companyNo)
+        // 列表 batchNo 传空
+        presenter.getProduceList(companyNo,"")
         isDelete = false
     }
 
@@ -56,11 +57,13 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.ListView<ProductIntoD
         initToolBar(R.string.produce_into)
 
 
+        // 搜索
         search_view.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
-                val tempString = v.text.toString().trim { it <= ' ' }
-                ToastUtil.showToast(tempString)
+                val batchNo = v.text.toString().trim { it <= ' ' }
+
+                presenter.getProduceList(companyNo,batchNo)
             }
             true
         }

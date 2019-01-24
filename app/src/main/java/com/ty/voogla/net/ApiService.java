@@ -37,13 +37,14 @@ public interface ApiService {
                                              @Field("password") String password);
 
     /**
-     * 生产入库列表
+     * 生产入库列表( 搜索 ： batchNo)
      *
      * @return
      */
     @FormUrlEncoded
     @POST(ApiNameConstant.PRODUCE_LIST)
-    Single<BaseResponse<ProductIntoData>> getProductList(@Field("companyNo") String companyNo);
+    Single<BaseResponse<ProductIntoData>> getProductList(@Field("companyNo") String companyNo,
+                                                         @Field("batchNo") String batchNo);
 
 
     @POST(ApiNameConstant.PRODUCE_ADD)

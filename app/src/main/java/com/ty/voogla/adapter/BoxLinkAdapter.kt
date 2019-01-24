@@ -14,17 +14,17 @@ class BoxLinkAdapter(context: Context, layout: Int, datas: MutableList<QrCodeLis
     CommonAdapter<QrCodeListData>(context, layout, datas) {
 
     override fun convert(holder: ViewHolder, info: QrCodeListData, position: Int) {
-        val type = if (info.qrCodeClass == "A0701" ) "产品码" else "箱码"
+        val type = if (info.qrCodeClass == "A0701" || info.qrCodeClass == "产品码") "产品码" else "箱码"
         holder.setText(R.id.tv_code,info.qrCode)
             .setText(R.id.tv_type,type)
 
-        val deleteView = holder.itemView.findViewById<ImageView>(R.id.image_delete)
-
-        deleteView.setOnClickListener {
-            datas.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, datas.size - position)
-        }
+//        val deleteView = holder.itemView.findViewById<ImageView>(R.id.image_delete)
+//
+//        deleteView.setOnClickListener {
+//            datas.removeAt(position)
+//            notifyItemRemoved(position)
+//            notifyItemRangeChanged(position, datas.size - position)
+//        }
 
     }
 

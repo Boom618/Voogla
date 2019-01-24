@@ -78,8 +78,9 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
     /**
      * 获取生产入库列表
+     * batchNo : 搜索生产批次号
      */
-    public void getProduceList(String companyNo) {
+    public void getProduceList(String companyNo,String batchNo) {
         httpMethods.getProductList(new SingleObserver<BaseResponse<ProductIntoData>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -99,7 +100,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onError(Throwable e) {
                 iListView.showError(e.getMessage());
             }
-        }, companyNo);
+        }, companyNo,batchNo);
     }
 
     /**

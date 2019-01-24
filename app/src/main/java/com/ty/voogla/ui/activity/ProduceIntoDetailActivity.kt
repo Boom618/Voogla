@@ -167,6 +167,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             val type = data?.getStringExtra(CodeConstant.RESULT_TYPE)
             when (type) {
                 "productIn" -> {
+                    // 入库
                     boxCode = data.getStringExtra("boxCode")
                     qrCodeInfos = SimpleCache.getBoxCode()
 
