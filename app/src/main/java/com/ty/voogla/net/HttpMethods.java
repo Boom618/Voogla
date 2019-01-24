@@ -1,5 +1,6 @@
 package com.ty.voogla.net;
 
+import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ty.voogla.base.BaseResponse;
@@ -16,15 +17,15 @@ import com.ty.voogla.net.gson.LongDefault0Adapter;
 import com.ty.voogla.net.gson.StringDefault0Adapter;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
+import okhttp3.*;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -47,7 +48,7 @@ public class HttpMethods {
     /**
      * cookie
      */
-//    private ConcurrentHashMap<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
     private HttpMethods() {
         init(ApiNameConstant.BASE_URL2);
     }
@@ -65,20 +66,20 @@ public class HttpMethods {
         // 创建OKHttpClient
         OkHttpClient.Builder client = new OkHttpClient.Builder()
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-//                .cookieJar(new CookieJar() {
-//                    @Override
-//                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-//                        // 保存 cookie
-//                        cookieStore.put(url.host(), cookies);
-//                    }
-//
-//                    @Override
-//                    public List<Cookie> loadForRequest(HttpUrl url) {
-//                        // 加载新的 cookie
-//                        List<Cookie> cookies = cookieStore.get(url.host());
-//                        return cookies != null ? cookies : new ArrayList<Cookie>();
-//                    }
-//                })
+                .cookieJar(new CookieJar() {
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        // 保存 cookie
+                        cookieStore.put(url.host(), cookies);
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        // 加载新的 cookie
+                        List<Cookie> cookies = cookieStore.get(url.host());
+                        return cookies != null ? cookies : new ArrayList<Cookie>();
+                    }
+                })
                 .addInterceptor(new SessionInterceptor())
                 // 日志拦截器
                 .addInterceptor(new LogInterceptor());

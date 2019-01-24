@@ -34,5 +34,6 @@ class ProductIntoData {
         var inWareDesc: String? = null
         var goodsName: String? = null
         var unitName: String? = null
+        var goodsSpec: String? = null
     }
 }

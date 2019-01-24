@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
         android:background="@color/white_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -22,10 +23,10 @@
 
         <TextView
                 android:id="@+id/tv_product_batch"
-                android:textSize="@dimen/text_16"
+                android:textSize="@dimen/text_14"
                 android:layout_marginTop="@dimen/x18"
                 android:layout_marginStart="@dimen/x28"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/et_batch_number"
                 app:layout_constraintStart_toStartOf="parent"
                 android:text="@string/product_batch"
                 android:textColor="@color/txt_product_color"
@@ -40,17 +41,24 @@
                 android:layout_height="wrap_content"/>
 
 
-        <EditText
+        <TextView
                 android:id="@+id/tv_select_house"
-                android:textSize="@dimen/text_12"
-                android:layout_marginTop="@dimen/x16"
+                android:textSize="@dimen/text_14"
+                android:layout_marginTop="@dimen/x18"
                 android:layout_marginStart="@dimen/x28"
+                app:layout_constraintBottom_toBottomOf="@+id/et_select_house"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/select_house"
+                android:textColor="@color/txt_product_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <EditText
+                android:id="@+id/et_select_house"
                 android:layout_marginEnd="@dimen/x28"
-                app:layout_constraintTop_toBottomOf="@+id/tv_product_batch"
-                app:layout_constraintStart_toStartOf="@id/tv_product_batch"
-                android:hint="@string/select_house"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/et_batch_number"
+                app:layout_constraintStart_toEndOf="@id/tv_select_house"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
 
         <TextView
@@ -60,7 +68,7 @@
                 android:background="@drawable/shape_select"
                 android:layout_marginStart="@dimen/x28"
                 android:layout_marginEnd="@dimen/x28"
-                app:layout_constraintTop_toBottomOf="@+id/tv_select_house"
+                app:layout_constraintTop_toBottomOf="@+id/et_select_house"
                 app:layout_constraintStart_toStartOf="@id/tv_product_batch"
                 android:hint="@string/select_pro_name"
                 android:layout_width="match_parent"
@@ -71,40 +79,38 @@
                 android:layout_height="wrap_content"/>
 
         <TextView
-                android:id="@+id/tv_select_time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_12"
-                android:layout_marginTop="@dimen/x16"
-                android:layout_marginEnd="@dimen/x6"
-                android:background="@drawable/shape_select"
-                android:hint="@string/into_house_time"
-                android:padding="@dimen/x8"
-                android:drawableEnd="@mipmap/ic_bottom"
-                android:gravity="center_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/tv_select_pro_name"
-                app:layout_constraintStart_toStartOf="@id/tv_product_batch"
-                app:layout_constraintEnd_toStartOf="@id/tv_select_spec"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"/>
-
-        <TextView
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_select_spec"
                 android:textSize="@dimen/text_12"
                 android:layout_marginTop="@dimen/x16"
+                android:layout_marginStart="@dimen/x28"
                 android:layout_marginEnd="@dimen/x28"
-                android:layout_marginStart="@dimen/x6"
                 android:background="@drawable/shape_select"
                 android:hint="@string/select_spec"
-                android:padding="@dimen/x8"
+                android:padding="@dimen/x14"
                 android:drawableEnd="@mipmap/ic_bottom"
                 android:drawablePadding="@dimen/x40"
                 android:gravity="center_vertical"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_select_time"
-                app:layout_constraintStart_toEndOf="@id/tv_select_time"
+                app:layout_constraintTop_toBottomOf="@+id/tv_select_pro_name"
+                app:layout_constraintStart_toStartOf="@id/tv_product_batch"
                 app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+                android:id="@+id/tv_select_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_12"
+                android:layout_marginTop="@dimen/x16"
+                android:layout_marginStart="@dimen/x28"
+                android:layout_marginEnd="@dimen/x28"
+                android:background="@drawable/shape_select"
+                android:hint="@string/into_house_time"
+                android:padding="@dimen/x14"
+                android:drawableEnd="@mipmap/ic_bottom"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/tv_select_spec"
+                app:layout_constraintStart_toStartOf="@id/tv_product_batch"/>
+
 
         <TextView
                 android:id="@+id/tv_to_box_link"
@@ -126,40 +132,40 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <TextView
-            android:id="@+id/tv_house_detail"
-            android:text="@string/house_detail"
-            android:layout_width="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/product_batch"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="@dimen/x28"
-            android:layout_marginTop="@dimen/x8"
-            android:layout_marginBottom="@dimen/x8"
-            android:layout_height="wrap_content"/>
+    <RelativeLayout
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-            android:text="@string/current_amount"
-            app:layout_constraintEnd_toStartOf="@id/tv_number"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_house_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/tv_house_detail"
+                android:text="@string/house_detail"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/x28"
+                android:layout_height="wrap_content"/>
 
-    <TextView
-            android:id="@+id/tv_number"
-            android:text="0"
-            android:textColor="@color/theme_color"
-            android:layout_marginEnd="@dimen/x24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_house_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <TextView
+                android:text="@string/current_amount"
+                android:layout_toStartOf="@+id/tv_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/tv_number"
+                android:text="0"
+                android:textColor="@color/theme_color"
+                android:layout_marginEnd="@dimen/x24"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
             android:layout_marginTop="@dimen/x16"
-            app:layout_constraintTop_toBottomOf="@+id/tv_house_detail"
             android:id="@+id/house_recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"/>
 
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

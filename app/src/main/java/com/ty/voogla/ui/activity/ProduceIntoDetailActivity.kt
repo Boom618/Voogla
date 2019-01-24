@@ -2,8 +2,10 @@ package com.ty.voogla.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
 import android.util.SparseArray
 import android.view.View
+import android.widget.ImageView
 import com.google.gson.Gson
 import com.ty.voogla.R
 import com.ty.voogla.adapter.LayoutInit
@@ -26,6 +28,7 @@ import com.ty.voogla.data.SparseArrayUtil
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
 import com.ty.voogla.widght.TimeWidght
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_product_into_detail.*
@@ -124,6 +127,27 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
         adapter = ProIntoDetailAdapter(this, R.layout.item_house_detail, listDetail)
         house_recycler.adapter = adapter
+
+        adapter.setOnItemClickListener(object :MultiItemTypeAdapter.OnItemClickListener{
+            override fun onItemLongClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int): Boolean {
+                return false
+            }
+
+            override fun onItemClick(view: View, holder: RecyclerView.ViewHolder, position: Int) {
+
+                val deleteView = holder.itemView.findViewById<ImageView>(R.id.image_delete)
+
+                deleteView.setOnClickListener {
+
+                    listDetail.removeAt(position)
+                    adapter.notifyItemRemoved(position)
+                    adapter.notifyItemRangeChanged(position,listDetail.size - position)
+
+                    tv_number.text = listDetail.size.toString()
+                }
+            }
+
+        })
     }
 
     /**
@@ -132,7 +156,6 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     override fun removeGoods() {
         listDetail.clear()
         adapter.notifyDataSetChanged()
-
 
         tv_number.text = "0"
         ToastUtil.showToast("清空数据")
@@ -145,7 +168,6 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             when (type) {
                 "productIn" -> {
                     boxCode = data.getStringExtra("boxCode")
-//                    qrCodeInfos = SparseArrayUtil.getQrCodeList(this)
                     qrCodeInfos = SimpleCache.getBoxCode()
 
                     listDetail.add(qrCodeInfos)
@@ -156,7 +178,6 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
                     val position = data?.getIntExtra(CodeConstant.SEND_POSITION,0)!!
                     qrCodeInfos = SimpleCache.getBoxCode()
                     listDetail.add(position,qrCodeInfos)
-//                    boxCodeSparse.put(position,boxCode)
                 }
             }
 
@@ -211,9 +232,12 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             // 箱码 A0702  产品吗 A0701
             val boxCodeInfo = InBoxCodeDetailInfosBean()
 
+            // 删除最后一列箱码,
+            val infos = listDetail[i].qrCodeInfos
+            val dropLast = infos!!.dropLast(1).toMutableList()
             boxCodeInfo.qrCode = listDetail[i].qrCode
             boxCodeInfo.qrCodeClass = "A0702"
-            boxCodeInfo.qrCodeInfos = listDetail[i].qrCodeInfos
+            boxCodeInfo.qrCodeInfos = dropLast
             boxInfo.add(boxCodeInfo)
         }
 
@@ -223,18 +247,22 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         val userInfo = SimpleCache.getUserInfo()
         val position = SharedP.getGoodNo(this)
         if (position == -1) {
+            ToastUtil.showToast("请选择商品和规格")
+            return null
+        }
+        if (boxInfo.size == 0){
+            ToastUtil.showToast("请前往箱码关联")
             return null
         }
         val goodsNoStr = goodsNo[position]
         val unit = goodsUnit[position]
 
         val productBatchNo = et_batch_number.text.toString().trim { it <= ' ' }
-        val wareName = tv_select_house.text.toString().trim { it <= ' ' }
+        val wareName = et_select_house.text.toString().trim { it <= ' ' }
         val inTime = tv_select_time.text.toString().trim { it <= ' ' }
         //val unit = tv_select_spec.text.toString().trim { it <= ' ' }
 
         if (goodsNo.isNullOrEmpty() ||
-            unit.isNullOrEmpty() ||
             wareName.isNullOrEmpty()
         ) {
             ToastUtil.showToast("请补全入库信息")
@@ -259,16 +287,6 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         return RequestBodyJson.requestBody(json)
 
 
-    }
-
-    /**
-     * 批次号搜索
-     */
-    private fun requestHttp(hasFocus: Boolean) {
-        val result = et_batch_number.text.toString().trim { it <= ' ' }
-        if (!hasFocus && result.isNotEmpty()) {
-            ToastUtil.showToast("批次号是 $result")
-        }
     }
 
     /**

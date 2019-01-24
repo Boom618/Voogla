@@ -19,12 +19,12 @@ class ProductIntoAdapter(val context: Context, layout: Int, datas: MutableList<P
     CommonAdapter<ProductIntoData.ListBean>(context, layout, datas) {
 
     override fun convert(holder: ViewHolder, info: ProductIntoData.ListBean, position: Int) {
-        val userName = SimpleCache.getUserInfo().userName
+//        val userName = SimpleCache.getUserInfo().userName
 
         holder.setText(R.id.tv_number, info.inBatchNo)
             .setText(R.id.tv_product_name, info.goodsName)
-            .setText(R.id.tv_into_user, userName)
-            .setText(R.id.tv_product_spec, info.unit)
+//            .setText(R.id.tv_into_user, userName)
+//            .setText(R.id.tv_product_spec, info.unit)
             .setText(R.id.tv_into_number, info.inBoxNum.toString())
             .setText(R.id.tv_into_time, info.inTime)
             .setText(R.id.tv_into_address, info.wareName)
@@ -36,7 +36,7 @@ class ProductIntoAdapter(val context: Context, layout: Int, datas: MutableList<P
             intent.putExtra("productName", info.goodsName)
             intent.putExtra("productHouse", info.wareName)
             intent.putExtra("productTime", info.inTime)
-            intent.putExtra("productSpec", info.unit)
+            intent.putExtra("productSpec", info.goodsSpec)
             context.startActivity(intent)
         }
 
