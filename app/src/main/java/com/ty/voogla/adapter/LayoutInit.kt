@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
  */
 object LayoutInit {
 
+    @JvmStatic
     fun initLayoutManager(context: Context,recycler_view:RecyclerView){
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recycler_view.layoutManager = layoutManager

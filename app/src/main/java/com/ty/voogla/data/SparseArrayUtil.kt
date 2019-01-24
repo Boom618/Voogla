@@ -15,9 +15,10 @@ object SparseArrayUtil {
 
     /**
      * File 存 List<QrCodeListData>
+     *     MutableList<InBoxCodeDetailInfosBean>
      */
     @JvmStatic
-    fun putQrCodeList(context: Context, sparseArray: List<QrCodeListData>) {
+    fun putQrCodeList(context: Context, sparseArray: MutableList<InBoxCodeDetailInfosBean>) {
 
         var outputStream: ObjectOutputStream? = null
         try {
@@ -42,13 +43,13 @@ object SparseArrayUtil {
      * 获取 List<QrCodeListData> 数据
      */
     @JvmStatic
-    fun getQrCodeList(context: Context): List<QrCodeListData> {
+    fun getQrCodeList(context: Context): MutableList<InBoxCodeDetailInfosBean> {
 
         var inputStreamReader: ObjectInputStream? = null
         val file = File(context.getDir("data", Context.MODE_PRIVATE), "sparse")
         inputStreamReader = ObjectInputStream(FileInputStream(file))
 //        inputStreamReader = ObjectInputStream(FileInputStream("code.txt"))
-        val readObject = inputStreamReader.readObject() as List<QrCodeListData>
+        val readObject = inputStreamReader.readObject() as MutableList<InBoxCodeDetailInfosBean>
         inputStreamReader.close()
         return readObject
 
@@ -57,25 +58,25 @@ object SparseArrayUtil {
     //    -----------------------------------------------------------
 
 
-    @JvmStatic
-    fun putQrCodeList(context:Context,boxInfos: InBoxCodeDetailInfosBean) {
-
-        var outputStream: ObjectOutputStream? = null
-        try {
-            val file = File(context.getDir("data", Context.MODE_PRIVATE), "sparse")
-            outputStream = ObjectOutputStream(FileOutputStream(file))
-//            outputStream = ObjectOutputStream(FileOutputStream("code.txt"))
-            outputStream.writeObject(boxInfos)
-            outputStream.flush()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            try {
-                outputStream?.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-        }
-    }
+//    @JvmStatic
+//    fun putQrCodeList(context:Context,boxInfos: InBoxCodeDetailInfosBean) {
+//
+//        var outputStream: ObjectOutputStream? = null
+//        try {
+//            val file = File(context.getDir("data", Context.MODE_PRIVATE), "sparse")
+//            outputStream = ObjectOutputStream(FileOutputStream(file))
+////            outputStream = ObjectOutputStream(FileOutputStream("code.txt"))
+//            outputStream.writeObject(boxInfos)
+//            outputStream.flush()
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        } finally {
+//            try {
+//                outputStream?.close()
+//            } catch (e: IOException) {
+//                e.printStackTrace()
+//            }
+//
+//        }
+//    }
 }

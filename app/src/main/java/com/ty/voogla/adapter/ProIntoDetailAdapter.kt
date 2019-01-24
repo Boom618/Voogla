@@ -8,6 +8,7 @@ import com.ty.voogla.R
 import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean
 import com.ty.voogla.bean.sendout.QrCodeListData
 import com.ty.voogla.constant.CodeConstant
+import com.ty.voogla.data.SparseArrayUtil
 import com.ty.voogla.ui.activity.BoxLinkJavaActivity
 import com.ty.voogla.util.ToastUtil
 import com.zhy.adapter.recyclerview.CommonAdapter
@@ -33,6 +34,7 @@ class ProIntoDetailAdapter(val context: Context, layout: Int,datas: MutableList<
             intent.putExtra(CodeConstant.PAGE_STATE_KEY,CodeConstant.PAGE_BOX_LINK_EDIT)
             intent.putExtra("boxCode",info.qrCode)
             intent.putExtra("position",position)
+            SparseArrayUtil.putQrCodeList(context,datas)
             context.startActivity(intent)
             //ToastUtil.showToast("修改 $position")
         }
