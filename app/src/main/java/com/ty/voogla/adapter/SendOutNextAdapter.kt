@@ -37,6 +37,7 @@ class SendOutNextAdapter(val context: Context, layout: Int, datas: MutableList<S
 //            val intent = Intent("android.intent.action.AUTOCODEACTIVITY")
             intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_SCAN_OUT)
             intent.putExtra(CodeConstant.SEND_POSITION,position)
+            intent.putExtra("goodsNo",info.goodsNo)
             (context as SendOutNextActivity).startActivityForResult(intent,CodeConstant.REQUEST_CODE_OUT)
         }
 

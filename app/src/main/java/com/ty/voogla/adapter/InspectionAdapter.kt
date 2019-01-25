@@ -18,7 +18,7 @@ class InspectionAdapter(context: Context, layoutId: Int, datas: MutableList<Stri
     override fun convert(holder: ViewHolder, t: String, position: Int) {
 
         holder.itemView.findViewById<ImageView>(R.id.image_confirm).setOnClickListener { view ->
-            DialogUtil.deleteItemDialog(view.context, "确认窜货",NormalAlertDialog.onNormalOnclickListener {
+            DialogUtil.deleteItemDialog(view.context, "温馨提示","确认窜货",NormalAlertDialog.onNormalOnclickListener {
                 ToastUtil.showToast("确认窜货")
                 it.dismiss()
                 datas.removeAt(position)

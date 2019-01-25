@@ -13,9 +13,24 @@ class QrCodeJudge {
         /**
          * companyNo : 企业编号
          * generateNo : 二维码生成编号
+         * "inBatchNo": "SPI20190124000002",
+         * "batchNo": "hm20190123002",
+         * "goodsNo": "17706-产品1",
+         * "qrCodeClass": "A0702",
+         *  wareName: "仓库编号",
+         * "qrCode": "19012400000002",
+         * "goodsName": "17706-产品1"
+         *
          */
 
         var companyNo: String? = null
+        var inBatchNo: String? = null
+        var wareName: String? = null
+        var batchNo: String? = null
+        var goodsNo: String? = null
+        var goodsName: String? = null
+        var qrCode: String? = null
+        var qrCodeClass: String? = null
         var generateNo: String? = null
     }
 }

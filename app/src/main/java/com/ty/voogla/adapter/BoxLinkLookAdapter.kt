@@ -15,7 +15,8 @@ class BoxLinkLookAdapter(context: Context, layout: Int, datas: List<QrCodeListDa
 
     override fun convert(holder: ViewHolder, info: QrCodeListData, position: Int) {
 
-        holder.setText(R.id.tv_type, info.qrCodeClass)
+        val type = if (info.qrCodeClass == "A0701") "产品码" else "箱码"
+        holder.setText(R.id.tv_type, type)
             .setText(R.id.tv_code, info.qrCode)
 
     }

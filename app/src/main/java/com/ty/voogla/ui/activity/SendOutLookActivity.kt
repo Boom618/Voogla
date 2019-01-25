@@ -45,7 +45,7 @@ class SendOutLookActivity : BaseActivity(),VooglaContract.View<OutPutInfoData> {
 
     override fun showSuccess(data: OutPutInfoData) {
 
-        val goodsInfo = data.goodsDeliveryInfo
+        val goodsInfo = data.outWareInfo
         val list = data.outQrCodeDetailInfos
 
 

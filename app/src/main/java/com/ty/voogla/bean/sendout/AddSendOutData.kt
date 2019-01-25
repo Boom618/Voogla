@@ -6,10 +6,10 @@ package com.ty.voogla.bean.sendout
  */
 class AddSendOutData {
 
-    var goodsDeliveryInfo: GoodsDeliveryInfoBean? = null
+    var outWareInfo: WareInfoBean? = null
     var outQrCodeDetailInfos: List<OutQrCodeDetailInfosBean>? = null
 
-    class GoodsDeliveryInfoBean {
+    class WareInfoBean {
         /**
          * companyNo : 企业编号
          * creator : 创建者
@@ -22,6 +22,10 @@ class AddSendOutData {
         var creator: String? = null
         var deliveryNo: String? = null
         var outTime: String? = null
+        var provinceLevel: String? = null
+        var cityLevel: String? = null
+        var countyLevel: String? = null
+        var deliveryAddress: String? = null
         var outWareDesc: String? = null
     }
 

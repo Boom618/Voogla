@@ -21,7 +21,6 @@ import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.net.RequestBodyJson
-import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
 import com.ty.voogla.widght.NormalAlertDialog
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
@@ -44,6 +43,19 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
 
     // 发货单号
     private var deliveryNo: String = ""
+    // 箱码、产品码 数量
+    private var boxSize = 0
+    private var proSize = 0
+
+    // 地址信息
+    private var provinceLevel: String? = null
+    private var cityLevel: String? = null
+    private var countyLevel: String? = null
+    private var deliveryAddress: String? = null
+
+    // 仓库 商品
+    private var wareNameList = mutableListOf<String>()
+    private var inBatchList = mutableListOf<String>()
 
     // 回调成功标志
     private var isDelete = false
@@ -65,10 +77,19 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
     }
 
     override fun initOneData() {
+        // 首次进来清空出库数据
+        SimpleCache.clearKey("qrCode")
 
 
-        initToolBar(R.string.send_out_detail, "保存", View.OnClickListener {
-            sendOutSave(initReqBody())
+        initToolBar(R.string.send_out_detail, "保存", View.OnClickListener { view ->
+            if (deliveryList!!.size != wareNameList.size) {
+                DialogUtil.deleteItemDialog(view.context,"确认发货？","实际发货数量与要求发货数量不一致", NormalAlertDialog.onNormalOnclickListener {
+                    sendOutSave(initReqBody())
+                    it.dismiss()
+                })
+            }else{
+                sendOutSave(initReqBody())
+            }
         })
         // 发货单编号
         deliveryNo = intent.getStringExtra(CodeConstant.DELIVERY_NO)
@@ -108,34 +129,39 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
         // 箱码数据
         val qrList = mutableListOf<QrCodeListData>()
 
-        val goodsInfo = AddSendOutData.GoodsDeliveryInfoBean()
+        val goodsInfo = AddSendOutData.WareInfoBean()
 
         val size = deliveryList!!.size
         // 商品数据
-        for (i in 0 until size) {
+        for (i in 0 until wareNameList.size) {
+
             val qrCode = AddSendOutData.OutQrCodeDetailInfosBean()
-            qrCode.wareName = ""
-            qrCode.inBatchNo = ""
-            qrCode.goodsNo = deliveryList!![i].goodsNo
-            qrCode.outBoxNum = ""
-            qrCode.outGoodsNum = ""
-            qrCode.unit = ""
+            qrCode.wareName = wareNameList[i]
+            qrCode.inBatchNo = inBatchList[i]
+            if (!wareNameList[i].isEmpty()) {
+                qrCode.goodsNo = deliveryList!![i].goodsNo
+                // 箱码数量
+                qrCode.outBoxNum = boxSize.toString()
+                qrCode.outGoodsNum = proSize.toString()
+                qrCode.unit = deliveryList!![i].unit
 
-            val arrayList = itemSparse[i]
-            val qrSize = arrayList.size
-            // 箱码数据
-            for (j in 0 until qrSize) {
-                val qrInfo = QrCodeListData()
-                qrInfo.qrCodeClass = arrayList[j].qrCodeClass
-                qrInfo.qrCode = arrayList[j].qrCode
+                val arrayList = itemSparse[i]
+                val qrSize = arrayList.size
+                // 箱码数据
+                for (j in 0 until qrSize) {
+                    val qrInfo = QrCodeListData()
+                    qrInfo.qrCodeClass = arrayList[j].qrCodeClass
+                    qrInfo.qrCode = arrayList[j].qrCode
 
-                qrList.add(qrInfo)
+                    qrList.add(qrInfo)
+                }
+
+                qrCode.qrCodeInfos = qrList
+                qrCodeList.add(qrCode)
+                // 清除箱码数据集合
+                //qrList.clear()
             }
 
-            qrCode.qrCodeInfos = qrList
-            qrCodeList.add(qrCode)
-            // 清除箱码数据集合
-            qrList.clear()
         }
         val time = DateUtil.getTime(Date())
 
@@ -143,8 +169,12 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
         goodsInfo.creator = userInfo.userNo
         goodsInfo.deliveryNo = deliveryNo
         goodsInfo.outTime = time
+        goodsInfo.provinceLevel = provinceLevel
+        goodsInfo.cityLevel = cityLevel
+        goodsInfo.countyLevel = countyLevel
+        goodsInfo.deliveryAddress = deliveryAddress
 
-        saveBean.goodsDeliveryInfo = goodsInfo
+        saveBean.outWareInfo = goodsInfo
         saveBean.outQrCodeDetailInfos = qrCodeList
 
 
@@ -159,14 +189,20 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
 
             val sendPosition = data?.getIntExtra(CodeConstant.SEND_POSITION, -1)!!
             qrCodeList = SimpleCache.getQrCode()
+            SimpleCache.putQrCode(qrCodeList)
+
+            val wareName = qrCodeList[sendPosition].wareName!!
+            val inBatchNo = qrCodeList[sendPosition].inBatchNo!!
+            wareNameList.add(sendPosition, wareName)
+            inBatchList.add(sendPosition, inBatchNo)
+
             // 存 item position 箱码产品码
             itemSparse.put(sendPosition, qrCodeList)
 
             val totalSize = qrCodeList.size
-            var boxSize = 0
-            var proSize = 0
+
             for (i in 0 until totalSize) {
-                if (qrCodeList[i].qrCodeClass.equals("产品码")) {
+                if (qrCodeList[i].qrCodeClass.equals("A0701")) {
                     proSize++
                 } else {
                     boxSize++
@@ -176,16 +212,17 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
             view.findViewById<TextView>(R.id.tv_box_amount).text = "$boxSize 箱"
             view.findViewById<TextView>(R.id.tv_product_amount).text = "$proSize 盒"
 
-
-//            val data = QrCodeListData()
-//            data.qrCode = qrCode
-//            //data.qrCodeClass = qrCodeClass
-//            qrCodeList.add(sendPosition!!,data)
         }
     }
 
 
     override fun showSuccess(data: SendOutListInfo) {
+
+        val info = data.goodsDeliveryInfo!!
+        provinceLevel = info.provinceLevel
+        cityLevel = info.cityLevel
+        countyLevel = info.countyLevel
+        deliveryAddress = info.deliveryAddress
 
         deliveryList = data.deliveryDetailInfos
         LayoutInit.initLayoutManager(this, recycler_view_send_next)
@@ -195,7 +232,7 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
         adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
             override fun onItemLongClick(view: View, holder: RecyclerView.ViewHolder, position: Int): Boolean {
 
-                DialogUtil.deleteItemDialog(view.context, "确认删除", NormalAlertDialog.onNormalOnclickListener {
+                DialogUtil.deleteItemDialog(view.context, "温馨提示","确认删除", NormalAlertDialog.onNormalOnclickListener {
 
                     presenter.deleteSendOut(companyNo, deliveryNo)
                     isDelete = true
@@ -218,7 +255,6 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
 
     override fun showResponse(response: ResponseInfo) {
         if (CodeConstant.SERVICE_SUCCESS == response.msg) {
-
             if (isDelete) {
                 deliveryList!!.removeAt(itemPosition)
                 adapter.notifyItemRemoved(itemPosition)

@@ -8,6 +8,7 @@ RxJava 操作符：
 - 请求嵌套问题
 - 延迟过滤
 - 入库箱码产品码逻辑需改进
+- iView.showSuccess(response) 如果有多个接口, T 对应不上
 
 项目说明：
 

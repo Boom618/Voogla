@@ -61,7 +61,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onSuccess(BaseResponse<UserInfo> response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
                     UserInfo userInfo = response.getData();
-                    SimpleCache.putString(CodeConstant.SESSION_ID_KEY, userInfo.getSessionID());
+                    //SimpleCache.putString(CodeConstant.SESSION_ID_KEY, userInfo.getSessionID());
                     SimpleCache.putUserInfo(userInfo);
                     iView.showSuccess(userInfo);
                 } else {
@@ -428,7 +428,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             @Override
             public void onSuccess(ResponseInfo response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
-                    iView.showSuccess(response);
+                    iView.showResponse(response);
                 } else {
                     iView.showError(response.getMsg());
                 }

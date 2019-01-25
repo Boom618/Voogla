@@ -6,10 +6,10 @@ package com.ty.voogla.bean.sendout
  */
 class OutPutInfoData {
 
-    var goodsDeliveryInfo: GoodsDeliveryInfoBean? = null
+    var outWareInfo: OutWareInfoBean? = null
     var outQrCodeDetailInfos: MutableList<OutQrCodeDetailInfosBean>? = null
 
-    class GoodsDeliveryInfoBean {
+    class OutWareInfoBean {
         /**
          * companyNo : 企业编号
          * deliveryNo : 发货单号

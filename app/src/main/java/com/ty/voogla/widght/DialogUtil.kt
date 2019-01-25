@@ -15,12 +15,18 @@ object DialogUtil {
      * 发货出库
      * 删除该 item
      *
-     * @param context
+     * @param titleText  标题 "温馨提示"
+     * @param pointContent 内容
      */
-    fun deleteItemDialog(context: Context, pointContent: String, listener: NormalAlertDialog.onNormalOnclickListener) {
+    fun deleteItemDialog(
+        context: Context,
+        titleText: String,
+        pointContent: String,
+        listener: NormalAlertDialog.onNormalOnclickListener
+    ) {
         val dialog = NormalAlertDialog.Builder(context)
             .setTitleVisible(true)
-            .setTitleText("温馨提示")
+            .setTitleText(titleText)
             .setRightButtonText("确认")
             .setLeftButtonText("取消")
             .setContentText(pointContent)
@@ -51,7 +57,7 @@ object DialogUtil {
                 if (temp != -1 && temp != which) {
 
                     // 选择不同商品
-                    deleteItemDialog(context, "重置数据？", NormalAlertDialog.onNormalOnclickListener {
+                    deleteItemDialog(context, "温馨提示","重置数据？", NormalAlertDialog.onNormalOnclickListener {
                         select.removeGoods()
                         it.dismiss()
                         dialog.dismiss()

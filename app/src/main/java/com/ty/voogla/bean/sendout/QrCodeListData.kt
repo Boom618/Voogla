@@ -13,6 +13,9 @@ class QrCodeListData : Serializable {
     var qrCode: String? = null
     // 类别
     var qrCodeClass: String? = null
+    // 仓库编号 入库批次号
+    var wareName: String? = null
+    var inBatchNo: String? = null
     // 二维码生成编号(校验生成)
     var generateNo: String? = null
 }

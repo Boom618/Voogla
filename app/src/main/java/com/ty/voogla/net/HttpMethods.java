@@ -80,7 +80,7 @@ public class HttpMethods {
                         return cookies != null ? cookies : new ArrayList<Cookie>();
                     }
                 })
-                .addInterceptor(new SessionInterceptor())
+                //.addInterceptor(new SessionInterceptor()) // 用 cookies 不用 session
                 // 日志拦截器
                 .addInterceptor(new LogInterceptor());
 

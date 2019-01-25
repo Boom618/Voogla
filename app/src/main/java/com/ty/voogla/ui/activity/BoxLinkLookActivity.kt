@@ -41,8 +41,8 @@ class BoxLinkLookActivity : BaseActivity(),VooglaContract.ListView<String> {
             presenter.getQrCodeList(qrCode)
         }else{
             // 出库查看
-//            val qrCodeListData = SparseArrayUtil.getQrCodeList(this)
-//            box_look_recycler.adapter = BoxLinkLookAdapter(this, R.layout.item_box_link_look, qrCodeListData)
+            val qrCodeListData = SparseArrayUtil.getQrCodeListLook(this)
+            box_look_recycler.adapter = BoxLinkLookAdapter(this, R.layout.item_box_link_look, qrCodeListData)
         }
     }
 
