@@ -86,6 +86,11 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
     private int specNumber = 0;
 
     /**
+     * 套码
+     */
+    private boolean isPackageCode = true;
+
+    /**
      * 是发货出库
      */
     private boolean isSendItem = false;
@@ -181,19 +186,25 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             public void onItemClick(View view, RecyclerView.ViewHolder holder, final int position) {
 
                 ImageView deleteView = holder.itemView.findViewById(R.id.image_delete);
-                deleteView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                // 套码禁用删除
+                if (!isPackageCode) {
+                    deleteView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                        numberCode.setText(String.valueOf(qrCodeInfos.size() - 1));
-                        // TODO　数量控制 （删除产品码有问题）
-                        qrCodeString.remove(position);
+                            numberCode.setText(String.valueOf(qrCodeInfos.size() - 1));
+                            // TODO　数量控制 （删除产品码有问题）
+                            qrCodeString.remove(position);
 
-                        qrCodeInfos.remove(position);
-                        adapter.notifyItemRemoved(position);
-                        adapter.notifyItemRangeChanged(position,qrCodeInfos.size() - position);
-                    }
-                });
+                            qrCodeInfos.remove(position);
+                            adapter.notifyItemRemoved(position);
+                            adapter.notifyItemRangeChanged(position, qrCodeInfos.size() - position);
+                        }
+                    });
+                }else{
+
+                }
+
             }
 
             @Override
@@ -255,9 +266,9 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
                 for (int i = 0; i < size; i++) {
                     String qrCodeClass = qrCodeInfos.get(i).getQrCodeClass();
                     if (qrCodeClass.equals("A0702")) {
-                        temp ++;
+                        temp++;
                     }
-                    if (i == size -1){
+                    if (i == size - 1) {
                         if (!qrCodeClass.equals("A0702")) {
                             ToastUtil.showToast("箱码必须最后扫码");
                         }
@@ -388,38 +399,50 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
         final String code = result.getCode();
         String applyNo = result.getApplyNo();
         String qrCodeType = result.getQrCodeType();
+        // 套码标识
+        String buApplyNo = result.getBuApplyNo();
         // 箱码 A0702  产品吗 A0701
         final String codeClass = qrCodeType.equals("2") ? "A0702" : "A0701";
 
-        // 发货出库
-        if (isSendItem) {
-            // 是否重复 code
-            isContainsCode(code,codeClass);
+        // 不是套码
+        if (buApplyNo == null) {
+            isPackageCode = false;
+            // 发货出库
+            if (isSendItem) {
+                // 是否重复 code
+                isContainsCode(code, codeClass);
 
-        }else{
-            int size = qrCodeInfos.size();
-            // 产品码数量由规格控制
-            if (size == specNumber + 1) {
-                return;
-            }
-            // TODO  逻辑需要改进
-            // 生产入库 符合规格数量
-            if (size < specNumber) {
-                // 1 为产品码,2 为箱码
-                if (qrCodeType.equals("1")) {
-                    // 是否重复 code
-                    isContainsCode(code,codeClass);
-                } else {
-                    ToastUtil.showToast("请先扫产品码");
-                }
             } else {
-                if (qrCodeType.equals("2")) {
-                    isContainsCode(code,codeClass);
-                    boxCode = code;
+                // 生产入库
+                int size = qrCodeInfos.size();
+                // 产品码数量由规格控制
+                if (size == specNumber + 1) {
+                    return;
+                }
+                // TODO  逻辑需要改进
+                // 生产入库 符合规格数量
+                if (size < specNumber) {
+                    // 1 为产品码,2 为箱码
+                    if (qrCodeType.equals("1")) {
+                        // 是否重复 code
+                        isContainsCode(code, codeClass);
+                    } else {
+                        ToastUtil.showToast("请先扫产品码");
+                    }
                 } else {
-                    ToastUtil.showToast("请扫箱码");
+                    if (qrCodeType.equals("2")) {
+                        isContainsCode(code, codeClass);
+                        boxCode = code;
+                    } else {
+                        ToastUtil.showToast("请扫箱码");
+                    }
                 }
             }
+        } else {
+            // 套码
+            getCodeList(code);
+            isPackageCode = true;
+            boxCode = code;
         }
 
         // TODO  Thread.sleep 需改进
@@ -434,19 +457,20 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
 
     /**
      * 检查是否已扫码 code
+     *
      * @param code
      */
-    private void isContainsCode(String code,String codeClass){
+    private void isContainsCode(String code, String codeClass) {
         if (qrCodeString.contains(code)) {
             ToastUtil.showToast("重复码号");
             //ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
         } else {
-            if (isSendItem){
+            if (isSendItem) {
                 // 出库校验
-                sendOutjudegCode(companyNo,codeClass,goodsNo,code);
-            }else{
-                // 入库
-                httpJudegCode(code,codeClass);
+                sendOutjudegCode(companyNo, codeClass, goodsNo, code);
+            } else {
+                // 入库校验
+                httpJudegCode(code, codeClass);
             }
         }
     }
@@ -454,7 +478,7 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
     /**
      * 入库校验
      */
-    private void httpJudegCode(final String code,final String codeClass) {
+    private void httpJudegCode(final String code, final String codeClass) {
         HttpMethods.getInstance().judegCode(new SingleObserver<BaseResponse<QrCodeJudge>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -480,7 +504,7 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
                     numberCode.setText(String.valueOf(qrCodeString.size()));
                     adapter.notifyItemInserted(qrCodeInfos.size());
                     adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
-                }else{
+                } else {
                     ToastUtil.showToast(response.getMsg());
                 }
 
@@ -498,12 +522,13 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
 
     /**
      * 出库校验
-     * @param companyNo 企业编号
+     *
+     * @param companyNo   企业编号
      * @param qrCodeClass 商品编号
-     * @param goodsNo 产品码A0701、箱码A0702
-     * @param qrCode 二维码
+     * @param goodsNo     产品码A0701、箱码A0702
+     * @param qrCode      二维码
      */
-    private void sendOutjudegCode(String companyNo, final String qrCodeClass, String goodsNo, final String qrCode){
+    private void sendOutjudegCode(String companyNo, final String qrCodeClass, String goodsNo, final String qrCode) {
         HttpMethods.getInstance().sendOutjudegCode(new SingleObserver<BaseResponse<QrCodeJudge>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -531,7 +556,7 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
                     adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
 
 
-                }else{
+                } else {
                     ToastUtil.showToast(response.getMsg());
                 }
             }
@@ -544,6 +569,52 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
         }, companyNo, qrCodeClass, goodsNo, qrCode);
     }
 
+    /**
+     * Http 根据套码箱码获取产品码
+     */
+    private void getCodeList(final String qrCode) {
+        HttpMethods.getInstance().getQrCodeList(new SingleObserver<BaseResponse<ArrayList<String>>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(BaseResponse<ArrayList<String>> response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+
+                    qrCodeInfos.clear();
+                    ArrayList<String> data = response.getData();
+                    int qrCodeSize = data.size();
+                    if (qrCodeSize != specNumber) {
+                        ToastUtil.showToast("请扫指定规格的套码");
+                    } else {
+                        for (int i = 0; i < data.size(); i++) {
+                            QrCodeListData qrCodeData = new QrCodeListData();
+                            qrCodeData.setQrCodeClass("A0701");
+                            qrCodeData.setQrCode(data.get(i));
+                            qrCodeInfos.add(qrCodeData);
+                        }
+                        QrCodeListData code = new QrCodeListData();
+                        code.setQrCodeClass("A0702");
+                        code.setQrCode(qrCode);
+                        qrCodeInfos.add(code);
+
+                        numberCode.setText(String.valueOf(qrCodeSize + 1));
+                        adapter.notifyDataSetChanged();
+                    }
+
+                } else {
+                    ToastUtil.showToast(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtil.showToast(e.getMessage());
+            }
+        }, qrCode);
+    }
 
     @Override
     public void showResponse(ResponseInfo response) {

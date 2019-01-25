@@ -4,8 +4,10 @@ import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageView
 import com.ty.voogla.R
 import com.ty.voogla.adapter.InspectionAdapter
 import com.ty.voogla.base.BaseActivity
@@ -14,12 +16,16 @@ import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.CheckInfoList
 import com.ty.voogla.bean.produce.DecodeCode
 import com.ty.voogla.constant.CodeConstant
+import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.net.HttpMethods
 import com.ty.voogla.util.ToastUtil
+import com.ty.voogla.widght.DialogUtil
+import com.ty.voogla.widght.NormalAlertDialog
 import com.uuzuche.lib_zxing.activity.CaptureActivity
 import com.uuzuche.lib_zxing.activity.CodeUtils
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import io.reactivex.internal.operators.single.SingleObserveOn
@@ -32,7 +38,8 @@ import pub.devrel.easypermissions.EasyPermissions
  * @author TY on 2019/1/7.
  * 稽查主页(手机端)
  */
-class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks, VooglaContract.View<DecodeCode.ResultBean> {
+class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
+    VooglaContract.View<DecodeCode.ResultBean> {
 
     lateinit var adapter: InspectionAdapter
 
@@ -41,7 +48,9 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks, 
     // 请求 CAMERA 权限码
     private val REQUEST_CAMERA_PERM: Int = 101
 
-    val list  = mutableListOf<CheckInfoList.ListBean>()
+    // 企业编号
+    private var companyNo: String? = null
+    val list = mutableListOf<CheckInfoList.ListBean>()
 
     private val presenter = VooglaPresenter(this)
 
@@ -52,6 +61,7 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks, 
     }
 
     override fun initOneData() {
+        companyNo = SimpleCache.getUserInfo().companyNo
     }
 
     override fun initTwoView() {
@@ -90,7 +100,7 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks, 
 
     }
 
-    var disposable:Disposable? = null
+    var disposable: Disposable? = null
 
     override fun showSuccess(data: DecodeCode.ResultBean) {
         // 二维码解析成功
@@ -108,11 +118,30 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks, 
                 if (CodeConstant.SERVICE_SUCCESS == response.msg) {
                     val list = response.data?.list!!
 
-                    val layoutManager = LinearLayoutManager(this@InspectionActivity, LinearLayoutManager.VERTICAL, false)
+                    val layoutManager =
+                        LinearLayoutManager(this@InspectionActivity, LinearLayoutManager.VERTICAL, false)
                     recycler_view.layoutManager = layoutManager
                     adapter = InspectionAdapter(this@InspectionActivity, R.layout.item_inspection, list)
 
                     recycler_view.adapter = adapter
+
+                    adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
+
+                        override fun onItemLongClick(
+                            view: View?,
+                            holder: RecyclerView.ViewHolder?,
+                            position: Int
+                        ): Boolean {
+                            return false
+                        }
+
+                        override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder, position: Int) {
+                            val imageView = holder.itemView.findViewById<ImageView>(R.id.image_confirm)
+                            val deliveryNo = ""
+                            ImageViewSetOnClick(imageView, deliveryNo)
+                        }
+
+                    })
 
 
                 } else {
@@ -131,7 +160,53 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks, 
         ToastUtil.showToast(msg)
     }
 
-    override fun showResponse(response: ResponseInfo?) {
+    override fun showResponse(response: ResponseInfo) {
+    }
+
+    /**
+     * 确认串货 Dialog
+     */
+    fun ImageViewSetOnClick(imageView: ImageView, deliveryNo: String) {
+        imageView.setOnClickListener { view ->
+            DialogUtil.deleteItemDialog(view.context, "温馨提示", "确认窜货", NormalAlertDialog.onNormalOnclickListener {
+
+                checkInfoConfirm(deliveryNo)
+                it.dismiss()
+//                datas.removeAt(position)
+//                notifyItemRemoved(position)
+//                notifyItemRangeChanged(position, datas.size - position)
+            })
+        }
+
+    }
+
+
+    /**
+     * 确认串货 Http
+     * deliveryNo 发货单编号
+     */
+    fun checkInfoConfirm(deliveryNo: String) {
+
+        HttpMethods.getInstance().checkInfoConfirm(object : SingleObserver<ResponseInfo> {
+            override fun onSuccess(response: ResponseInfo) {
+                if (CodeConstant.SERVICE_SUCCESS == response.msg) {
+
+//                    adapter.notifyItemRemoved()
+//                    adapter.notifyItemRangeChanged()
+
+                }
+                ToastUtil.showToast(response.msg)
+            }
+
+            override fun onSubscribe(d: Disposable) {
+            }
+
+            override fun onError(e: Throwable) {
+                ToastUtil.showToast(e.message)
+            }
+
+        }, companyNo, deliveryNo)
+
     }
 
     @AfterPermissionGranted(101)
@@ -150,7 +225,6 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks, 
                 REQUEST_CAMERA_PERM,
                 Manifest.permission.CAMERA
             )
-//            EasyPermissions.requestPermissions(Manifest.permission.CAMERA)
         }
     }
 
@@ -209,5 +283,10 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks, 
 //                .show()
 //        }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
     }
 }

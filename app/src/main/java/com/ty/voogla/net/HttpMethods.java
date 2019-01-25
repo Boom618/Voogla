@@ -337,8 +337,8 @@ public class HttpMethods {
      * @param deliveryNo
      * @param fleeFlag
      */
-    public void checkInfoConfirm(SingleObserver<BaseResponse> observer, String companyNo, String deliveryNo, String fleeFlag) {
-        mService.checkInfoConfirm(companyNo, deliveryNo, fleeFlag)
+    public void checkInfoConfirm(SingleObserver<ResponseInfo> observer, String companyNo, String deliveryNo) {
+        mService.checkInfoConfirm(companyNo, deliveryNo, "02")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }

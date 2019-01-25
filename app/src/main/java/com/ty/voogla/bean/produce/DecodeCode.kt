@@ -14,6 +14,8 @@ class DecodeCode {
         var code: String? = null
         // 1 为产品码,2 为箱码
         var qrCodeType: String? = null
+        // 套码
+        var buApplyNo: String? = null
         // 申请批次
         var applyNo: String? = null
     }

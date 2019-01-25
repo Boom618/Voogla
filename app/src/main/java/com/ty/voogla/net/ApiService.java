@@ -202,7 +202,7 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(ApiNameConstant.CHECK_INFO_CONFIRM)
-    Single<BaseResponse> checkInfoConfirm(@Field("companyNo") String companyNo,
+    Single<ResponseInfo> checkInfoConfirm(@Field("companyNo") String companyNo,
                                           @Field("deliveryNo") String deliveryNo,
                                           @Field("fleeFlag") String fleeFlag);
 //

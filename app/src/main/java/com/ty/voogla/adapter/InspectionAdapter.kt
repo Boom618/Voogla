@@ -25,15 +25,15 @@ class InspectionAdapter(context: Context, layoutId: Int, datas: MutableList<Chec
 //            .setText(R.id.tv_send_address,info.deliveryAddress)
             .setText(R.id.tv_receipt_address, info.deliveryAddress)
 
-        holder.itemView.findViewById<ImageView>(R.id.image_confirm).setOnClickListener { view ->
-            DialogUtil.deleteItemDialog(view.context, "温馨提示", "确认窜货", NormalAlertDialog.onNormalOnclickListener {
-                ToastUtil.showToast("确认窜货")
-                it.dismiss()
-                datas.removeAt(position)
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(position, datas.size - position)
-            })
-        }
+//        holder.itemView.findViewById<ImageView>(R.id.image_confirm).setOnClickListener { view ->
+//            DialogUtil.deleteItemDialog(view.context, "温馨提示", "确认窜货", NormalAlertDialog.onNormalOnclickListener {
+//                ToastUtil.showToast("确认窜货")
+//                it.dismiss()
+//                datas.removeAt(position)
+//                notifyItemRemoved(position)
+//                notifyItemRangeChanged(position, datas.size - position)
+//            })
+//        }
 
 
     }
