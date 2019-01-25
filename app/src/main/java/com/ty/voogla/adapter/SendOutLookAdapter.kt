@@ -22,7 +22,6 @@ class SendOutLookAdapter(val context: Context,layout:Int,datas:MutableList<OutPu
         // tv_send_amount_wait  设置了 android:visibility="gone"
 
         holder.setText(R.id.tv_select_pro_name,info.goodsNo)
-            .setText(R.id.tv_send_amount_wait,"?")
             .setText(R.id.tv_box_amount,info.outBoxNum)
             .setText(R.id.tv_product_amount,info.outGoodsNum)
 

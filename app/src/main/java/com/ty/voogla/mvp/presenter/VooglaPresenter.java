@@ -2,6 +2,7 @@ package com.ty.voogla.mvp.presenter;
 
 import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
+import com.ty.voogla.bean.CheckInfoList;
 import com.ty.voogla.bean.produce.*;
 import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.bean.sendout.OutPutInfoData;
@@ -80,7 +81,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
      * 获取生产入库列表
      * batchNo : 搜索生产批次号
      */
-    public void getProduceList(String companyNo,String batchNo) {
+    public void getProduceList(String companyNo, String batchNo) {
         httpMethods.getProductList(new SingleObserver<BaseResponse<ProductIntoData>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -100,7 +101,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onError(Throwable e) {
                 iListView.showError(e.getMessage());
             }
-        }, companyNo,batchNo);
+        }, companyNo, batchNo);
     }
 
     /**
@@ -271,9 +272,10 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
     /**
      * 根据箱码获取产品码
+     *
      * @param qrCode
      */
-    public void getQrCodeList(String qrCode){
+    public void getQrCodeList(String qrCode) {
         httpMethods.getQrCodeList(new SingleObserver<BaseResponse<ArrayList<String>>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -439,6 +441,39 @@ public class VooglaPresenter implements VooglaContract.Presenter {
                 iView.showError(e.getMessage());
             }
         }, body);
+    }
+
+    /**
+     * --------------------------------- 稽查 ----------------------------------------
+     */
+
+    /**
+     * @param qrCodeClass 二维码分类
+     * @param qrCode      二维码
+     */
+    public void checkInfoList(String qrCodeClass, String qrCode) {
+        httpMethods.checkInfoList(new SingleObserver<BaseResponse<CheckInfoList>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(BaseResponse<CheckInfoList> response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    CheckInfoList data = response.getData();
+                    iView.showSuccess(data);
+                } else {
+                    iView.showError(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iView.showError(e.getMessage());
+            }
+        }, qrCodeClass, qrCode);
+
     }
 
 }

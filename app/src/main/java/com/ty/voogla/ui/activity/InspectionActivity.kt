@@ -9,9 +9,20 @@ import android.view.View
 import com.ty.voogla.R
 import com.ty.voogla.adapter.InspectionAdapter
 import com.ty.voogla.base.BaseActivity
+import com.ty.voogla.base.BaseResponse
+import com.ty.voogla.base.ResponseInfo
+import com.ty.voogla.bean.CheckInfoList
+import com.ty.voogla.bean.produce.DecodeCode
+import com.ty.voogla.constant.CodeConstant
+import com.ty.voogla.mvp.contract.VooglaContract
+import com.ty.voogla.mvp.presenter.VooglaPresenter
+import com.ty.voogla.net.HttpMethods
 import com.ty.voogla.util.ToastUtil
 import com.uuzuche.lib_zxing.activity.CaptureActivity
 import com.uuzuche.lib_zxing.activity.CodeUtils
+import io.reactivex.SingleObserver
+import io.reactivex.disposables.Disposable
+import io.reactivex.internal.operators.single.SingleObserveOn
 import kotlinx.android.synthetic.main.activity_inspection.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -21,18 +32,18 @@ import pub.devrel.easypermissions.EasyPermissions
  * @author TY on 2019/1/7.
  * 稽查主页(手机端)
  */
-class InspectionActivity : BaseActivity() ,EasyPermissions.PermissionCallbacks{
+class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks, VooglaContract.View<DecodeCode.ResultBean> {
 
     lateinit var adapter: InspectionAdapter
-
-//    val list: MutableList<InspectionData.ListBean>? = null
 
     // 扫描跳转Activity RequestCode
     private val REQUEST_CODE: Int = 100
     // 请求 CAMERA 权限码
     private val REQUEST_CAMERA_PERM: Int = 101
 
-    val list: ArrayList<String> = ArrayList(10)
+    val list  = mutableListOf<CheckInfoList.ListBean>()
+
+    private val presenter = VooglaPresenter(this)
 
     override val activityLayout: Int
         get() = R.layout.activity_inspection
@@ -41,8 +52,6 @@ class InspectionActivity : BaseActivity() ,EasyPermissions.PermissionCallbacks{
     }
 
     override fun initOneData() {
-        list.add("12345")
-        list.add("12345")
     }
 
     override fun initTwoView() {
@@ -50,17 +59,12 @@ class InspectionActivity : BaseActivity() ,EasyPermissions.PermissionCallbacks{
 
         initToolBar(R.string.inspection_system)
 
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        recycler_view.layoutManager = layoutManager
-        adapter = InspectionAdapter(this, R.layout.item_inspection, list)
-
-        recycler_view.adapter = adapter
 
         ed_search.setOnTouchListener(View.OnTouchListener { _, event ->
             val drawable = ed_search.compoundDrawables[2]
 
             if (event.actionMasked == MotionEvent.ACTION_UP) {
-                if (event.x > (ed_search.width - ed_search.paddingRight - drawable.intrinsicWidth)){
+                if (event.x > (ed_search.width - ed_search.paddingRight - drawable.intrinsicWidth)) {
                     // 打开相机扫码
                     cameraTask()
                 }
@@ -84,6 +88,50 @@ class InspectionActivity : BaseActivity() ,EasyPermissions.PermissionCallbacks{
             ToastUtil.showToast("搜索内容：" + ed_search.text.toString())
         }
 
+    }
+
+    var disposable:Disposable? = null
+
+    override fun showSuccess(data: DecodeCode.ResultBean) {
+        // 二维码解析成功
+        val qrCodeType = data.qrCodeType!!
+        val code = data.code!!
+
+        val qrCodeClass = if (qrCodeType == "2") "A0702" else "A0701"
+
+        HttpMethods.getInstance().checkInfoList(object : SingleObserver<BaseResponse<CheckInfoList>> {
+            override fun onSubscribe(d: Disposable) {
+                disposable = d
+            }
+
+            override fun onSuccess(response: BaseResponse<CheckInfoList>) {
+                if (CodeConstant.SERVICE_SUCCESS == response.msg) {
+                    val list = response.data?.list!!
+
+                    val layoutManager = LinearLayoutManager(this@InspectionActivity, LinearLayoutManager.VERTICAL, false)
+                    recycler_view.layoutManager = layoutManager
+                    adapter = InspectionAdapter(this@InspectionActivity, R.layout.item_inspection, list)
+
+                    recycler_view.adapter = adapter
+
+
+                } else {
+
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                ToastUtil.showToast(e.message)
+            }
+        }, qrCodeClass, code)
+
+    }
+
+    override fun showError(msg: String) {
+        ToastUtil.showToast(msg)
+    }
+
+    override fun showResponse(response: ResponseInfo?) {
     }
 
     @AfterPermissionGranted(101)
@@ -113,12 +161,15 @@ class InspectionActivity : BaseActivity() ,EasyPermissions.PermissionCallbacks{
             val bundle = data?.extras
             if (CodeUtils.RESULT_SUCCESS == bundle?.getInt(CodeUtils.RESULT_TYPE)) {
                 val result = bundle.getString(CodeUtils.RESULT_STRING)
+
+                presenter.decodeUrlCode(result)
+
                 ToastUtil.showToast(result)
-                ed_search.setText(result)
+                //ed_search.setText(result)
             } else {
                 ToastUtil.showToast("解析二维码失败")
             }
-        }else if(requestCode == REQUEST_CAMERA_PERM){
+        } else if (requestCode == REQUEST_CAMERA_PERM) {
             ToastUtil.showToast("从设置页面返回...")
         }
     }

@@ -82,13 +82,17 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
 
 
         initToolBar(R.string.send_out_detail, "保存", View.OnClickListener { view ->
-            if (deliveryList!!.size != wareNameList.size) {
-                DialogUtil.deleteItemDialog(view.context,"确认发货？","实际发货数量与要求发货数量不一致", NormalAlertDialog.onNormalOnclickListener {
+            val size = deliveryList!!.size
+            for (i in 0 until size){
+                val temp = deliveryList!![i].deliveryNum!!.toInt()
+                if ( temp != boxSize) {
+                    DialogUtil.deleteItemDialog(view.context,"确认发货？","实际发货数量与要求发货数量不一致", NormalAlertDialog.onNormalOnclickListener {
+                        sendOutSave(initReqBody())
+                        it.dismiss()
+                    })
+                }else{
                     sendOutSave(initReqBody())
-                    it.dismiss()
-                })
-            }else{
-                sendOutSave(initReqBody())
+                }
             }
         })
         // 发货单编号
@@ -133,7 +137,7 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
 
         val size = deliveryList!!.size
         // 商品数据
-        for (i in 0 until wareNameList.size) {
+        for (i in 0 until size) {
 
             val qrCode = AddSendOutData.OutQrCodeDetailInfosBean()
             qrCode.wareName = wareNameList[i]
@@ -186,7 +190,9 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // 出库扫码
         if (requestCode == CodeConstant.REQUEST_CODE_OUT && resultCode == CodeConstant.RESULT_CODE) {
-
+            // 重置数量
+            proSize = 0
+            boxSize = 0
             val sendPosition = data?.getIntExtra(CodeConstant.SEND_POSITION, -1)!!
             qrCodeList = SimpleCache.getQrCode()
             SimpleCache.putQrCode(qrCodeList)

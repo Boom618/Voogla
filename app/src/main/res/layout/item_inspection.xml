@@ -90,6 +90,7 @@
             android:layout_marginTop="@dimen/space_10"
             app:layout_constraintStart_toStartOf="@+id/tv_number"
             android:text="@string/send_address"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:textSize="@dimen/text_14"
             android:layout_height="wrap_content"/>
@@ -100,12 +101,14 @@
             android:layout_marginTop="@dimen/space_10"
             app:layout_constraintEnd_toEndOf="@id/image_confirm"
             android:text="@string/send_address"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:textSize="@dimen/text_14"
             android:layout_height="wrap_content"/>
 
     <View
             android:id="@+id/view_line4"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/tv_send_address"
             android:layout_width="match_parent"
             style="@style/lineView"/>

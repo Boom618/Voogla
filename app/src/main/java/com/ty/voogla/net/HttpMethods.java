@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
+import com.ty.voogla.bean.CheckInfoList;
 import com.ty.voogla.bean.produce.*;
 import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.bean.sendout.OutPutInfoData;
@@ -49,6 +50,7 @@ public class HttpMethods {
      * cookie
      */
     private ConcurrentHashMap<String, List<Cookie>> cookieStore = new ConcurrentHashMap<>();
+
     private HttpMethods() {
         init(ApiNameConstant.BASE_URL2);
     }
@@ -133,8 +135,8 @@ public class HttpMethods {
      * @param observer
      * @param companyNo
      */
-    public void getProductList(SingleObserver<BaseResponse<ProductIntoData>> observer, String companyNo,String batchNo) {
-        mService.getProductList(companyNo,batchNo)
+    public void getProductList(SingleObserver<BaseResponse<ProductIntoData>> observer, String companyNo, String batchNo) {
+        mService.getProductList(companyNo, batchNo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
@@ -214,6 +216,7 @@ public class HttpMethods {
 
     /**
      * 入库 二维码校验
+     *
      * @param observer
      * @param companyNo
      * @param qrCode
@@ -226,10 +229,11 @@ public class HttpMethods {
 
     /**
      * 根据箱码获取产品码
+     *
      * @param qrCode
      * @return
      */
-    public void getQrCodeList(SingleObserver<BaseResponse<ArrayList<String>>> observer,String qrCode){
+    public void getQrCodeList(SingleObserver<BaseResponse<ArrayList<String>>> observer, String qrCode) {
         mService.getQrCodeList(qrCode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
@@ -315,6 +319,29 @@ public class HttpMethods {
                 .subscribe(observer);
     }
 
+    /**
+     * --------------------------------- 稽查 ----------------------------------------
+     */
+
+    public void checkInfoList(SingleObserver<BaseResponse<CheckInfoList>> observer, String qrCodeClass, String qrCode) {
+        mService.checkInfoList(qrCodeClass, qrCode)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+    /**
+     * 稽查确认
+     *
+     * @param observer
+     * @param companyNo
+     * @param deliveryNo
+     * @param fleeFlag
+     */
+    public void checkInfoConfirm(SingleObserver<BaseResponse> observer, String companyNo, String deliveryNo, String fleeFlag) {
+        mService.checkInfoConfirm(companyNo, deliveryNo, fleeFlag)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
 
     /**
      * --------------------------------- Gson  ----------------------------------------

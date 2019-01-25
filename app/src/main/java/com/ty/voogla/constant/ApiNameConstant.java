@@ -120,5 +120,19 @@ public class ApiNameConstant {
      */
     public static final String CODE_JUDGE_SEND = "corp/im/commodity-output-judge";
 
+    /**
+     * --------------------------------- 稽查 ----------------------------------------
+     */
+
+    /**
+     * 稽查列表信息
+     */
+    public static final String CHECK_INFO_LIST = "corp/im/check-info-list";
+
+    /**
+     * 稽查确认
+     */
+    public static final String CHECK_INFO_CONFIRM = "corp/im/check-info-confirm";
+
 
 }

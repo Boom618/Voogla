@@ -2,6 +2,7 @@ package com.ty.voogla.net;
 
 import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
+import com.ty.voogla.bean.CheckInfoList;
 import com.ty.voogla.bean.produce.*;
 import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.bean.sendout.OutPutInfoData;
@@ -83,7 +84,7 @@ public interface ApiService {
                                                                @Field("inBatchNo") String inBatchNo);
 
     /**
-     * 二维码检验
+     * 二维码解码
      *
      * @param encodeUrl
      * @return
@@ -106,6 +107,7 @@ public interface ApiService {
 
     /**
      * 根据箱码获取产品码
+     *
      * @param qrCode
      * @return
      */
@@ -166,6 +168,7 @@ public interface ApiService {
 
     /**
      * 出库 二维码校验
+     *
      * @param companyNo
      * @param qrCodeClass
      * @param goodsNo
@@ -179,7 +182,29 @@ public interface ApiService {
                                                        @Field("goodsNo") String goodsNo,
                                                        @Field("qrCode") String qrCode);
 
+    /**
+     * --------------------------------- 稽查 ----------------------------------------
+     */
 
+    @FormUrlEncoded
+    @POST(ApiNameConstant.CHECK_INFO_LIST)
+    Single<BaseResponse<CheckInfoList>> checkInfoList(@Field("qrCodeClass") String qrCodeClass,
+                                                      @Field("qrCode") String qrCode);
+
+
+    /**
+     * 稽查确认
+     *
+     * @param companyNo
+     * @param deliveryNo
+     * @param fleeFlag
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(ApiNameConstant.CHECK_INFO_CONFIRM)
+    Single<BaseResponse> checkInfoConfirm(@Field("companyNo") String companyNo,
+                                          @Field("deliveryNo") String deliveryNo,
+                                          @Field("fleeFlag") String fleeFlag);
 //
 //    /**
 //     * 用户登出

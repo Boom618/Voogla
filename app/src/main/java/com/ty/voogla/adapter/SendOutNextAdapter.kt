@@ -19,22 +19,12 @@ class SendOutNextAdapter(val context: Context, layout: Int, datas: MutableList<S
 
     override fun convert(holder: ViewHolder, info: SendOutListInfo.DeliveryDetailInfosBean, position: Int) {
 
-
-
-//        holder.itemView.findViewById<TextView>(R.id.tv_select_pro_name).setOnClickListener {
-//
-//            DialogUtil.selectSendName(context, send)
-//        }
-
         holder.setText(R.id.tv_send_amount_wait, info.deliveryNum)
             .setText(R.id.tv_select_pro_name, info.goodsName)
-//            .setText(R.id.tv_box_amount, "0 箱")
-//            .setText(R.id.tv_product_amount, "0 盒")
 
         holder.itemView.findViewById<TextView>(R.id.tv_scan_code_box).setOnClickListener {
 
             val intent = Intent(context, BoxLinkJavaActivity::class.java)
-//            val intent = Intent("android.intent.action.AUTOCODEACTIVITY")
             intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_SCAN_OUT)
             intent.putExtra(CodeConstant.SEND_POSITION,position)
             intent.putExtra("goodsNo",info.goodsNo)
