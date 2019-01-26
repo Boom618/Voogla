@@ -53,6 +53,13 @@ public interface VooglaContract {
          * @param msg
          */
         void showError(String msg);
+
+        /**
+         * 返回响应信息（成功 失败）
+         *
+         * @param response
+         */
+        void showResponse(ResponseInfo response);
     }
 
     interface Presenter {

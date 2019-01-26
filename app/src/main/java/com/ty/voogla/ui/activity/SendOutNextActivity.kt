@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.SparseArray
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import com.google.gson.Gson
 import com.ty.voogla.R
 import com.ty.voogla.adapter.LayoutInit
@@ -21,6 +22,7 @@ import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.net.RequestBodyJson
+import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
 import com.ty.voogla.widght.NormalAlertDialog
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
@@ -54,11 +56,11 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
     private var deliveryAddress: String? = null
 
     // 仓库 商品
-    private var wareNameList = mutableListOf<String>()
-    private var inBatchList = mutableListOf<String>()
+    private var wareNameList = SparseArray<String>()
+    private var inBatchList = SparseArray<String>()
 
     // 回调成功标志
-    private var isDelete = false
+//    private var isDelete = false
     private var itemPosition = 0
 
     // 企业编号
@@ -90,8 +92,10 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
                         sendOutSave(initReqBody())
                         it.dismiss()
                     })
+                    return@OnClickListener
                 }else{
                     sendOutSave(initReqBody())
+                    return@OnClickListener
                 }
             }
         })
@@ -116,7 +120,7 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
         }
 
         presenter.addSendOut(body)
-        isDelete = false
+//        isDelete = false
 
     }
 
@@ -135,14 +139,19 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
 
         val goodsInfo = AddSendOutData.WareInfoBean()
 
-        val size = deliveryList!!.size
-        // 商品数据
-        for (i in 0 until size) {
+        // 发货明细 size
+        val itemSize = deliveryList!!.size
 
+        // 商品数据
+        for (i in 0 until itemSize) {
+            // 仓库（有效值）
+            val wareName = wareNameList[i]
             val qrCode = AddSendOutData.OutQrCodeDetailInfosBean()
-            qrCode.wareName = wareNameList[i]
-            qrCode.inBatchNo = inBatchList[i]
-            if (!wareNameList[i].isEmpty()) {
+
+            if (!wareName.isNullOrEmpty()) {
+                qrCode.wareName = wareNameList[i]
+                qrCode.inBatchNo = inBatchList[i]
+
                 qrCode.goodsNo = deliveryList!![i].goodsNo
                 // 箱码数量
                 qrCode.outBoxNum = boxSize.toString()
@@ -197,10 +206,11 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
             qrCodeList = SimpleCache.getQrCode()
             SimpleCache.putQrCode(qrCodeList)
 
+            // qrCodeList[sendPosition] IndexOutOfBounds
             val wareName = qrCodeList[sendPosition].wareName!!
             val inBatchNo = qrCodeList[sendPosition].inBatchNo!!
-            wareNameList.add(sendPosition, wareName)
-            inBatchList.add(sendPosition, inBatchNo)
+            wareNameList.put(sendPosition, wareName)
+            inBatchList.put(sendPosition, inBatchNo)
 
             // 存 item position 箱码产品码
             itemSparse.put(sendPosition, qrCodeList)
@@ -235,24 +245,24 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
         adapter = SendOutNextAdapter(this, R.layout.item_send_out_next, deliveryList!!)
         recycler_view_send_next.adapter = adapter
 
-        adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
-            override fun onItemLongClick(view: View, holder: RecyclerView.ViewHolder, position: Int): Boolean {
-
-                DialogUtil.deleteItemDialog(view.context, "温馨提示","确认删除", NormalAlertDialog.onNormalOnclickListener {
-
-                    presenter.deleteSendOut(companyNo, deliveryNo)
-                    isDelete = true
-                    itemPosition = position
-                    it.dismiss()
-                })
-                return true
-            }
-
-            override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
-
-            }
-
-        })
+//        adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
+//            override fun onItemLongClick(view: View, holder: RecyclerView.ViewHolder, position: Int): Boolean {
+//
+//                DialogUtil.deleteItemDialog(view.context, "温馨提示","确认删除", NormalAlertDialog.onNormalOnclickListener {
+//
+//                    presenter.deleteSendOut(companyNo, deliveryNo)
+//                    isDelete = true
+//                    itemPosition = position
+//                    it.dismiss()
+//                })
+//                return true
+//            }
+//
+//            override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
+//
+//            }
+//
+//        })
 
     }
 
@@ -260,15 +270,17 @@ class SendOutNextActivity : BaseActivity(), VooglaContract.View<SendOutListInfo>
     }
 
     override fun showResponse(response: ResponseInfo) {
-        if (CodeConstant.SERVICE_SUCCESS == response.msg) {
-            if (isDelete) {
-                deliveryList!!.removeAt(itemPosition)
-                adapter.notifyItemRemoved(itemPosition)
-                adapter.notifyItemRangeChanged(itemPosition, deliveryList!!.size - itemPosition)
-            } else {
-                finish()
-            }
-        }
+        ToastUtil.showToast(response.msg)
+        finish()
+//        if (CodeConstant.SERVICE_SUCCESS == response.msg) {
+//            if (isDelete) {
+//                deliveryList!!.removeAt(itemPosition)
+//                adapter.notifyItemRemoved(itemPosition)
+//                adapter.notifyItemRangeChanged(itemPosition, deliveryList!!.size - itemPosition)
+//            } else {
+//                finish()
+//            }
+//        }
     }
 
     override fun onDestroy() {

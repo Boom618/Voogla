@@ -50,9 +50,11 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
 
     // 企业编号
     private var companyNo: String? = null
-    val list = mutableListOf<CheckInfoList.ListBean>()
+    private var list = mutableListOf<CheckInfoList.ListBean>()
 
     private val presenter = VooglaPresenter(this)
+    // 当前确认 position
+    private var currentPosition = 0
 
     override val activityLayout: Int
         get() = R.layout.activity_inspection
@@ -65,7 +67,6 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
     }
 
     override fun initTwoView() {
-
 
         initToolBar(R.string.inspection_system)
 
@@ -116,7 +117,7 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
 
             override fun onSuccess(response: BaseResponse<CheckInfoList>) {
                 if (CodeConstant.SERVICE_SUCCESS == response.msg) {
-                    val list = response.data?.list!!
+                    list = response.data?.list!!
 
                     val layoutManager =
                         LinearLayoutManager(this@InspectionActivity, LinearLayoutManager.VERTICAL, false)
@@ -128,16 +129,16 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
                     adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
 
                         override fun onItemLongClick(
-                            view: View?,
-                            holder: RecyclerView.ViewHolder?,
+                            view: View,
+                            holder: RecyclerView.ViewHolder,
                             position: Int
                         ): Boolean {
                             return false
                         }
 
-                        override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder, position: Int) {
+                        override fun onItemClick(view: View, holder: RecyclerView.ViewHolder, position: Int) {
                             val imageView = holder.itemView.findViewById<ImageView>(R.id.image_confirm)
-                            val deliveryNo = ""
+                            val deliveryNo = list[position].deliveryNo!!
                             ImageViewSetOnClick(imageView, deliveryNo)
                         }
 
@@ -161,6 +162,10 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
     }
 
     override fun showResponse(response: ResponseInfo) {
+        ToastUtil.showToast(response.msg)
+        list.removeAt(currentPosition)
+        adapter.notifyItemRemoved(currentPosition)
+        adapter.notifyItemRangeChanged(currentPosition,list.size - currentPosition)
     }
 
     /**
@@ -172,9 +177,6 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
 
                 checkInfoConfirm(deliveryNo)
                 it.dismiss()
-//                datas.removeAt(position)
-//                notifyItemRemoved(position)
-//                notifyItemRangeChanged(position, datas.size - position)
             })
         }
 
@@ -187,25 +189,7 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
      */
     fun checkInfoConfirm(deliveryNo: String) {
 
-        HttpMethods.getInstance().checkInfoConfirm(object : SingleObserver<ResponseInfo> {
-            override fun onSuccess(response: ResponseInfo) {
-                if (CodeConstant.SERVICE_SUCCESS == response.msg) {
-
-//                    adapter.notifyItemRemoved()
-//                    adapter.notifyItemRangeChanged()
-
-                }
-                ToastUtil.showToast(response.msg)
-            }
-
-            override fun onSubscribe(d: Disposable) {
-            }
-
-            override fun onError(e: Throwable) {
-                ToastUtil.showToast(e.message)
-            }
-
-        }, companyNo, deliveryNo)
+        presenter.checkInfoConfirm(companyNo,deliveryNo)
 
     }
 

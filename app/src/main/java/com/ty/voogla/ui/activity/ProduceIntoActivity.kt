@@ -8,6 +8,7 @@ import com.ty.voogla.R
 import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.adapter.ProductIntoAdapter
 import com.ty.voogla.base.BaseActivity
+import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.produce.ProductIntoData
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
@@ -105,6 +106,10 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.ListView<ProductIntoD
 
             })
         }
+
+    }
+
+    override fun showResponse(response: ResponseInfo) {
 
     }
 

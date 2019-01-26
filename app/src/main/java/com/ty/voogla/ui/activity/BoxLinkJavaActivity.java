@@ -22,6 +22,7 @@ import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean;
 import com.ty.voogla.bean.produce.QrCodeJudge;
 import com.ty.voogla.bean.sendout.QrCodeListData;
 import com.ty.voogla.constant.CodeConstant;
+import com.ty.voogla.data.SharedP;
 import com.ty.voogla.data.SimpleCache;
 import com.ty.voogla.data.SparseArrayUtil;
 import com.ty.voogla.mvp.contract.VooglaContract;
@@ -63,11 +64,6 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
      */
     private String boxCode;
     /**
-     * 发货出库 箱码产品码 (要删)
-     */
-//    private ArrayList<QrCodeListData> qrCodeList = new ArrayList<>();
-
-    /**
      * 发货出库-发货明细 item
      */
     private int sendPosition;
@@ -103,6 +99,11 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
      */
     private TextView numberCode;
 
+    /**
+     * 上一次进来的位置
+     */
+    private int lastPosition = 0;
+
 
     @Override
     protected int getActivityLayout() {
@@ -132,7 +133,6 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             specNumber = Integer.parseInt(spec);
             sendPosition = getIntent().getIntExtra("position", 0);
             List<InBoxCodeDetailInfosBean> qrCodeList = SparseArrayUtil.getQrCodeList(this);
-//            qrCodeInfos =  qrCodeList.get(0).getQrCodeInfos();
             List<QrCodeListData> infos = qrCodeList.get(0).getQrCodeInfos();
             qrCodeInfos.addAll(infos);
             for (int i = 0; i < qrCodeInfos.size(); i++) {
@@ -153,21 +153,32 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             // 出库扫码
             isSendItem = true;
             sendPosition = getIntent().getIntExtra(CodeConstant.SEND_POSITION, -1);
+            lastPosition = SharedP.getKeyPosition(this,"lastPosition");
+
             goodsNo = getIntent().getStringExtra("goodsNo");
-            qrCodeInfos = SimpleCache.getQrCode();
-            if (qrCodeInfos == null) {
-                qrCodeInfos = new ArrayList();
-            }
-            for (int i = 0; i < qrCodeInfos.size(); i++) {
-                qrCodeString.add(qrCodeInfos.get(i).getQrCode());
+
+            // 是同一列
+            if (sendPosition == lastPosition) {
+                qrCodeInfos = SimpleCache.getQrCode();
+                if (qrCodeInfos == null) {
+                    qrCodeInfos = new ArrayList();
+                }
+                for (int i = 0; i < qrCodeInfos.size(); i++) {
+                    qrCodeString.add(qrCodeInfos.get(i).getQrCode());
+                }
             }
             numberCode.setText(String.valueOf(this.qrCodeInfos.size()));
             initToolBar(R.string.scan_code, "保存", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (qrCodeInfos.size() == 0) {
+                        ToastUtil.showToast("码数量不能为空");
+                        return;
+                    }
                     Intent intent = new Intent();
                     intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
                     SimpleCache.putQrCode(qrCodeInfos);
+                    SharedP.putKeyPosition(BoxLinkJavaActivity.this,"lastPosition",sendPosition);
 
                     setResult(CodeConstant.RESULT_CODE, intent);
                     finish();
@@ -186,7 +197,7 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
             public void onItemClick(View view, RecyclerView.ViewHolder holder, final int position) {
 
                 ImageView deleteView = holder.itemView.findViewById(R.id.image_delete);
-                // 套码禁用删除
+                // 套码禁用产品删除 【默认 true 】
                 if (!isPackageCode) {
                     deleteView.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -202,7 +213,15 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
                         }
                     });
                 }else{
-
+                    // 套码一删全删
+                    deleteView.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            numberCode.setText("0");
+                            qrCodeInfos.clear();
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
                 }
 
             }
@@ -545,7 +564,6 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
                     codeData.setQrCodeClass(qrCodeClass);
                     codeData.setWareName(qrCodeInfo.getWareName());
                     codeData.setInBatchNo(qrCodeInfo.getInBatchNo());
-//                    qrCodeList.add(codeData);
 
                     qrCodeInfos.add(codeData);
 
@@ -554,7 +572,6 @@ public class BoxLinkJavaActivity extends BaseActivity implements BarcodeReader.B
                     numberCode.setText(String.valueOf(qrCodeString.size()));
                     adapter.notifyItemInserted(qrCodeInfos.size());
                     adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
-
 
                 } else {
                     ToastUtil.showToast(response.getMsg());

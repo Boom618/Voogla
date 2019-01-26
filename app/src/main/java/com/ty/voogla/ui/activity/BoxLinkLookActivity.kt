@@ -7,6 +7,7 @@ import com.ty.voogla.adapter.BoxLinkLookAdapter
 import com.ty.voogla.adapter.BoxLinkProLookAdapter
 import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.base.BaseActivity
+import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.data.SparseArrayUtil
 import com.ty.voogla.mvp.contract.VooglaContract
@@ -52,6 +53,9 @@ class BoxLinkLookActivity : BaseActivity(),VooglaContract.ListView<String> {
 
     }
 
+    override fun showResponse(response: ResponseInfo) {
+
+    }
     override fun showError(msg: String?) {
     }
 

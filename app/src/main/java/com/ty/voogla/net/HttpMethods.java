@@ -335,7 +335,6 @@ public class HttpMethods {
      * @param observer
      * @param companyNo
      * @param deliveryNo
-     * @param fleeFlag
      */
     public void checkInfoConfirm(SingleObserver<ResponseInfo> observer, String companyNo, String deliveryNo) {
         mService.checkInfoConfirm(companyNo, deliveryNo, "02")

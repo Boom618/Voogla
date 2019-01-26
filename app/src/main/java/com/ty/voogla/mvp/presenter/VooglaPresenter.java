@@ -401,15 +401,15 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             @Override
             public void onSuccess(ResponseInfo response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
-                    iView.showResponse(response);
+                    iListView.showResponse(response);
                 } else {
-                    iView.showError(response.getMsg());
+                    iListView.showError(response.getMsg());
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-                iView.showError(e.getMessage());
+                iListView.showError(e.getMessage());
             }
         }, companyNo, deliveryNo);
 
@@ -474,6 +474,34 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             }
         }, qrCodeClass, qrCode);
 
+    }
+
+    /**
+     * 稽查确认
+     * @param companyNo
+     * @param deliveryNo
+     */
+    public void checkInfoConfirm(String companyNo, String deliveryNo){
+        httpMethods.checkInfoConfirm(new SingleObserver<ResponseInfo>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(ResponseInfo responseInfo) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(responseInfo.getMsg())) {
+                    iView.showResponse(responseInfo);
+                }else{
+                    iView.showError(responseInfo.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iView.showError(e.getMessage());
+            }
+        },companyNo,deliveryNo);
     }
 
 }
