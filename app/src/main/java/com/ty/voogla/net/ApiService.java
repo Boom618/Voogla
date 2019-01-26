@@ -103,7 +103,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(ApiNameConstant.CODE_JUDGE_PRODUCE)
     Single<BaseResponse<QrCodeJudge>> judegCode(@Field("companyNo") String companyNo,
-                                                @Field("qrCode") String qrCode);
+                                                @Field("qrCode") String qrCode,
+                                                @Field("qrCodeClass") String qrCodeClass);
 
     /**
      * 根据箱码获取产品码

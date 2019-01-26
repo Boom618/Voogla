@@ -72,6 +72,11 @@ public final class CodeConstant {
      * 发货明细列表 position
      */
     public static final String SEND_POSITION = "position";
+    /**
+     * 箱码和产品码 类型
+     */
+    public static final String QR_CODE_0701 = "A0701";
+    public static final String QR_CODE_0702 = "A0702";
 
 
     /**

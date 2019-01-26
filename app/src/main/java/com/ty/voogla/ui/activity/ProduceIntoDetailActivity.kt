@@ -49,14 +49,11 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
     // 箱码
     private var boxCode: String? = null
-    // 箱码集合
-//    private var boxCodeSparse: SparseArray<String> = SparseArray()
     /**
      * 产品码对象
      */
     private var qrCodeInfos: InBoxCodeDetailInfosBean = InBoxCodeDetailInfosBean()
     // 入库箱码明细列表
-//    private val listDetail: SparseArray<List<QrCodeListData>> = SparseArray()
     private val listDetail: MutableList<InBoxCodeDetailInfosBean> = mutableListOf()
 
     // 商品名称
@@ -69,6 +66,8 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     private var goodsNo: MutableList<String> = mutableListOf()
 
     private val presenter = VooglaPresenter(this)
+    // 套码编号
+    private var buApplyNo = ""
 
     override val activityLayout: Int
         get() = R.layout.activity_product_into_detail
@@ -169,6 +168,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
                 "productIn" -> {
                     // 入库
                     boxCode = data.getStringExtra("boxCode")
+                    buApplyNo = data.getStringExtra("buApplyNo")
                     qrCodeInfos = SimpleCache.getBoxCode()
 
                     listDetail.add(qrCodeInfos)
@@ -238,6 +238,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             val dropLast = infos!!.dropLast(1).toMutableList()
             boxCodeInfo.qrCode = listDetail[i].qrCode
             boxCodeInfo.qrCodeClass = "A0702"
+            boxCodeInfo.buApplyNo = buApplyNo
             boxCodeInfo.qrCodeInfos = dropLast
             boxInfo.add(boxCodeInfo)
         }

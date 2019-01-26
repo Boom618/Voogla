@@ -233,7 +233,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
      * @param companyNo
      * @param qrCode
      */
-    public void judegCode(String companyNo, String qrCode) {
+    public void judegCode(String companyNo, String qrCode,String qrCodeClass) {
         httpMethods.judegCode(new SingleObserver<BaseResponse<QrCodeJudge>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -255,7 +255,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
                 iView.showError(e.getMessage());
 
             }
-        }, companyNo, qrCode);
+        }, companyNo, qrCode,qrCodeClass);
     }
 
     /**

@@ -34,14 +34,4 @@ class AddProduct {
         var batchNo: String? = null
     }
 
-//    class InBoxCodeDetailInfosBean {
-//        /**
-//         * boxCode : 箱码
-//         * qrCodeInfos : [{"generateNo":"二维码生成编号","qrCode":"产品码"}]
-//         */
-//
-//        var boxCode: String? = null
-//        var qrCodeInfos: List<QrCodeListData>? = null
-//
-//    }
 }

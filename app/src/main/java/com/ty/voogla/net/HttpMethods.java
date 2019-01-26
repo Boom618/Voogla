@@ -201,19 +201,6 @@ public class HttpMethods {
                 .subscribe(observer);
     }
 
-//    public void decodeUrlCodeMap(String secret) {
-//        mService.decodeUrlCode(secret)
-//                .map(new Function<DecodeCode, DecodeCode>() {
-//                    @Override
-//                    public DecodeCode apply(DecodeCode decodeCode) throws Exception {
-//                        return decodeCode;
-//                    }
-//                })
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe();
-//
-//    }
-
     /**
      * 入库 二维码校验
      *
@@ -221,8 +208,8 @@ public class HttpMethods {
      * @param companyNo
      * @param qrCode
      */
-    public void judegCode(SingleObserver<BaseResponse<QrCodeJudge>> observer, String companyNo, String qrCode) {
-        mService.judegCode(companyNo, qrCode)
+    public void judegCode(SingleObserver<BaseResponse<QrCodeJudge>> observer, String companyNo, String qrCode,String qrCodeClass) {
+        mService.judegCode(companyNo, qrCode,qrCodeClass)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
