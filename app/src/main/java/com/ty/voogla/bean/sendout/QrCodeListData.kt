@@ -5,7 +5,7 @@ import java.io.Serializable
 /**
  * @author TY on 2019/1/18.
  *
- * 箱码和产品码
+ * 箱码和产品码（数据展示）
  */
 class QrCodeListData : Serializable {
 

@@ -13,6 +13,7 @@ class QrCodeJudge {
         /**
          * companyNo : 企业编号
          * generateNo : 二维码生成编号
+         * =============================== 校验
          * "inBatchNo": "SPI20190124000002",
          * "batchNo": "hm20190123002",
          * "goodsNo": "17706-产品1",
@@ -29,6 +30,8 @@ class QrCodeJudge {
         var batchNo: String? = null
         var goodsNo: String? = null
         var goodsName: String? = null
+        var qrCodeStart: String? = null
+        var qrCodeEnd: String? = null
         var qrCode: String? = null
         var qrCodeClass: String? = null
         var generateNo: String? = null

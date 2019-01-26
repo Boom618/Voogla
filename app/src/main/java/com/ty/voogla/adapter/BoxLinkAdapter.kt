@@ -18,13 +18,6 @@ class BoxLinkAdapter(context: Context, layout: Int, datas: MutableList<QrCodeLis
         holder.setText(R.id.tv_code,info.qrCode)
             .setText(R.id.tv_type,type)
 
-//        val deleteView = holder.itemView.findViewById<ImageView>(R.id.image_delete)
-//
-//        deleteView.setOnClickListener {
-//            datas.removeAt(position)
-//            notifyItemRemoved(position)
-//            notifyItemRangeChanged(position, datas.size - position)
-//        }
 
     }
 

@@ -1,7 +1,10 @@
 package com.ty.voogla.mvp.contract;
 
+import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
+import com.ty.voogla.bean.produce.DecodeCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,6 +63,25 @@ public interface VooglaContract {
          * @param response
          */
         void showResponse(ResponseInfo response);
+    }
+
+    /**
+     * 扫码页面单独接口
+     *
+     * @param <T>
+     */
+    interface BoxLinkView<T> {
+
+
+        void decodeCode(DecodeCode.ResultBean resultBean);
+
+        void produceJudegCode(T response);
+
+        void sendJudegCode(T response);
+
+        void getCodeList(ArrayList<String> codeList);
+
+        void showError(String msg);
     }
 
     interface Presenter {

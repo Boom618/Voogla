@@ -3,7 +3,6 @@ package com.ty.voogla.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
-import android.util.SparseArray
 import android.view.View
 import android.widget.ImageView
 import com.google.gson.Gson
@@ -19,12 +18,11 @@ import com.ty.voogla.bean.sendout.QrCodeListData
 import com.ty.voogla.connector.SelectGoods
 import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.data.SharedP
+import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.net.HttpMethods
 import com.ty.voogla.net.RequestBodyJson
-import com.ty.voogla.data.SimpleCache
-import com.ty.voogla.data.SparseArrayUtil
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
 import com.ty.voogla.widght.TimeWidght
@@ -35,7 +33,6 @@ import kotlinx.android.synthetic.main.activity_product_into_detail.*
 import okhttp3.RequestBody
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * @author TY on 2019/1/11.
@@ -50,10 +47,13 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     // 箱码
     private var boxCode: String? = null
     /**
-     * 产品码对象
+     * 产品码对象 扫码列表
      */
-    private var qrCodeInfos: InBoxCodeDetailInfosBean = InBoxCodeDetailInfosBean()
-    // 入库箱码明细列表
+    private var qrCodeInfos: MutableList<QrCodeListData> = mutableListOf()
+
+    // 外层列表
+//    private var listCode:MutableList<MutableList<QrCodeListData>> = mutableListOf()
+    // 入库箱码明细列表( 含箱码和产品码 )
     private val listDetail: MutableList<InBoxCodeDetailInfosBean> = mutableListOf()
 
     // 商品名称
@@ -67,7 +67,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
     private val presenter = VooglaPresenter(this)
     // 套码编号
-    private var buApplyNo = ""
+    private var buApplyNo:String? = null
 
     override val activityLayout: Int
         get() = R.layout.activity_product_into_detail
@@ -169,16 +169,30 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
                     // 入库
                     boxCode = data.getStringExtra("boxCode")
                     buApplyNo = data.getStringExtra("buApplyNo")
-                    qrCodeInfos = SimpleCache.getBoxCode()
+                    qrCodeInfos = SimpleCache.getQrCode()
 
-                    listDetail.add(qrCodeInfos)
+                    val data = InBoxCodeDetailInfosBean()
+                    data.qrCode = boxCode
+                    data.buApplyNo = buApplyNo
+                    data.qrCodeClass= "A0702"
+                    data.qrCodeInfos = qrCodeInfos
+
+                    listDetail.add(data)
+                    //listCode.put(qrCodeInfos)
                 }
                 else -> {
                     // 修改
                     boxCode = data?.getStringExtra("boxCode")
+                    buApplyNo = data?.getStringExtra("buApplyNo")
                     val position = data?.getIntExtra(CodeConstant.SEND_POSITION,0)!!
-                    qrCodeInfos = SimpleCache.getBoxCode()
-                    listDetail.add(position,qrCodeInfos)
+                    qrCodeInfos = SimpleCache.getQrCode()
+                    val data = InBoxCodeDetailInfosBean()
+                    data.qrCode = boxCode
+                    data.buApplyNo = buApplyNo
+                    data.qrCodeClass= "A0702"
+                    data.qrCodeInfos = qrCodeInfos
+
+                    listDetail.add(position,data)
                 }
             }
 
@@ -225,23 +239,9 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     private fun initReqBody(): RequestBody? {
 
         val saveBean = AddProduct()
-        val boxInfo: MutableList<InBoxCodeDetailInfosBean> = mutableListOf()
+//        val boxInfo: MutableList<InBoxCodeDetailInfosBean> = mutableListOf()
         val wareInfo = AddProduct.InWareInfoBean()
         val boxSize = listDetail.size
-
-        for (i in 0 until boxSize){
-            // 箱码 A0702  产品吗 A0701
-            val boxCodeInfo = InBoxCodeDetailInfosBean()
-
-            // 删除最后一列箱码,
-            val infos = listDetail[i].qrCodeInfos
-            val dropLast = infos!!.dropLast(1).toMutableList()
-            boxCodeInfo.qrCode = listDetail[i].qrCode
-            boxCodeInfo.qrCodeClass = "A0702"
-            boxCodeInfo.buApplyNo = buApplyNo
-            boxCodeInfo.qrCodeInfos = dropLast
-            boxInfo.add(boxCodeInfo)
-        }
 
 
         //主信息
@@ -252,9 +252,19 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             ToastUtil.showToast("请选择商品和规格")
             return null
         }
-        if (boxInfo.size == 0){
+        if (boxSize == 0){
             ToastUtil.showToast("请前往箱码关联")
             return null
+        }
+        for (i in 0 until boxSize){
+            val infos = listDetail[i].qrCodeInfos!!
+            var tempClass = 0
+            for (j in 0 until infos.size){
+                if (infos[j].qrCodeClass == CodeConstant.QR_CODE_0702) {
+                    tempClass = j
+                }
+            }
+            infos.removeAt(tempClass)
         }
         val goodsNoStr = goodsNo[position]
         val unit = goodsUnit[position]
@@ -262,7 +272,6 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         val productBatchNo = et_batch_number.text.toString().trim { it <= ' ' }
         val wareName = et_select_house.text.toString().trim { it <= ' ' }
         val inTime = tv_select_time.text.toString().trim { it <= ' ' }
-        //val unit = tv_select_spec.text.toString().trim { it <= ' ' }
 
         if (goodsNo.isNullOrEmpty() ||
             wareName.isNullOrEmpty()
@@ -276,12 +285,12 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         wareInfo.companyNo = userInfo.companyNo
         wareInfo.creator = userInfo.userNo
         wareInfo.goodsNo = goodsNoStr
-        wareInfo.inBoxNum = boxSize.toString()//"入库数量"
+        wareInfo.inBoxNum = listDetail.size.toString()//"入库数量"
         wareInfo.inTime = inTime
         wareInfo.unit = unit
         wareInfo.wareName = wareName
 
-        saveBean.inQrCodeDetailInfos = boxInfo
+        saveBean.inQrCodeDetailInfos = listDetail
         saveBean.inWareInfo = wareInfo
 
         val json = Gson().toJson(saveBean)
