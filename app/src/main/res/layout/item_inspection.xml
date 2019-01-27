@@ -89,34 +89,6 @@
             app:layout_constraintTop_toBottomOf="@+id/view_line3"
             android:layout_marginTop="@dimen/space_10"
             app:layout_constraintStart_toStartOf="@+id/tv_number"
-            android:text="@string/send_address"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:textSize="@dimen/text_14"
-            android:layout_height="wrap_content"/>
-
-    <TextView
-            android:id="@+id/tv_send_address"
-            app:layout_constraintTop_toBottomOf="@+id/view_line3"
-            android:layout_marginTop="@dimen/space_10"
-            app:layout_constraintEnd_toEndOf="@id/image_confirm"
-            android:text="@string/send_address"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:textSize="@dimen/text_14"
-            android:layout_height="wrap_content"/>
-
-    <View
-            android:id="@+id/view_line4"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/tv_send_address"
-            android:layout_width="match_parent"
-            style="@style/lineView"/>
-
-    <TextView
-            app:layout_constraintTop_toBottomOf="@+id/view_line4"
-            android:layout_marginTop="@dimen/space_10"
-            app:layout_constraintStart_toStartOf="@+id/tv_number"
             android:text="@string/receipt_address"
             android:layout_width="wrap_content"
             android:textSize="@dimen/text_14"
@@ -124,11 +96,36 @@
 
     <TextView
             android:id="@+id/tv_receipt_address"
+            app:layout_constraintTop_toBottomOf="@+id/view_line3"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/image_confirm"
+            android:text="@string/receipt_address"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/view_line4"
+            app:layout_constraintTop_toBottomOf="@+id/tv_receipt_address"
+            android:layout_width="match_parent"
+            style="@style/lineView"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/view_line4"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_number"
+            android:text="@string/send_state"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_receipt_state"
             app:layout_constraintTop_toBottomOf="@+id/view_line4"
             android:layout_marginTop="@dimen/space_10"
             android:paddingBottom="@dimen/space_10"
             app:layout_constraintEnd_toEndOf="@id/image_confirm"
-            android:text="@string/receipt_address"
+            android:text="@string/send_state"
             android:layout_width="wrap_content"
             android:textSize="@dimen/text_14"
             android:layout_height="wrap_content"/>

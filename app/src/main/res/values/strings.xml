@@ -29,6 +29,7 @@
     <string name="send_organization">发货组织</string>
     <string name="receipt_organization">收货组织</string>
     <string name="send_address">发货地址</string>
+    <string name="send_state">状态</string>
     <string name="send_address_">发货地址：</string>
     <string name="receipt_address">收货地址</string>
     <string name="search">搜索</string>

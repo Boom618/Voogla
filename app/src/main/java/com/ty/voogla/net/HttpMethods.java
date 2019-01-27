@@ -322,9 +322,10 @@ public class HttpMethods {
      * @param observer
      * @param companyNo
      * @param deliveryNo
+     * @param fleeFlag 01 正常 02 窜货
      */
-    public void checkInfoConfirm(SingleObserver<ResponseInfo> observer, String companyNo, String deliveryNo) {
-        mService.checkInfoConfirm(companyNo, deliveryNo, "02")
+    public void checkInfoConfirm(SingleObserver<ResponseInfo> observer, String companyNo, String deliveryNo,String fleeFlag) {
+        mService.checkInfoConfirm(companyNo, deliveryNo, fleeFlag)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }

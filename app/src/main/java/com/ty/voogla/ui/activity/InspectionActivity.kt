@@ -64,6 +64,13 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
 
     override fun initOneData() {
         companyNo = SimpleCache.getUserInfo().companyNo
+
+        val layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recycler_view.layoutManager = layoutManager
+//        adapter = InspectionAdapter(this, R.layout.item_inspection, list)
+//        recycler_view.adapter = adapter
+
     }
 
     override fun initTwoView() {
@@ -83,17 +90,6 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
             }
             false
         })
-
-        // XML　设置   android:imeOptions="actionSearch"
-        //            android:singleLine="true"
-//        ed_search.setOnEditorActionListener { textView, actionId, event ->
-//            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//
-//                val tempString = textView.text.toString().trim { it <= ' ' }
-//                ToastUtil.showToast(tempString)
-//            }
-//            true
-//        }
 
         tv_search.setOnClickListener {
             ToastUtil.showToast("搜索内容：" + ed_search.text.toString())
@@ -121,31 +117,30 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
                 if (CodeConstant.SERVICE_SUCCESS == response.msg) {
                     list = response.data?.list!!
 
-                    val layoutManager =
-                        LinearLayoutManager(this@InspectionActivity, LinearLayoutManager.VERTICAL, false)
-                    recycler_view.layoutManager = layoutManager
                     adapter = InspectionAdapter(this@InspectionActivity, R.layout.item_inspection, list)
-
                     recycler_view.adapter = adapter
+//                    adapter.notifyDataSetChanged()
 
-                    adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
+                    if (list.size == 0) {
+                        ToastUtil.showToast("无发货信息")
+                    } else {
+                        adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
 
-                        override fun onItemLongClick(
-                            view: View,
-                            holder: RecyclerView.ViewHolder,
-                            position: Int
-                        ): Boolean {
-                            return false
-                        }
+                            override fun onItemLongClick(
+                                view: View,
+                                holder: RecyclerView.ViewHolder,
+                                position: Int
+                            ): Boolean {
+                                return false
+                            }
 
-                        override fun onItemClick(view: View, holder: RecyclerView.ViewHolder, position: Int) {
-                            val imageView = holder.itemView.findViewById<ImageView>(R.id.image_confirm)
-                            val deliveryNo = list[position].deliveryNo!!
-                            ImageViewSetOnClick(imageView, deliveryNo)
-                        }
-
-                    })
-
+                            override fun onItemClick(view: View, holder: RecyclerView.ViewHolder, position: Int) {
+                                val imageView = holder.itemView.findViewById<ImageView>(R.id.image_confirm)
+                                val deliveryNo = list[position].deliveryNo!!
+                                ImageViewSetOnClick(imageView, deliveryNo)
+                            }
+                        })
+                    }
 
                 } else {
 
@@ -163,11 +158,16 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
         ToastUtil.showToast(msg)
     }
 
+    /**
+     * 确认窜货
+     */
     override fun showResponse(response: ResponseInfo) {
-        ToastUtil.showToast(response.msg)
-        list.removeAt(currentPosition)
-        adapter.notifyItemRemoved(currentPosition)
-        adapter.notifyItemRangeChanged(currentPosition,list.size - currentPosition)
+        //ToastUtil.showToast(response.msg)
+//        list.removeAt(currentPosition)
+//        adapter.notifyItemRemoved(currentPosition)
+//        adapter.notifyItemRangeChanged(currentPosition, list.size - currentPosition)
+        adapter.notifyItemChanged(currentPosition)
+        adapter.notifyItemRangeChanged(currentPosition, list.size - currentPosition)
     }
 
     /**
@@ -176,7 +176,6 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
     fun ImageViewSetOnClick(imageView: ImageView, deliveryNo: String) {
         imageView.setOnClickListener { view ->
             DialogUtil.deleteItemDialog(view.context, "温馨提示", "确认窜货", NormalAlertDialog.onNormalOnclickListener {
-
                 checkInfoConfirm(deliveryNo)
                 it.dismiss()
             })
@@ -188,10 +187,11 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
     /**
      * 确认串货 Http
      * deliveryNo 发货单编号
+     * 是否窜货(01否,02是)
      */
     fun checkInfoConfirm(deliveryNo: String) {
 
-        presenter.checkInfoConfirm(companyNo,deliveryNo)
+        presenter.checkInfoConfirm(companyNo, deliveryNo,"02")
 
     }
 
@@ -224,7 +224,6 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
 
                 presenter.decodeUrlCode(result)
 
-                ToastUtil.showToast(result)
                 //ed_search.setText(result)
             } else {
                 ToastUtil.showToast("解析二维码失败")

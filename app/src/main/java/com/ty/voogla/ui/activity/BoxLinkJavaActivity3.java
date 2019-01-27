@@ -127,7 +127,12 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
         if (qrCodeInfos == null) {
             qrCodeInfos = new ArrayList();
         }
-        numberCode.setText(String.valueOf(this.qrCodeInfos.size()));
+        int size = qrCodeInfos.size();
+        for (int i = 0; i < size; i++) {
+            repeatCodeList.add(qrCodeInfos.get(i).getQrCode());
+        }
+        numberCode.setText(String.valueOf(size));
+
         initToolBar(R.string.scan_code, "保存", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -301,8 +306,6 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
             // 出库校验
             sendOutjudegCode(companyNo, codeClass, goodsNo, code);
         }
-
-
     }
 
 
@@ -339,7 +342,8 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
         } else {
             // 套码
             isPackageCode = true;
-            sendOutjudegCode(companyNo, codeClass, goodsNo, code);
+            isContainsCode(code, codeClass);
+            //sendOutjudegCode(companyNo, codeClass, goodsNo, code);
         }
 
     }
@@ -357,22 +361,6 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
         presenter.sendOutjudegCode(companyNo, qrCodeClass, goodsNo, qrCode);
         lastCodeClass = qrCodeClass;
         lastCode = qrCode;
-//        if (lastCodeClass.equals(CodeConstant.QR_CODE_0702)) {
-//            outBoxNum++;
-//        } else {
-//            outGoodsNum++;
-//        }
-//        repeatCodeList.add(lastCode);
-//        // 校验成功直接添加数据
-//        QrCodeListData data = new QrCodeListData();
-//        data.setQrCode(lastCode);
-//        data.setQrCodeClass(lastCodeClass);
-//
-//        qrCodeInfos.add(data);
-//
-//        numberCode.setText(String.valueOf(qrCodeInfos.size()));
-//        adapter.notifyItemInserted(qrCodeInfos.size());
-//        adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
     }
 
     /**

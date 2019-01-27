@@ -545,7 +545,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
      * @param companyNo
      * @param deliveryNo
      */
-    public void checkInfoConfirm(String companyNo, String deliveryNo) {
+    public void checkInfoConfirm(String companyNo, String deliveryNo,String fleeFlag) {
         httpMethods.checkInfoConfirm(new SingleObserver<ResponseInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -565,7 +565,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onError(Throwable e) {
                 iView.showError(e.getMessage());
             }
-        }, companyNo, deliveryNo);
+        }, companyNo, deliveryNo,fleeFlag);
     }
 
 }
