@@ -7,7 +7,9 @@ import com.ty.voogla.R
 import com.ty.voogla.bean.sendout.SendOutListInfo
 import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.ui.activity.BoxLinkJavaActivity2
+import com.ty.voogla.ui.activity.BoxLinkJavaActivity3
 import com.ty.voogla.ui.activity.SendOutNextActivity
+import com.ty.voogla.ui.activity.SendOutNextActivity2
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 
@@ -24,11 +26,12 @@ class SendOutNextAdapter(val context: Context, layout: Int, datas: MutableList<S
 
         holder.itemView.findViewById<TextView>(R.id.tv_scan_code_box).setOnClickListener {
 
-            val intent = Intent(context, BoxLinkJavaActivity2::class.java)
+            val intent = Intent(context, BoxLinkJavaActivity3::class.java)
             intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_SCAN_OUT)
             intent.putExtra(CodeConstant.SEND_POSITION,position)
             intent.putExtra("goodsNo",info.goodsNo)
-            (context as SendOutNextActivity).startActivityForResult(intent,CodeConstant.REQUEST_CODE_OUT)
+//            (context as SendOutNextActivity).startActivityForResult(intent,CodeConstant.REQUEST_CODE_OUT)
+            (context as SendOutNextActivity2).startActivityForResult(intent,CodeConstant.REQUEST_CODE_OUT)
         }
 
     }

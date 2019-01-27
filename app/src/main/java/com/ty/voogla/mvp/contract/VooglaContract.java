@@ -70,14 +70,14 @@ public interface VooglaContract {
      *
      * @param <T>
      */
-    interface BoxLinkView<T> {
+    interface BoxLinkView {
 
 
         void decodeCode(DecodeCode.ResultBean resultBean);
 
-        void produceJudegCode(T response);
+        void produceJudegCode(String response);
 
-        void sendJudegCode(T response);
+        void sendJudegCode(String response);
 
         void getCodeList(ArrayList<String> codeList);
 

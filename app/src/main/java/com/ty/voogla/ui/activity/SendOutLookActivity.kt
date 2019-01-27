@@ -48,10 +48,11 @@ class SendOutLookActivity : BaseActivity(),VooglaContract.View<OutPutInfoData> {
         val goodsInfo = data.outWareInfo
         val list = data.outQrCodeDetailInfos
 
+        val addr = goodsInfo?.provinceLevel + goodsInfo?.cityLevel + goodsInfo?.cityLevel + goodsInfo?.deliveryAddress
 
         tv_send_out_receipt.text = deliveryNo
         tv_send_out_date.text = goodsInfo?.outTime
-        tv_send_out_address.text = goodsInfo?.deliveryAddress
+        tv_send_out_address.text = addr
 
         LayoutInit.initLayoutManager(this, recycler_view_send_look)
         recycler_view_send_look.adapter = SendOutLookAdapter(this,R.layout.item_send_out_look,list!!)

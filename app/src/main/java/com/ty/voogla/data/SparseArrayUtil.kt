@@ -92,4 +92,49 @@ object SparseArrayUtil {
         inputStream.close()
         return list
     }
+
+    //    ----------------------------------------------------------- 发货出明细
+
+
+    @JvmStatic
+    fun putQrCodeSend(context:Context,boxInfos: HashMap<Int, ArrayList<QrCodeListData>>) {
+
+        var outputStream: ObjectOutputStream? = null
+        try {
+            val file = File(context.getDir("data", Context.MODE_PRIVATE), "sendDetail")
+            outputStream = ObjectOutputStream(FileOutputStream(file))
+//            outputStream = ObjectOutputStream(FileOutputStream("code.txt"))
+            outputStream.writeObject(boxInfos)
+            outputStream.flush()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                outputStream?.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+
+
+    }
+
+    @JvmStatic
+    fun getQrCodeSend(context:Context): HashMap<Int, ArrayList<QrCodeListData>>{
+        val file = File(context.getDir("data", Context.MODE_PRIVATE), "sendDetail")
+        val inputStream = ObjectInputStream(FileInputStream(file))
+        val list = inputStream.readObject() as HashMap<Int, ArrayList<QrCodeListData>>
+        inputStream.close()
+        return list
+    }
+
+    @JvmStatic
+    fun clearCode(context:Context){
+        val hashMap = HashMap<Int, ArrayList<QrCodeListData>>()
+        val file = File(context.getDir("data", Context.MODE_PRIVATE), "sendDetail")
+        val outputStream = ObjectOutputStream(FileOutputStream(file))
+        outputStream.writeObject(hashMap)
+        outputStream.flush()
+        outputStream.close()
+    }
 }

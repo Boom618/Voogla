@@ -258,13 +258,15 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         }
         for (i in 0 until boxSize){
             val infos = listDetail[i].qrCodeInfos!!
-            var tempClass = 0
+            var tempClass = -1
             for (j in 0 until infos.size){
                 if (infos[j].qrCodeClass == CodeConstant.QR_CODE_0702) {
                     tempClass = j
                 }
             }
-            infos.removeAt(tempClass)
+            if (tempClass > -1){
+                infos.removeAt(tempClass)
+            }
         }
         val goodsNoStr = goodsNo[position]
         val unit = goodsUnit[position]

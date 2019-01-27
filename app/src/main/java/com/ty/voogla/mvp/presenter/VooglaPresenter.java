@@ -266,7 +266,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onSuccess(BaseResponse<QrCodeJudge> response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
 
-                    boxView.produceJudegCode(response.getData());
+                    boxView.produceJudegCode(response.getMsg());
                 } else {
                     boxView.showError(response.getMsg());
                 }
@@ -408,7 +408,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onSuccess(BaseResponse<QrCodeJudge> response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
 
-                    boxView.sendJudegCode(response);
+                    boxView.sendJudegCode(response.getMsg());
 
                 } else {
                     boxView.showError(response.getMsg());

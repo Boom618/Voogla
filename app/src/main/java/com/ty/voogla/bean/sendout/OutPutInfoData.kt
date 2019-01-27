@@ -53,6 +53,7 @@ class OutPutInfoData {
         var inBatchNo: String? = null
         var wareName: String? = null
         var goodsNo: String? = null
+        var goodsName: String? = null
         var outBoxNum: String? = null
         var outGoodsNum: String? = null
         var unit: String? = null

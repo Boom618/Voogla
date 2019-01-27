@@ -1,6 +1,7 @@
 package com.ty.voogla.data;
 
 
+import android.util.SparseArray;
 import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean;
 import com.ty.voogla.bean.sendout.QrCodeListData;

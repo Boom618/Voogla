@@ -107,6 +107,8 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
         // 二维码解析成功
         val qrCodeType = data.qrCodeType!!
         val code = data.code!!
+        // 单据号
+        ed_search.setText(code)
 
         val qrCodeClass = if (qrCodeType == "2") "A0702" else "A0701"
 

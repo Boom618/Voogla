@@ -64,17 +64,6 @@
             </intent-filter>
         </activity>
 
-        <!--&lt;!&ndash; 发货出库 &ndash;&gt;-->
-        <!--<activity-->
-                <!--android:label="Barcode"-->
-                <!--android:name=".ui.activity.boxlink.BoxLinkProduct"-->
-                <!--android:screenOrientation="portrait">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.AUTOCODEACTIVITY_PRO"/>-->
-
-                <!--<category android:name="android.intent.category.DEFAULT"/>-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
         <!-- 对接 PDA 50k Barcode End -->
 
         <activity android:name=".ui.activity.ProductIntoLookActivity"/>
@@ -82,6 +71,8 @@
         <activity android:name=".ui.activity.SendOutActivity"/>
         <activity android:name=".ui.activity.SendOutNextActivity"/>
         <activity android:name=".ui.activity.SendOutLookActivity"/>
+        <activity android:name=".ui.activity.BoxLinkJavaActivity3"/>
+        <activity android:name=".ui.activity.SendOutNextActivity2"/>
 
     </application>
 
