@@ -6,9 +6,7 @@ import android.widget.TextView
 import com.ty.voogla.R
 import com.ty.voogla.bean.sendout.SendOutListInfo
 import com.ty.voogla.constant.CodeConstant
-import com.ty.voogla.ui.activity.BoxLinkJavaActivity2
 import com.ty.voogla.ui.activity.BoxLinkJavaActivity3
-import com.ty.voogla.ui.activity.SendOutNextActivity
 import com.ty.voogla.ui.activity.SendOutNextActivity2
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder

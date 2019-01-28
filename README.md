@@ -32,3 +32,11 @@ RecyclerView 封装：
 
 - 入库
 1. 规格为 5，不足 5 盒可以箱码绑定吗？
+
+RecyclerView 问题：
+
+- RecyclerView 在 `android.support.constraint.ConstraintLayout` 约束布局中数据超过一屏展示不全
+
+解决方案：
+
+含有 `RecyclerView` 的控件放在外层改为`LinearLayout`或其他常用 Layout 。

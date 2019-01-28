@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * @author TY on 2019/1/12.
  * <p>
- * 箱码绑定 --> 扫码
+ * 箱码绑定 --> 扫码（入库）
  */
 public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.BarcodeListener,
         BarcodeReader.TriggerListener, VooglaContract.BoxLinkView {
@@ -424,9 +424,6 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
     @Override
     public void produceJudegCode(String response) {
 
-        // QrCodeJudge 主要是收取 【"generateNo": "二维码生成编号"】
-//        QrCodeJudge.QrCodeInfoBean qrCodeInfo = response.getQrCodeInfo();
-
         if (isPackageCode) {
             // 拉取套码 下的产品码
             // getCodeList(code);
@@ -482,11 +479,11 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
         if (qrCodeSize != specNumber) {
             ToastUtil.showToast("请扫指定规格的套码");
         } else {
-            for (int i = 0; i < data.size(); i++) {
-                QrCodeListData qrCodeData = new QrCodeListData();
-                qrCodeData.setQrCodeClass("A0701");
-                qrCodeData.setQrCode(data.get(i));
-                qrCodeInfos.add(qrCodeData);
+            for (int i = 0; i < qrCodeSize; i++) {
+                QrCodeListData qrCodeList = new QrCodeListData();
+                qrCodeList.setQrCodeClass("A0701");
+                qrCodeList.setQrCode(data.get(i));
+                qrCodeInfos.add(qrCodeList);
             }
             QrCodeListData code = new QrCodeListData();
             code.setQrCodeClass("A0702");
