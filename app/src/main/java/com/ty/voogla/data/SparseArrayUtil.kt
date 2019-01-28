@@ -56,6 +56,16 @@ object SparseArrayUtil {
 
     }
 
+    @JvmStatic
+    fun clearInBoxCode(context: Context) {
+        val temp: MutableList<InBoxCodeDetailInfosBean> = mutableListOf()
+        val file = File(context.getDir("data", Context.MODE_PRIVATE), "sparse")
+        val outputStream = ObjectOutputStream(FileOutputStream(file))
+//            outputStream = ObjectOutputStream(FileOutputStream("code.txt"))
+        outputStream.writeObject(temp)
+        outputStream.flush()
+    }
+
     //    -----------------------------------------------------------
 
 
@@ -63,7 +73,7 @@ object SparseArrayUtil {
      * 接收 QrCodeListData （出库查看）
      */
     @JvmStatic
-    fun putQrCodeListLook(context:Context,boxInfos: MutableList<QrCodeListData>) {
+    fun putQrCodeListLook(context: Context, boxInfos: MutableList<QrCodeListData>) {
 
         var outputStream: ObjectOutputStream? = null
         try {
@@ -85,7 +95,7 @@ object SparseArrayUtil {
     }
 
     @JvmStatic
-    fun getQrCodeListLook(context:Context): MutableList<QrCodeListData>{
+    fun getQrCodeListLook(context: Context): MutableList<QrCodeListData> {
         val file = File(context.getDir("data", Context.MODE_PRIVATE), "sendLook")
         val inputStream = ObjectInputStream(FileInputStream(file))
         val list = inputStream.readObject() as MutableList<QrCodeListData>
@@ -97,7 +107,7 @@ object SparseArrayUtil {
 
 
     @JvmStatic
-    fun putQrCodeSend(context:Context,boxInfos: HashMap<Int, ArrayList<QrCodeListData>>) {
+    fun putQrCodeSend(context: Context, boxInfos: HashMap<Int, ArrayList<QrCodeListData>>) {
 
         var outputStream: ObjectOutputStream? = null
         try {
@@ -120,7 +130,7 @@ object SparseArrayUtil {
     }
 
     @JvmStatic
-    fun getQrCodeSend(context:Context): HashMap<Int, ArrayList<QrCodeListData>>{
+    fun getQrCodeSend(context: Context): HashMap<Int, ArrayList<QrCodeListData>> {
         val file = File(context.getDir("data", Context.MODE_PRIVATE), "sendDetail")
         val inputStream = ObjectInputStream(FileInputStream(file))
         val list = inputStream.readObject() as HashMap<Int, ArrayList<QrCodeListData>>
@@ -129,7 +139,7 @@ object SparseArrayUtil {
     }
 
     @JvmStatic
-    fun clearCode(context:Context){
+    fun clearCode(context: Context) {
         val hashMap = HashMap<Int, ArrayList<QrCodeListData>>()
         val file = File(context.getDir("data", Context.MODE_PRIVATE), "sendDetail")
         val outputStream = ObjectOutputStream(FileOutputStream(file))

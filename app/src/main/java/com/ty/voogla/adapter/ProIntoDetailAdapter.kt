@@ -25,7 +25,6 @@ class ProIntoDetailAdapter(val context: Context, layout: Int,datas: MutableList<
         holder.setText(R.id.tv_code, info.qrCode)
 
         val editView = holder.itemView.findViewById<ImageView>(R.id.image_edit)
-//        val deleteView = holder.itemView.findViewById<ImageView>(R.id.image_delete)
 
         editView.setOnClickListener {
             val intent = Intent(context, BoxLinkJavaActivity2::class.java)
@@ -35,8 +34,7 @@ class ProIntoDetailAdapter(val context: Context, layout: Int,datas: MutableList<
             intent.putExtra(CodeConstant.PAGE_STATE_KEY,CodeConstant.PAGE_BOX_LINK_EDIT)
             intent.putExtra("boxCode",info.qrCode)
             intent.putExtra("position",position)
-            SparseArrayUtil.putQrCodeList(context,datas)
-//            SparseArrayUtil.putQrCodeListLook(context,datas[position].qrCodeInfos!!)
+//            SparseArrayUtil.putQrCodeList(context,datas)
             context.startActivity(intent)
         }
 

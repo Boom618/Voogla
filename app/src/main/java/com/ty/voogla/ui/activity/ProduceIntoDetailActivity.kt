@@ -19,6 +19,7 @@ import com.ty.voogla.connector.SelectGoods
 import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.data.SharedP
 import com.ty.voogla.data.SimpleCache
+import com.ty.voogla.data.SparseArrayUtil
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.net.HttpMethods
@@ -33,12 +34,14 @@ import kotlinx.android.synthetic.main.activity_product_into_detail.*
 import okhttp3.RequestBody
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 /**
  * @author TY on 2019/1/11.
  * 生产入库 详情
  */
-class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductListInfoData>,SelectGoods {
+class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductListInfoData>, SelectGoods {
 
     private lateinit var selectTime: String
 
@@ -52,7 +55,6 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     private var qrCodeInfos: MutableList<QrCodeListData> = mutableListOf()
 
     // 外层列表
-//    private var listCode:MutableList<MutableList<QrCodeListData>> = mutableListOf()
     // 入库箱码明细列表( 含箱码和产品码 )
     private val listDetail: MutableList<InBoxCodeDetailInfosBean> = mutableListOf()
 
@@ -67,7 +69,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
     private val presenter = VooglaPresenter(this)
     // 套码编号
-    private var buApplyNo:String? = null
+    private var buApplyNo: String? = null
 
     override val activityLayout: Int
         get() = R.layout.activity_product_into_detail
@@ -95,7 +97,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         tv_select_pro_name.setOnClickListener {
 
             //
-            DialogUtil.selectProName(it.context, goodsName, goodsSpec, tv_select_pro_name, tv_select_spec,this)
+            DialogUtil.selectProName(it.context, goodsName, goodsSpec, tv_select_pro_name, tv_select_spec, this)
         }
 
         // 时间选择
@@ -109,224 +111,248 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         }
 
         tv_to_box_link.setOnClickListener {
-            // 广播跳转
-            val spec = tv_select_spec.text.toString().trim { spec -> spec <= ' ' }
-            if (tv_select_spec.text.isNotEmpty()) {
-                val intent = Intent("android.intent.action.AUTOCODEACTIVITY")
-                intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_BOX_LINK)
-                // 商品规格
-                SimpleCache.putString(CodeConstant.GOODS_SPEC,spec)
-                startActivityForResult(intent, CodeConstant.REQUEST_CODE_INTO)
+
+            if (listDetail.size >= 3) {
+                ToastUtil.showToast("请先提交")
+                return@setOnClickListener
+            }
+        // 广播跳转
+        val spec = tv_select_spec.text.toString().trim { spec -> spec <= ' ' }
+        if (tv_select_spec.text.isNotEmpty()) {
+            val intent = Intent("android.intent.action.AUTOCODEACTIVITY")
+            intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_BOX_LINK)
+            // 商品规格
+            SimpleCache.putString(CodeConstant.GOODS_SPEC, spec)
+            startActivityForResult(intent, CodeConstant.REQUEST_CODE_INTO)
+        } else {
+            ToastUtil.showToast("请选择对应的商品和规格")
+        }
+    }
+
+    LayoutInit.initLayoutManager(this, house_recycler)
+
+    adapter = ProIntoDetailAdapter(this, R.layout.item_house_detail, listDetail)
+    house_recycler.adapter = adapter
+
+    adapter.setOnItemClickListener(
+    object : MultiItemTypeAdapter.OnItemClickListener {
+        override fun onItemLongClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int): Boolean {
+            return false
+        }
+
+        override fun onItemClick(view: View, holder: RecyclerView.ViewHolder, position: Int) {
+
+            val deleteView = holder.itemView.findViewById<ImageView>(R.id.image_delete)
+
+            deleteView.setOnClickListener {
+
+                listDetail.removeAt(position)
+                SparseArrayUtil.putQrCodeList(view.context,listDetail)
+
+                adapter.notifyItemRemoved(position)
+                adapter.notifyItemRangeChanged(position, listDetail.size - position)
+
+                tv_number.text = listDetail.size.toString()
+            }
+        }
+
+    })
+}
+
+/**
+ * 用户更换商品 重置数据
+ */
+override fun removeGoods() {
+    listDetail.clear()
+    SparseArrayUtil.putQrCodeList(this,listDetail)
+    adapter.notifyDataSetChanged()
+
+    tv_number.text = "0"
+    ToastUtil.showToast("清空数据")
+}
+
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    if (requestCode == CodeConstant.REQUEST_CODE_INTO && resultCode == CodeConstant.RESULT_CODE) {
+
+        val type = data?.getStringExtra(CodeConstant.RESULT_TYPE)
+        when (type) {
+            "productIn" -> {
+                // 入库
+                boxCode = data.getStringExtra("boxCode")
+                buApplyNo = data.getStringExtra("buApplyNo")
+                qrCodeInfos = SimpleCache.getQrCode()
+
+                val data = InBoxCodeDetailInfosBean()
+                data.qrCode = boxCode
+                data.buApplyNo = buApplyNo
+                data.qrCodeClass = "A0702"
+                data.qrCodeInfos = qrCodeInfos
+
+                listDetail.add(data)
+                // 【文件写入】存所有数据,在扫码是校验是否有重复码（箱码和产品码）
+                SparseArrayUtil.putQrCodeList(this,listDetail)
+            }
+            else -> {
+                // 修改
+                boxCode = data?.getStringExtra("boxCode")
+                buApplyNo = data?.getStringExtra("buApplyNo")
+                val position = data?.getIntExtra(CodeConstant.SEND_POSITION, 0)!!
+                qrCodeInfos = SimpleCache.getQrCode()
+                val data = InBoxCodeDetailInfosBean()
+                data.qrCode = boxCode
+                data.buApplyNo = buApplyNo
+                data.qrCodeClass = "A0702"
+                data.qrCodeInfos = qrCodeInfos
+
+                listDetail.add(position, data)
+                // 【文件写入】修改成功更新存的数据,在扫码是校验是否有重复码（箱码和产品码）
+                SparseArrayUtil.putQrCodeList(this,listDetail)
+            }
+        }
+
+        val size = listDetail.size
+        tv_number.text = size.toString()
+    }
+}
+
+/**
+ * 入库保存
+ */
+private fun produceIntoSave(body: RequestBody?) {
+
+    if (body == null) {
+        return
+    }
+
+    HttpMethods.getInstance().addProduct(object : SingleObserver<ResponseInfo> {
+        override fun onSuccess(info: ResponseInfo) {
+            if (CodeConstant.SERVICE_SUCCESS == info.msg) {
+                // 入库成功（保存）
+                ToastUtil.showToast("入库成功")
+                finish()
             } else {
-                ToastUtil.showToast("请选择对应的商品和规格")
+                ToastUtil.showToast("入库失败")
             }
         }
 
-        LayoutInit.initLayoutManager(this, house_recycler)
-
-        adapter = ProIntoDetailAdapter(this, R.layout.item_house_detail, listDetail)
-        house_recycler.adapter = adapter
-
-        adapter.setOnItemClickListener(object :MultiItemTypeAdapter.OnItemClickListener{
-            override fun onItemLongClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int): Boolean {
-                return false
-            }
-
-            override fun onItemClick(view: View, holder: RecyclerView.ViewHolder, position: Int) {
-
-                val deleteView = holder.itemView.findViewById<ImageView>(R.id.image_delete)
-
-                deleteView.setOnClickListener {
-
-                    listDetail.removeAt(position)
-                    adapter.notifyItemRemoved(position)
-                    adapter.notifyItemRangeChanged(position,listDetail.size - position)
-
-                    tv_number.text = listDetail.size.toString()
-                }
-            }
-
-        })
-    }
-
-    /**
-     * 用户更换商品 重置数据
-     */
-    override fun removeGoods() {
-        listDetail.clear()
-        adapter.notifyDataSetChanged()
-
-        tv_number.text = "0"
-        ToastUtil.showToast("清空数据")
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == CodeConstant.REQUEST_CODE_INTO && resultCode == CodeConstant.RESULT_CODE) {
-
-            val type = data?.getStringExtra(CodeConstant.RESULT_TYPE)
-            when (type) {
-                "productIn" -> {
-                    // 入库
-                    boxCode = data.getStringExtra("boxCode")
-                    buApplyNo = data.getStringExtra("buApplyNo")
-                    qrCodeInfos = SimpleCache.getQrCode()
-
-                    val data = InBoxCodeDetailInfosBean()
-                    data.qrCode = boxCode
-                    data.buApplyNo = buApplyNo
-                    data.qrCodeClass= "A0702"
-                    data.qrCodeInfos = qrCodeInfos
-
-                    listDetail.add(data)
-                    //listCode.put(qrCodeInfos)
-                }
-                else -> {
-                    // 修改
-                    boxCode = data?.getStringExtra("boxCode")
-                    buApplyNo = data?.getStringExtra("buApplyNo")
-                    val position = data?.getIntExtra(CodeConstant.SEND_POSITION,0)!!
-                    qrCodeInfos = SimpleCache.getQrCode()
-                    val data = InBoxCodeDetailInfosBean()
-                    data.qrCode = boxCode
-                    data.buApplyNo = buApplyNo
-                    data.qrCodeClass= "A0702"
-                    data.qrCodeInfos = qrCodeInfos
-
-                    listDetail.add(position,data)
-                }
-            }
-
-            val size = listDetail.size
-            tv_number.text = size.toString()
-        }
-    }
-
-    /**
-     * 入库保存
-     */
-    private fun produceIntoSave(body: RequestBody?) {
-
-        if (body == null) {
-            return
+        override fun onSubscribe(d: Disposable) {
         }
 
-        HttpMethods.getInstance().addProduct(object : SingleObserver<ResponseInfo> {
-            override fun onSuccess(info: ResponseInfo) {
-                if (CodeConstant.SERVICE_SUCCESS == info.msg) {
-                    // 入库成功（保存）
-                    ToastUtil.showToast("入库成功")
-                    finish()
-                } else {
-                    ToastUtil.showToast("入库失败")
-                }
-            }
+        override fun onError(e: Throwable) {
+            ToastUtil.showToast(e.message)
+        }
 
-            override fun onSubscribe(d: Disposable) {
-            }
+    }, body)
 
-            override fun onError(e: Throwable) {
-                ToastUtil.showToast(e.message)
-            }
-
-        }, body)
-
-    }
+}
 
 
-    /**
-     * 构建请求参数
-     */
-    private fun initReqBody(): RequestBody? {
+/**
+ * 构建请求参数
+ */
+private fun initReqBody(): RequestBody? {
 
-        val saveBean = AddProduct()
+    val saveBean = AddProduct()
 //        val boxInfo: MutableList<InBoxCodeDetailInfosBean> = mutableListOf()
-        val wareInfo = AddProduct.InWareInfoBean()
-        val boxSize = listDetail.size
+    val wareInfo = AddProduct.InWareInfoBean()
+    val boxSize = listDetail.size
 
 
-        //主信息
-        // 归属单位  缺少产品名称字段
-        val userInfo = SimpleCache.getUserInfo()
-        val position = SharedP.getGoodNo(this)
-        if (position == -1) {
-            ToastUtil.showToast("请选择商品和规格")
-            return null
-        }
-        if (boxSize == 0){
-            ToastUtil.showToast("请前往箱码关联")
-            return null
-        }
-        for (i in 0 until boxSize){
-            val infos = listDetail[i].qrCodeInfos!!
-            var tempClass = -1
-            for (j in 0 until infos.size){
-                if (infos[j].qrCodeClass == CodeConstant.QR_CODE_0702) {
-                    tempClass = j
-                }
+    val tempList = ArrayList<String>()
+    for (i in 0 until boxSize) {
+        tempList.add(listDetail[i].qrCode!!)
+    }
+    val distinct = tempList.distinct()
+    if (distinct.size != boxSize) {
+        ToastUtil.showToast("请删除重复箱码")
+        return null
+    }
+    //主信息
+    // 归属单位
+    val userInfo = SimpleCache.getUserInfo()
+    val position = SharedP.getGoodNo(this)
+    if (position == -1) {
+        ToastUtil.showToast("请选择商品和规格")
+        return null
+    }
+    if (boxSize == 0) {
+        ToastUtil.showToast("请前往箱码关联")
+        return null
+    }
+    for (i in 0 until boxSize) {
+        val infos = listDetail[i].qrCodeInfos!!
+        var tempClass = -1
+        for (j in 0 until infos.size) {
+            if (infos[j].qrCodeClass == CodeConstant.QR_CODE_0702) {
+                tempClass = j
             }
-            if (tempClass > -1){
-                infos.removeAt(tempClass)
-            }
         }
-        val goodsNoStr = goodsNo[position]
-        val unit = goodsUnit[position]
-
-        val productBatchNo = et_batch_number.text.toString().trim { it <= ' ' }
-        val wareName = et_select_house.text.toString().trim { it <= ' ' }
-        val inTime = tv_select_time.text.toString().trim { it <= ' ' }
-
-        if (goodsNo.isNullOrEmpty() ||
-            wareName.isNullOrEmpty()
-        ) {
-            ToastUtil.showToast("请补全入库信息")
-            return null
-        }
-
-        wareInfo.batchNo = productBatchNo
-        wareInfo.companyAttr = userInfo.companyAttr
-        wareInfo.companyNo = userInfo.companyNo
-        wareInfo.creator = userInfo.userNo
-        wareInfo.goodsNo = goodsNoStr
-        wareInfo.inBoxNum = listDetail.size.toString()//"入库数量"
-        wareInfo.inTime = inTime
-        wareInfo.unit = unit
-        wareInfo.wareName = wareName
-
-        saveBean.inQrCodeDetailInfos = listDetail
-        saveBean.inWareInfo = wareInfo
-
-        val json = Gson().toJson(saveBean)
-
-        return RequestBodyJson.requestBody(json)
-
-
-    }
-
-    /**
-     * 产品列表信息
-     */
-    override fun showSuccess(data: ProductListInfoData?) {
-        val list = data?.list
-        val size = list!!.size
-        for (i in 0 until size) {
-
-            goodsName.add(list[i].goodsName!!)
-            goodsSpec.add(list[i].goodsSpec!!)
-            goodsUnit.add(list[i].unit!!)
-            goodsNo.add(list[i].goodsNo!!)
+        if (tempClass > -1) {
+            infos.removeAt(tempClass)
         }
     }
+    val goodsNoStr = goodsNo[position]
+    val unit = goodsUnit[position]
 
-    override fun showResponse(response: ResponseInfo) {
+    val productBatchNo = et_batch_number.text.toString().trim { it <= ' ' }
+    val wareName = et_select_house.text.toString().trim { it <= ' ' }
+    val inTime = tv_select_time.text.toString().trim { it <= ' ' }
 
+    if (goodsNo.isNullOrEmpty() ||
+        wareName.isNullOrEmpty()
+    ) {
+        ToastUtil.showToast("请补全入库信息")
+        return null
     }
 
-    override fun showError(msg: String?) {
-        ToastUtil.showToast(msg)
-    }
+    wareInfo.batchNo = productBatchNo
+    wareInfo.companyAttr = userInfo.companyAttr
+    wareInfo.companyNo = userInfo.companyNo
+    wareInfo.creator = userInfo.userNo
+    wareInfo.goodsNo = goodsNoStr
+    wareInfo.inBoxNum = listDetail.size.toString()//"入库数量"
+    wareInfo.inTime = inTime
+    wareInfo.unit = unit
+    wareInfo.wareName = wareName
 
-    override fun onDestroy() {
-        super.onDestroy()
-        SharedP.clearGoodNo(this)
+    saveBean.inQrCodeDetailInfos = listDetail
+    saveBean.inWareInfo = wareInfo
+
+    val json = Gson().toJson(saveBean)
+
+    return RequestBodyJson.requestBody(json)
+
+
+}
+
+/**
+ * 产品列表信息
+ */
+override fun showSuccess(data: ProductListInfoData?) {
+    val list = data?.list
+    val size = list!!.size
+    for (i in 0 until size) {
+
+        goodsName.add(list[i].goodsName!!)
+        goodsSpec.add(list[i].goodsSpec!!)
+        goodsUnit.add(list[i].unit!!)
+        goodsNo.add(list[i].goodsNo!!)
     }
+}
+
+override fun showResponse(response: ResponseInfo) {
+
+}
+
+override fun showError(msg: String?) {
+    ToastUtil.showToast(msg)
+}
+
+override fun onDestroy() {
+    super.onDestroy()
+    // 清空商品编号
+    SharedP.clearGoodNo(this)
+    // 清空所有已保存的码
+    SparseArrayUtil.clearInBoxCode(this)
+}
 }
