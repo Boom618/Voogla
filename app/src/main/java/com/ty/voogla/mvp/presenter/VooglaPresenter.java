@@ -363,6 +363,37 @@ public class VooglaPresenter implements VooglaContract.Presenter {
     }
 
     /**
+     * 获取发货单信息(分状态)
+     *
+     * @param companyNo
+     */
+    public void getSendOutList2(String companyNo,String deliveryState) {
+        httpMethods.getSendOutList2(new SingleObserver<BaseResponse<SendOutListData>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(BaseResponse<SendOutListData> response) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
+                    SendOutListData data = response.getData();
+
+                    iListView.showSuccess(data.getList());
+                } else {
+                    iListView.showError(response.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iListView.showError(e.getMessage());
+
+            }
+        }, companyNo,deliveryState);
+    }
+
+    /**
      * 发货单详情
      */
     public void getSendOutListInfo(String companyNo, String deliveryNo) {

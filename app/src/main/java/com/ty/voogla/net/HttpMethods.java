@@ -243,6 +243,17 @@ public class HttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
+    /**
+     * 发货单信息
+     *
+     * @param observer
+     * @param companyNo
+     */
+    public void getSendOutList2(SingleObserver<BaseResponse<SendOutListData>> observer, String companyNo,String deliveryState) {
+        mService.getSendOutList2(companyNo, deliveryState)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
 
     /**
      * 发货单详情信息

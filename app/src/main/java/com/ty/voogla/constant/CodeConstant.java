@@ -102,8 +102,10 @@ public final class CodeConstant {
     public static final int RESULT_CODE = 100;
 
     /**
-     * 用户数据
+     * 用户数据 check@corp 稽查  im@corp PDA
      */
     public static final String USER_DATA = "userData";
+    public static final String USER_PHONE = "check@corp";
+    public static final String USER_PDA = "im@corp";
 
 }

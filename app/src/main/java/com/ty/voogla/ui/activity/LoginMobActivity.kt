@@ -7,6 +7,7 @@ import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.UserInfo
+import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.util.ToastUtil
@@ -58,10 +59,21 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View<UserInfo> {
     }
 
     override fun showSuccess(data:UserInfo) {
+        // check@corp 稽查  im@corp PDA
+        val httpPhone = data.roleNo?.contains(CodeConstant.USER_PHONE)!!
+        val httpPda = data.roleNo?.contains(CodeConstant.USER_PDA)!!
         if (isPhone) {
-            gotoActivity(MainMobActivity::class.java, true)
+            if (httpPhone) {
+                gotoActivity(MainMobActivity::class.java, true)
+            }else{
+                ToastUtil.showToast("登录失败请更换账号")
+            }
         } else {
-            gotoActivity(MainPdaJavaActivity::class.java, true)
+            if (httpPda){
+                gotoActivity(MainPdaJavaActivity::class.java, true)
+            }else{
+                ToastUtil.showToast("登录失败请更换账号")
+            }
         }
     }
 

@@ -139,8 +139,8 @@ dependencies {
     // 时间选择框
     implementation "com.contrarywind:Android-PickerView:${ZBConfig.PickerViewVersion}"
 
-    // SearchLayout
-    //implementation 'com.carson_ho:SearchLayout:1.0.1'
+    // TabLayout 库
+    implementation "com.flyco.tablayout:FlycoTabLayout_Lib:${ZBConfig.tablayout_version}"
 
     // log
     //implementation 'com.elvishew:xlog:1.6.1'
@@ -153,7 +153,7 @@ dependencies {
     implementation "com.scwang.smartrefresh:SmartRefreshLayout:${ZBConfig.SmartRefreshVersion}"
 
     //没有使用特殊 Header，可以不加这行
-    //implementation "com.scwang.smartrefresh:SmartRefreshHeader:${ZBConfig.SmartRefreshVersion}"
+    implementation "com.scwang.smartrefresh:SmartRefreshHeader:${ZBConfig.SmartRefreshVersion}"
 
     // adapter
     implementation "com.zhy:base-rvadapter:${ZBConfig.rvadapterVersion}"

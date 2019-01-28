@@ -130,6 +130,16 @@ public interface ApiService {
                                                          @Field("flag") String flag);
 
     /**
+     * 获取发货单列表
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(ApiNameConstant.SEND_OUT_LIST)
+    Single<BaseResponse<SendOutListData>> getSendOutList2(@Field("companyNo") String companyNo,
+                                                         @Field("deliveryState") String deliveryState);
+
+    /**
      * 发货单详情信息
      * <p>
      * deliveryNo:发货单号
