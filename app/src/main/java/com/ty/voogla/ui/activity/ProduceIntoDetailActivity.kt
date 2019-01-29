@@ -112,7 +112,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
         tv_to_box_link.setOnClickListener {
 
-            if (listDetail.size >= 3) {
+            if (listDetail.size >= 10) {
                 ToastUtil.showToast("请先提交")
                 return@setOnClickListener
             }

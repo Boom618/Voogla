@@ -16,16 +16,18 @@ class InspectionAdapter(context: Context, layoutId: Int, datas: MutableList<Chec
 
     override fun convert(holder: ViewHolder, info: CheckInfoList.ListBean, position: Int) {
 
-        val state = if (info.deliveryState == "01") View.GONE else View.VISIBLE
+        // 是否窜货(01否,02是)
+        val stateText = if (info.fleeFlag == "02") "取消窜货" else "确认窜货"
+        val stateName = if (info.fleeFlag == "02") "窜货" else "发货"
 
-        holder.itemView.findViewById<ImageView>(R.id.image_confirm).visibility = state
         // tv_send_address  XML 设置 android:visibility="gone"
         val addr = info.provinceLevel + info.cityLevel + info.countyLevel + info.deliveryAddress
         holder.setText(R.id.tv_send_org, info.companyName)
+            .setText(R.id.tv_confirm, stateText)
             .setText(R.id.tv_number, info.deliveryNo)
             .setText(R.id.tv_receipt_org, info.customerName)
             .setText(R.id.tv_receipt_address, addr)
-            .setText(R.id.tv_receipt_state, info.deliveryStateName)
+            .setText(R.id.tv_receipt_state, stateName)
 
     }
 }

@@ -12,8 +12,6 @@
     </style>
 
 
-
-
     <!-- 删除 item dialog  start  -->
 
     <style name="NormalDialogStyle">
@@ -105,4 +103,15 @@
         <item name="android:layout_marginStart">@dimen/x28</item>
         <item name="android:layout_marginEnd">@dimen/x28</item>
     </style>
+
+
+    <!-- TextView 替换 ImageView 样式-->
+    <style name="Text2ImageView">
+        <item name="android:background">@drawable/button_color</item>
+        <item name="android:textColor">@color/theme_color</item>
+        <item name="android:padding">@dimen/x6</item>
+        <item name="android:paddingStart">@dimen/x20</item>
+        <item name="android:paddingEnd">@dimen/x20</item>
+    </style>
+
 </resources>

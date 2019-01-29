@@ -66,13 +66,13 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View<UserInfo> {
             if (httpPhone) {
                 gotoActivity(MainMobActivity::class.java, true)
             }else{
-                ToastUtil.showToast("登录失败请更换账号")
+                ToastUtil.showToast("无权限,请联系管理员")
             }
         } else {
             if (httpPda){
                 gotoActivity(MainPdaJavaActivity::class.java, true)
             }else{
-                ToastUtil.showToast("登录失败请更换账号")
+                ToastUtil.showToast("无权限,请联系管理员")
             }
         }
     }

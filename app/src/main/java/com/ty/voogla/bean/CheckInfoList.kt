@@ -23,9 +23,11 @@ class CheckInfoList {
          * deliveryAddress : 发货地址
          * outTime : 出库时间
          * outWareDesc : 出库描述
+         * fleeFlag : 是否窜货(01否,02是)
          */
 
         var companyNo: String? = null
+        var customerType: String? = null
         var deliveryNo: String? = null
         var customerName: String? = null
         var companyName: String? = null
@@ -38,5 +40,6 @@ class CheckInfoList {
         var deliveryAddress: String? = null
         var outTime: String? = null
         var outWareDesc: String? = null
+        var fleeFlag: String? = null
     }
 }

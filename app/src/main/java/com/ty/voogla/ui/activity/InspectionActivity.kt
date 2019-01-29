@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import com.ty.voogla.R
 import com.ty.voogla.adapter.InspectionAdapter
 import com.ty.voogla.base.BaseActivity
@@ -16,7 +17,6 @@ import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.CheckInfoList
 import com.ty.voogla.bean.produce.DecodeCode
 import com.ty.voogla.constant.CodeConstant
-import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.net.HttpMethods
@@ -28,7 +28,6 @@ import com.uuzuche.lib_zxing.activity.CodeUtils
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
-import io.reactivex.internal.operators.single.SingleObserveOn
 import kotlinx.android.synthetic.main.activity_inspection.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -49,12 +48,15 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
     private val REQUEST_CAMERA_PERM: Int = 101
 
     // 企业编号
-    private var companyNo: String? = null
+//    private var companyNo: String? = null
     private var list = mutableListOf<CheckInfoList.ListBean>()
 
     private val presenter = VooglaPresenter(this)
     // 当前确认 position
     private var currentPosition = 0
+
+    private lateinit var currentCode:String
+    private lateinit var currentCodeClass:String
 
     override val activityLayout: Int
         get() = R.layout.activity_inspection
@@ -63,7 +65,6 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
     }
 
     override fun initOneData() {
-        companyNo = SimpleCache.getUserInfo().companyNo
 
         val layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -102,12 +103,20 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
     override fun showSuccess(data: DecodeCode.ResultBean) {
         // 二维码解析成功
         val qrCodeType = data.qrCodeType!!
-        val code = data.code!!
+        currentCode = data.code!!
         // 单据号
-        ed_search.setText(code)
+        ed_search.setText(currentCode)
 
-        val qrCodeClass = if (qrCodeType == "2") "A0702" else "A0701"
+        currentCodeClass = if (qrCodeType == "2") "A0702" else "A0701"
 
+        httpCheckList(currentCodeClass, currentCode)
+
+    }
+
+    /**
+     * 获取稽查列表数据
+     */
+    private fun httpCheckList(qrCodeClass: String, code: String) {
         HttpMethods.getInstance().checkInfoList(object : SingleObserver<BaseResponse<CheckInfoList>> {
             override fun onSubscribe(d: Disposable) {
                 disposable = d
@@ -119,7 +128,7 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
 
                     adapter = InspectionAdapter(this@InspectionActivity, R.layout.item_inspection, list)
                     recycler_view.adapter = adapter
-//                    adapter.notifyDataSetChanged()
+                    //                    adapter.notifyDataSetChanged()
 
                     if (list.size == 0) {
                         ToastUtil.showToast("无发货信息")
@@ -135,9 +144,11 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
                             }
 
                             override fun onItemClick(view: View, holder: RecyclerView.ViewHolder, position: Int) {
-                                val imageView = holder.itemView.findViewById<ImageView>(R.id.image_confirm)
+                                val confirmView = holder.itemView.findViewById<TextView>(R.id.tv_confirm)
                                 val deliveryNo = list[position].deliveryNo!!
-                                ImageViewSetOnClick(imageView, deliveryNo)
+                                val companyNo = list[position].companyNo!!
+                                val fleeFlag = list[position].fleeFlag!!
+                                ImageViewSetOnClick(confirmView, companyNo, deliveryNo, fleeFlag)
                             }
                         })
                     }
@@ -151,7 +162,6 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
                 ToastUtil.showToast(e.message)
             }
         }, qrCodeClass, code)
-
     }
 
     override fun showError(msg: String) {
@@ -162,21 +172,26 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
      * 确认窜货
      */
     override fun showResponse(response: ResponseInfo) {
+        // list 数据没更新  不能 notify, 方案 1：重新获取数据
+        httpCheckList(currentCodeClass, currentCode)
         //ToastUtil.showToast(response.msg)
 //        list.removeAt(currentPosition)
-//        adapter.notifyItemRemoved(currentPosition)
+//        adapter.notifyDataSetChanged()
+//        adapter.notifyItemChanged(currentPosition)
 //        adapter.notifyItemRangeChanged(currentPosition, list.size - currentPosition)
-        adapter.notifyItemChanged(currentPosition)
-        adapter.notifyItemRangeChanged(currentPosition, list.size - currentPosition)
     }
 
     /**
-     * 确认串货 Dialog
+     * 确认/取消 窜货 Dialog
+     * fleeFlag 是否窜货(01否,02是)
      */
-    fun ImageViewSetOnClick(imageView: ImageView, deliveryNo: String) {
-        imageView.setOnClickListener { view ->
-            DialogUtil.deleteItemDialog(view.context, "温馨提示", "确认窜货", NormalAlertDialog.onNormalOnclickListener {
-                checkInfoConfirm(deliveryNo)
+    fun ImageViewSetOnClick(confirmView: TextView, companyNo: String, deliveryNo: String, fleeFlag: String) {
+        val pointContent = if (fleeFlag == "01") "确认窜货" else "取消窜货"
+        // 确认操作 取反
+        val flag = if (fleeFlag == "01") "02" else "01"
+        confirmView.setOnClickListener { view ->
+            DialogUtil.deleteItemDialog(view.context, "温馨提示", pointContent, NormalAlertDialog.onNormalOnclickListener {
+                checkInfoConfirm(companyNo, deliveryNo, flag)
                 it.dismiss()
             })
         }
@@ -186,12 +201,13 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
 
     /**
      * 确认串货 Http
+     * companyNo 该订单的企业编号
      * deliveryNo 发货单编号
      * 是否窜货(01否,02是)
      */
-    fun checkInfoConfirm(deliveryNo: String) {
+    fun checkInfoConfirm(companyNo: String, deliveryNo: String, fleeFlag: String) {
 
-        presenter.checkInfoConfirm(companyNo, deliveryNo,"02")
+        presenter.checkInfoConfirm(companyNo, deliveryNo, fleeFlag)
 
     }
 

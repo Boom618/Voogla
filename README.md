@@ -17,6 +17,7 @@ RxJava 操作符：
 - SharedP ：SharedPreferences 形式存值。GoodNo
 - SimpleCache : ACache 形式存值。存 putString、UserInfo、ArrayList<QrCodeListData>
 - SparseArrayUtil：文件形式存值。 List<QrCodeListData>
+- 代码抽取 Ctrl + Alt + M （Refactor -> Extract -> Function）
 
 RecyclerView 封装：
 
