@@ -9,6 +9,7 @@ RxJava 操作符：
 - 延迟过滤
 - 入库箱码产品码逻辑需改进
 - iView.showSuccess(response) 如果有多个接口, T 对应不上
+- 文件读写改用 okIo
 
 项目说明：
 
@@ -41,3 +42,9 @@ RecyclerView 问题：
 解决方案：
 
 含有 `RecyclerView` 的控件放在外层改为`LinearLayout`或其他常用 Layout 。
+
+总结：
+
+- 参与接口设计
+- 数据结构在设计的时候与界面操作尽量保持一致：比如
+    - 获取详情结构尽量与保存提交的时候一致

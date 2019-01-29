@@ -127,12 +127,12 @@ public class ApiNameConstant {
     /**
      * 稽查列表信息
      */
-    public static final String CHECK_INFO_LIST = "corp/im/check-info-list";
+    public static final String CHECK_INFO_LIST = "corp/check/check-info-list";
 
     /**
      * 稽查确认
      */
-    public static final String CHECK_INFO_CONFIRM = "corp/im/check-info-confirm";
+    public static final String CHECK_INFO_CONFIRM = "corp/check/check-info-confirm";
 
 
 }

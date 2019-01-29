@@ -47,11 +47,21 @@ object SparseArrayUtil {
     fun getQrCodeList(context: Context): MutableList<InBoxCodeDetailInfosBean> {
 
         var inputStreamReader: ObjectInputStream? = null
-        val file = File(context.getDir("data", Context.MODE_PRIVATE), "sparse")
-        inputStreamReader = ObjectInputStream(FileInputStream(file))
+        var readObject =  mutableListOf<InBoxCodeDetailInfosBean>()
+        try {
+            val file = File(context.getDir("data", Context.MODE_PRIVATE), "sparse")
+            inputStreamReader = ObjectInputStream(FileInputStream(file))
 //        inputStreamReader = ObjectInputStream(FileInputStream("code.txt"))
-        val readObject = inputStreamReader.readObject() as MutableList<InBoxCodeDetailInfosBean>
-        inputStreamReader.close()
+            readObject = inputStreamReader.readObject() as MutableList<InBoxCodeDetailInfosBean>
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            try {
+                inputStreamReader?.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
         return readObject
 
     }

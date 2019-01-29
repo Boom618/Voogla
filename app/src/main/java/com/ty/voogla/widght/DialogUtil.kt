@@ -18,6 +18,7 @@ object DialogUtil {
      * @param titleText  标题 "温馨提示"
      * @param pointContent 内容
      */
+    @JvmStatic
     fun deleteItemDialog(
         context: Context,
         titleText: String,

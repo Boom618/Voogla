@@ -115,6 +115,7 @@ class WaitShippFragment : BaseFragment(), VooglaContract.ListView<SendOutListDat
 
     override fun showSuccess(data: MutableList<SendOutListData.ListBean>) {
 
+        listData.clear()
         listData.addAll(data)
         adapter!!.notifyDataSetChanged()
     }
