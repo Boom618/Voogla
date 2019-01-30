@@ -61,6 +61,9 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
     private RecyclerView recyclerView;
     private SendOutNextAdapter adapter;
 
+    private SparseArray<Integer> boxSize = new SparseArray<>();
+    private SparseArray<Integer> proSize = new SparseArray<>();
+
     @Override
     protected int getActivityLayout() {
         return R.layout.activity_send_out_next;
@@ -80,7 +83,7 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
             @Override
             public void onClick(View v) {
 
-                DialogUtil.INSTANCE.deleteItemDialog(v.getContext(), "确认发货？", "确认发货", new NormalAlertDialog.onNormalOnclickListener() {
+                DialogUtil.deleteItemDialog(v.getContext(), "温馨提示", "确认发货", new NormalAlertDialog.onNormalOnclickListener() {
                     @Override
                     public void onNormalClick(NormalAlertDialog dialog) {
                         sendOutSave(initReqBody());
@@ -156,9 +159,6 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         }
 
     }
-
-    private SparseArray<Integer> boxSize = new SparseArray<>();
-    private SparseArray<Integer> proSize = new SparseArray<>();
 
     /**
      * 构建 Body

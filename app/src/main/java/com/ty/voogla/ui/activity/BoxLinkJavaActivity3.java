@@ -33,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * @author TY on 2019/1/12.
@@ -51,6 +52,10 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
      * 产品码列表(全局展示类 ： QrCodeListData )
      */
     private ArrayList<QrCodeListData> qrCodeInfos = new ArrayList<>();
+    /**
+     * 当前出库的所有码
+     */
+    private HashMap<Integer, ArrayList<QrCodeListData>> allCode = new HashMap<>();
 
     /**
      * 发货出库-发货明细 item
@@ -96,11 +101,9 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
     private TextView numberCode;
 
     /**
-     * 上一次进来的位置
+     * 上一次进来的位置 HashMap 存数据了
      */
-    private int lastPosition = 0;
-
-
+//    private int lastPosition = 0;
     @Override
     protected int getActivityLayout() {
         return R.layout.activity_box_link_code;
@@ -114,13 +117,13 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
         numberCode = findViewById(R.id.tv_code_number);
 
         sendPosition = getIntent().getIntExtra(CodeConstant.SEND_POSITION, -1);
-        lastPosition = SharedP.getKeyPosition(this, "lastPosition");
+//        lastPosition = SharedP.getKeyPosition(this, "lastPosition");
 
         goodsNo = getIntent().getStringExtra("goodsNo");
 
         try {
-            HashMap<Integer, ArrayList<QrCodeListData>> qrCodeSend = SparseArrayUtil.getQrCodeSend(this);
-            qrCodeInfos = qrCodeSend.get(sendPosition);
+            allCode = SparseArrayUtil.getQrCodeSend(this);
+            qrCodeInfos = allCode.get(sendPosition);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -142,21 +145,20 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
                 }
                 Intent intent = new Intent();
                 intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
-                HashMap<Integer,ArrayList<QrCodeListData>> array = null;
-                try {
-                    array = SparseArrayUtil.getQrCodeSend(BoxLinkJavaActivity3.this);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (array == null) {
-                    array = new HashMap<>();
-                }
+                // 从文件中拿已经保存过的数据 再添加
+//                try {
+//                    allCode = SparseArrayUtil.getQrCodeSend(BoxLinkJavaActivity3.this);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                if (allCode == null) {
+//                    allCode = new HashMap<>();
+//                }
 
-                array.put(sendPosition,qrCodeInfos);
-//                SimpleCache.putQrCode(qrCodeInfos);
-                SparseArrayUtil.putQrCodeSend(BoxLinkJavaActivity3.this,array);
+                allCode.put(sendPosition, qrCodeInfos);
+                SparseArrayUtil.putQrCodeSend(BoxLinkJavaActivity3.this, allCode);
 
-                SharedP.putKeyPosition(BoxLinkJavaActivity3.this, "lastPosition", sendPosition);
+                //SharedP.putKeyPosition(BoxLinkJavaActivity3.this, "lastPosition", sendPosition);
 
                 setResult(CodeConstant.RESULT_CODE, intent);
                 finish();
@@ -182,6 +184,8 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
                         numberCode.setText(String.valueOf(qrCodeInfos.size() - 1));
 
                         qrCodeInfos.remove(position);
+                        // 重复码集合
+                        repeatCodeList.remove(position);
                         adapter.notifyItemRemoved(position);
                         adapter.notifyItemRangeChanged(position, qrCodeInfos.size() - position);
                     }
@@ -297,6 +301,33 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
      * @param code
      */
     private void isContainsCode(String code, String codeClass) {
+
+        // 方式一：使用 keySet()遍历 Map ( 10 W 数据 31 ms )
+        /*for (Integer key : allCode.keySet()) {
+            ArrayList<QrCodeListData> data = allCode.get(key);
+            for (int j = 0; j < data.size(); j++) {
+                String qrCode = data.get(j).getQrCode();
+                if (qrCode.equals(code)) {
+                    ToastUtil.showToast("重复码请重试");
+                    return;
+                }
+            }
+        }*/
+
+        // 方式二：迭代器，keySet 迭代 （10 W 数据 17 ms）
+        Iterator<Integer> iterator = allCode.keySet().iterator();
+        Integer key;
+        while (iterator.hasNext()) {
+            key = iterator.next();
+            ArrayList<QrCodeListData> listData = allCode.get(key);
+            for (int i = 0; i < listData.size(); i++) {
+                String qrCode = listData.get(i).getQrCode();
+                if (qrCode.equals(code)) {
+                    ToastUtil.showToast("重复码请重试");
+                    return;
+                }
+            }
+        }
 
         if (repeatCodeList.contains(code)) {
             ToastUtil.showToast("重复码号");
