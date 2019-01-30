@@ -357,27 +357,12 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
         // 有数据的时候判断套码 和 卷码
         if (size != 0) {
             if (isPackageCode != currentPackage) {
-                // 码类型不一致提示
-                final boolean finalCurrentPackage = currentPackage;
-                DialogUtil.deleteItemDialog(this, "温馨提示", "重置数据吗？", new NormalAlertDialog.onNormalOnclickListener() {
-                    @Override
-                    public void onNormalClick(NormalAlertDialog dialog) {
-
-                        typeSwitch = true;
-                        isPackage(finalCurrentPackage, code, qrCodeType, codeClass);
-
-                        dialog.dismiss();
-                    }
-                });
-            } else {
-                // 码类型一致
-                isPackage(currentPackage, code, qrCodeType, codeClass);
+                // 码类型不一致提示( 套码和卷码更换 )
+                typeSwitch = true;
+                //deleteSwitchDialog(code, qrCodeType, codeClass, currentPackage);
             }
-        } else {
-            // 无数据的时候判断套码 和 卷码
-
-            isPackage(currentPackage, code, qrCodeType, codeClass);
         }
+        isPackage(currentPackage, code, qrCodeType, codeClass);
 
     }
 
@@ -463,7 +448,8 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
         if (isPackageCode) {
             // 拉取套码 下的产品码
             // getCodeList(code);
-            presenter.getQrCodeList(currentCode);
+            //presenter.getQrCodeList(currentCode,currentCodeClass);
+            presenter.getQrCodeList(currentCode,CodeConstant.QR_CODE_0702);
         } else {
 
             QrCodeListData qrCode = new QrCodeListData();
@@ -472,13 +458,8 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
 
             if (typeSwitch) {
                 // 更换了码类型
-                qrCodeInfos.clear();
-                repeatCodeList.clear();
+                deleteSwitchDialog(qrCode);
 
-                qrCodeInfos.add(qrCode);
-                repeatCodeList.add(currentCode);
-                numberCode.setText(String.valueOf(qrCodeInfos.size()));
-                adapter.notifyDataSetChanged();
             } else {
                 qrCodeInfos.add(qrCode);
                 repeatCodeList.add(currentCode);
@@ -493,6 +474,27 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
 
         }
 
+    }
+
+    /**
+     * 切换了码类型
+     */
+    private void deleteSwitchDialog(final QrCodeListData qrCode) {
+        DialogUtil.deleteItemDialog(this, "温馨提示", "重置数据吗？", new NormalAlertDialog.onNormalOnclickListener() {
+            @Override
+            public void onNormalClick(NormalAlertDialog dialog) {
+                // 更换了码类型
+                qrCodeInfos.clear();
+                repeatCodeList.clear();
+
+                qrCodeInfos.add(qrCode);
+                repeatCodeList.add(currentCode);
+                numberCode.setText(String.valueOf(qrCodeInfos.size()));
+                adapter.notifyDataSetChanged();
+
+                dialog.dismiss();
+            }
+        });
     }
 
     /**

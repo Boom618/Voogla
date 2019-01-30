@@ -114,7 +114,8 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(ApiNameConstant.QR_CODE_LIST)
-    Single<BaseResponse<ArrayList<String>>> getQrCodeList(@Field("qrCode") String qrCode);
+    Single<BaseResponse<ArrayList<String>>> getQrCodeList(@Field("qrCode") String qrCode,
+                                                          @Field("qrCodeType") String qrCodeType);
     /**
      * --------------------------------- 发货出库 ----------------------------------------
      */
@@ -137,7 +138,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(ApiNameConstant.SEND_OUT_LIST)
     Single<BaseResponse<SendOutListData>> getSendOutList2(@Field("companyNo") String companyNo,
-                                                         @Field("deliveryState") String deliveryState);
+                                                          @Field("deliveryState") String deliveryState);
 
     /**
      * 发货单详情信息

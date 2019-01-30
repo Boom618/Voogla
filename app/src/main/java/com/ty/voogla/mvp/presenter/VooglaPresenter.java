@@ -292,11 +292,11 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
 
     /**
-     * 根据箱码获取产品码
+     * 箱码和产品码互查
      *
      * @param qrCode
      */
-    public void getQrCodeList(String qrCode) {
+    public void getQrCodeList(String qrCode,String qrCodeType) {
         httpMethods.getQrCodeList(new SingleObserver<BaseResponse<ArrayList<String>>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -325,7 +325,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onError(Throwable e) {
 
             }
-        }, qrCode);
+        }, qrCode,qrCodeType);
 
     }
 

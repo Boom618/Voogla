@@ -220,8 +220,8 @@ public class HttpMethods {
      * @param qrCode
      * @return
      */
-    public void getQrCodeList(SingleObserver<BaseResponse<ArrayList<String>>> observer, String qrCode) {
-        mService.getQrCodeList(qrCode)
+    public void getQrCodeList(SingleObserver<BaseResponse<ArrayList<String>>> observer, String qrCode,String qrCodeType) {
+        mService.getQrCodeList(qrCode,qrCodeType)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
 

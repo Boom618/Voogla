@@ -39,7 +39,7 @@ class BoxLinkLookActivity : BaseActivity(),VooglaContract.ListView<String> {
         if (type == "product") {
             // 入库查看
             val qrCode = intent.getStringExtra("qrCode")
-            presenter.getQrCodeList(qrCode)
+            presenter.getQrCodeList(qrCode,CodeConstant.QR_CODE_0702)
         }else{
             // 出库查看
             val qrCodeListData = SparseArrayUtil.getQrCodeListLook(this)

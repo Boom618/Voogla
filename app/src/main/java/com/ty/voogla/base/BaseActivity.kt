@@ -14,7 +14,7 @@ import com.ty.voogla.data.ACache
  */
 abstract class BaseActivity : AppCompatActivity() {
 
-//    private var mUnbinder: Unbinder? = null
+    //    private var mUnbinder: Unbinder? = null
     private var mCache: ACache? = null
 
     /**
@@ -83,7 +83,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
 
     @JvmOverloads
-    protected fun initToolBar(midId: Int = 0,  rightText: String? = null,listener: View.OnClickListener? = null) {
+    protected fun initToolBar(midId: Int = 0, rightText: String? = null, listener: View.OnClickListener? = null) {
 
         // 左边返回
         findViewById<View>(R.id.iv_back).setOnClickListener {
@@ -93,11 +93,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
         // 中间标题
         val midText = findViewById<TextView>(R.id.tv_title)
-        if (midId == 0) {
-            midText.text = ""
-        } else {
-            midText.setText(midId)
-        }
+        if (midId == 0) midText.text = "" else midText.setText(midId)
 
         // 右边监听事件
         val right = findViewById<TextView>(R.id.tv_right)
@@ -108,6 +104,7 @@ abstract class BaseActivity : AppCompatActivity() {
         if (null == listener) {
             right.visibility = View.GONE
         } else {
+
             right.setOnClickListener(listener)
         }
 
