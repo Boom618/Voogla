@@ -233,5 +233,6 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
     protected void onDestroy() {
         super.onDestroy();
         SparseArrayUtil.clearCode(this);
+        SparseArrayUtil.clearOwnProCode(this);
     }
 }

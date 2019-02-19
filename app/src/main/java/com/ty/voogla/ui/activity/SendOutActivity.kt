@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.ViewPager
+import com.flyco.tablayout.listener.OnTabSelectListener
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.ui.fragment.WaitShippFragment
@@ -32,7 +34,35 @@ class SendOutActivity : BaseActivity() {
 
         val mAdapter = MyPagerAdapter(supportFragmentManager, mFragment)
         viewpager.adapter = mAdapter
+
         stl.setViewPager(viewpager)
+
+//        stl.setTabData(mTitles)
+//        stl.setOnTabSelectListener(object : OnTabSelectListener{
+//            override fun onTabSelect(position: Int) {
+//                viewpager.currentItem = position
+//            }
+//
+//            override fun onTabReselect(position: Int) {
+//            }
+//
+//        })
+//
+//        viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+//            override fun onPageScrollStateChanged(position: Int) {
+//
+//            }
+//
+//            override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
+//            }
+//
+//            override fun onPageSelected(position: Int) {
+//                stl.currentTab = position
+//            }
+//
+//        })
+//
+//        viewpager.currentItem = 0
 
     }
 
@@ -44,7 +74,7 @@ class SendOutActivity : BaseActivity() {
 
     class MyPagerAdapter(fm: FragmentManager, private val mFragment: List<Fragment>) : FragmentPagerAdapter(fm) {
 
-        private val mTitles = arrayOf("未发货", "已发货", "已收货")
+        //private val mTitles = arrayOf("未发货", "已发货", "已收货")
         override fun getCount(): Int {
             return mFragment.size
         }
@@ -56,6 +86,9 @@ class SendOutActivity : BaseActivity() {
         override fun getItem(position: Int): Fragment {
             return mFragment[position]
         }
+    }
+    companion object {
+        val mTitles = arrayOf("未发货", "已发货", "已收货")
     }
 
 }

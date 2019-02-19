@@ -1,7 +1,7 @@
 package com.ty.voogla.data
 
 import android.content.Context
-import android.util.SparseArray
+import android.support.v4.util.ArrayMap
 import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean
 import com.ty.voogla.bean.sendout.QrCodeListData
 import java.io.*
@@ -47,7 +47,7 @@ object SparseArrayUtil {
     fun getQrCodeList(context: Context): MutableList<InBoxCodeDetailInfosBean> {
 
         var inputStreamReader: ObjectInputStream? = null
-        var readObject =  mutableListOf<InBoxCodeDetailInfosBean>()
+        var readObject = mutableListOf<InBoxCodeDetailInfosBean>()
         try {
             val file = File(context.getDir("data", Context.MODE_PRIVATE), "sparse")
             inputStreamReader = ObjectInputStream(FileInputStream(file))
@@ -113,7 +113,7 @@ object SparseArrayUtil {
         return list
     }
 
-    //    ----------------------------------------------------------- 发货出明细
+    /**  ----------------------------------------------------------- 发货出库明细 */
 
 
     @JvmStatic
@@ -157,4 +157,46 @@ object SparseArrayUtil {
         outputStream.flush()
         outputStream.close()
     }
+
+    /**  ----------------------------------------------------------- 出库 所有产品码 */
+
+    @JvmStatic
+    fun putOwnProCode(context: Context, ownPro: HashMap<String, String>) {
+
+        var outputStream: ObjectOutputStream? = null
+        try {
+            val file = File(context.getDir("data", Context.MODE_PRIVATE), "ownProCode")
+            outputStream = ObjectOutputStream(FileOutputStream(file))
+            outputStream.writeObject(ownPro)
+            outputStream.flush()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                outputStream?.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    @JvmStatic
+    fun getOwnProCode(context: Context): HashMap<String, String> {
+        val file = File(context.getDir("data", Context.MODE_PRIVATE), "ownProCode")
+        val inputStream = ObjectInputStream(FileInputStream(file))
+        val list = inputStream.readObject() as HashMap<String, String>
+        inputStream.close()
+        return list
+    }
+
+    @JvmStatic
+    fun clearOwnProCode(context: Context) {
+        val hashMap = HashMap<String, String>()
+        val file = File(context.getDir("data", Context.MODE_PRIVATE), "ownProCode")
+        val outputStream = ObjectOutputStream(FileOutputStream(file))
+        outputStream.writeObject(hashMap)
+        outputStream.flush()
+        outputStream.close()
+    }
+
 }

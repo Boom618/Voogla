@@ -19,6 +19,8 @@ RxJava 操作符：
 - SimpleCache : ACache 形式存值。存 putString、UserInfo、ArrayList<QrCodeListData>
 - SparseArrayUtil：文件形式存值。 List<QrCodeListData>
 - 代码抽取 Ctrl + Alt + M （Refactor -> Extract -> Function）
+- ArrayMap 没有 Serializable ，不能采用文件保存 改用 HashMap
+- SharedPreferences 保存的是基本类型数据
 
 RecyclerView 封装：
 

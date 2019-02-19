@@ -68,7 +68,7 @@ public interface VooglaContract {
     /**
      * 扫码页面单独接口
      *
-     * @param <T>
+     * @param
      */
     interface BoxLinkView {
 

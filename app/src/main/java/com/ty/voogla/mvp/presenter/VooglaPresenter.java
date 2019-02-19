@@ -243,7 +243,11 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onError(Throwable e) {
-                iView.showError(e.getMessage());
+                if (boxView == null) {
+                    iView.showError(e.getMessage());
+                }else{
+                    boxView.showError(e.getMessage());
+                }
             }
         }, encodeUrl);
 

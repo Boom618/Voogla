@@ -48,6 +48,17 @@
             tl:tl_textSelectColor="@color/theme_color"
             tl:tl_textUnselectColor="@color/txt_product_color"/>
 
+    <!--<com.flyco.tablayout.SegmentTabLayout-->
+            <!--android:id="@+id/stl"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="48dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--tl:tl_tab_space_equal="true"-->
+            <!--tl:tl_indicator_anim_enable="true"-->
+            <!--tl:tl_indicator_bounce_enable="true"-->
+            <!--tl:tl_textSelectColor="@color/theme_color"-->
+            <!--tl:tl_textUnselectColor="@color/txt_product_color" />-->
+
     <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"

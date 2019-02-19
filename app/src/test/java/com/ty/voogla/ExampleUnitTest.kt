@@ -24,6 +24,21 @@ class ExampleUnitTest {
         val size = list.size
         val size1 = list.distinct().size
 
+        val timeMillis = System.currentTimeMillis()
+
+        var temp = 0
+        for (i in 0..100000000){
+//            for (j in 0..10000){
+//               temp = i + j
+//            }
+            temp = i
+        }
+        println(temp)
+
+        val millis = System.currentTimeMillis()
+
+        println(millis - timeMillis)
+
 
     }
 

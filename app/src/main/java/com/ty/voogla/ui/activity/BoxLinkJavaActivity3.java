@@ -72,17 +72,25 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
     String proCode = "";
 
     /**
-     * 出库箱数、出库产品数
      * 二维码、类别
      */
-    private int outBoxNum = 0;
-    private int outGoodsNum = 0;
     private String lastCode = "";
     private String lastCodeClass = "";
     /**
      * 重复码
      */
     private ArrayList<String> repeatCodeList = new ArrayList<>();
+
+    /**
+     * support.v4.util.ArrayMap ( 兼容 aip19 以下)
+     * ArrayMap 没有 Serializable ，不能采用文件保存 改用 HashMap
+     * 保存所有 产品码 及对应的箱码
+     */
+    private HashMap<String,String> ownProCode = new HashMap();
+    /**
+     * 产品码转箱码
+     */
+    private String pro2BoxCode;
 
 
     private VooglaPresenter presenter = new VooglaPresenter(this);
@@ -106,12 +114,11 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
         numberCode = findViewById(R.id.tv_code_number);
 
         sendPosition = getIntent().getIntExtra(CodeConstant.SEND_POSITION, -1);
-//        lastPosition = SharedP.getKeyPosition(this, "lastPosition");
-
         goodsNo = getIntent().getStringExtra("goodsNo");
 
         try {
             allCode = SparseArrayUtil.getQrCodeSend(this);
+            ownProCode = SparseArrayUtil.getOwnProCode(this);
             qrCodeInfos = allCode.get(sendPosition);
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,20 +141,12 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
                 }
                 Intent intent = new Intent();
                 intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
-                // 从文件中拿已经保存过的数据 再添加
-//                try {
-//                    allCode = SparseArrayUtil.getQrCodeSend(BoxLinkJavaActivity3.this);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                if (allCode == null) {
-//                    allCode = new HashMap<>();
-//                }
 
                 allCode.put(sendPosition, qrCodeInfos);
+                // 保存出库中所有码（不能互查）
                 SparseArrayUtil.putQrCodeSend(BoxLinkJavaActivity3.this, allCode);
-
-                //SharedP.putKeyPosition(BoxLinkJavaActivity3.this, "lastPosition", sendPosition);
+                // 保存所有产品码及对应的箱码
+                SparseArrayUtil.putOwnProCode(BoxLinkJavaActivity3.this, ownProCode);
 
                 setResult(CodeConstant.RESULT_CODE, intent);
                 finish();
@@ -170,6 +169,12 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
                     @Override
                     public void onClick(View v) {
 
+                        QrCodeListData data = qrCodeInfos.get(position);
+                        String qrCodeClass = data.getQrCodeClass();
+                        if (CodeConstant.QR_CODE_0701.equals(qrCodeClass)) {
+                            String qrCode = data.getQrCode();
+                            ownProCode.remove(qrCode);
+                        }
                         numberCode.setText(String.valueOf(qrCodeInfos.size() - 1));
 
                         qrCodeInfos.remove(position);
@@ -303,15 +308,6 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
 
         isContainsCode(code, codeClass);
 
-        // TODO  Thread.sleep 需改进
-//        try {
-//            Thread.sleep(500);
-//            // 继续扫码
-//            continuousScanning(true);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
     }
 
     /**
@@ -343,19 +339,33 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
                 String qrCode = listData.get(i).getQrCode();
                 if (qrCode.equals(code)) {
                     ToastUtil.showToast("重复码请重试");
-                    ToastUtil.showToast("该产品码所关联箱码已在列表中");
                     return;
                 }
             }
         }
 
         if (repeatCodeList.contains(code)) {
-            ToastUtil.showToast("重复码号");
+            ToastUtil.showToast("重复码请重试");
             //ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
         } else {
-
-            // 出库校验
-            sendOutjudegCode(companyNo, codeClass, goodsNo, code);
+            if (CodeConstant.QR_CODE_0701.equals(codeClass)){
+                presenter.getQrCodeList(code,CodeConstant.QR_CODE_0701);
+                lastCode = code;
+            }else{
+                // 箱码,去比较所有产品码对应的箱码
+                Iterator<String> iteratorPro = ownProCode.keySet().iterator();
+                String keyPro;
+                while (iteratorPro.hasNext()) {
+                    keyPro = iteratorPro.next();
+                    String boxCode = ownProCode.get(keyPro);
+                    if (code.equals(boxCode)) {
+                        ToastUtil.showToast("该箱码中有对应的产品码已出库");
+                        return;
+                    }
+                }
+                // 出库校验
+                sendOutjudegCode(companyNo, codeClass, goodsNo, code);
+            }
         }
     }
 
@@ -369,19 +379,9 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
      */
     private void sendOutjudegCode(String companyNo, String qrCodeClass, String goodsNo, String qrCode) {
 
-//        presenter.sendOutjudegCode(companyNo, qrCodeClass, goodsNo, qrCode);
-//        lastCodeClass = qrCodeClass;
-//        lastCode = qrCode;
-        if (qrCodeClass.equals(CodeConstant.QR_CODE_0701)) {
-            presenter.getQrCodeList(qrCode,CodeConstant.QR_CODE_0701);
-            lastCodeClass = CodeConstant.QR_CODE_0701;
-            proCode = qrCode;
-            lastCode = qrCode;
-        }else{
-            presenter.sendOutjudegCode(companyNo, qrCodeClass, goodsNo, qrCode);
-            lastCodeClass = qrCodeClass;
-            lastCode = qrCode;
-        }
+        presenter.sendOutjudegCode(companyNo, qrCodeClass, goodsNo, qrCode);
+        lastCodeClass = qrCodeClass;
+        lastCode = qrCode;
     }
 
     /**
@@ -402,12 +402,8 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
     @Override
     public void sendJudegCode(String response) {
 
-        if (lastCodeClass.equals(CodeConstant.QR_CODE_0702)) {
-            outBoxNum++;
-        } else {
-            outGoodsNum++;
-        }
         repeatCodeList.add(lastCode);
+        ownProCode.put(lastCode,pro2BoxCode);
         // 校验成功直接添加数据
         QrCodeListData data = new QrCodeListData();
         data.setQrCode(lastCode);
@@ -425,18 +421,19 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
     }
 
     /**
+     * 产品码去判断箱码，箱码根据保存的 ownProCode 去遍历
      * 根据产品码获取箱码号(单个)
      *
      * @param codeList
      */
     @Override
     public void getCodeList(ArrayList<String> codeList) {
-        String qrCode = codeList.get(0);
-        if (repeatCodeList.contains(qrCode)) {
+        pro2BoxCode = codeList.get(0);
+        if (repeatCodeList.contains(pro2BoxCode)) {
             ToastUtil.showToast("该产品码所关联箱码已在列表中");
             return;
         }
-        presenter.sendOutjudegCode(companyNo, CodeConstant.QR_CODE_0701, goodsNo, proCode);
+        sendOutjudegCode(companyNo, CodeConstant.QR_CODE_0701, goodsNo, proCode);
 
     }
 
