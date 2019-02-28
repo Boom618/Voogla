@@ -1,6 +1,8 @@
 package com.ty.voogla.widght
 
 import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.ty.voogla.connector.SelectGoods
 import com.ty.voogla.data.SharedP
@@ -10,6 +12,18 @@ import com.ty.voogla.util.ToastUtil
  * @author TY on 2019/1/8.
  */
 object DialogUtil {
+
+
+    /**
+     * 关闭软键盘
+     *
+     * @param context
+     * @param view
+     */
+    fun hideInputWindow(context: Context, view: View) {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 
     /**
      * 发货出库

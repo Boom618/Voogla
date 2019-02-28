@@ -20,7 +20,7 @@ class InspectionAdapter(context: Context, layoutId: Int, datas: MutableList<Chec
 
         // tv_send_address  XML 设置 android:visibility="gone"
         val addr = info.provinceLevel + info.cityLevel + info.countyLevel
-        val stringAddr = when (addr.length >= 14) {
+        val stringAddr = when (info.deliveryAddress!!.length >= 6) {
            true -> {
                addr + "\n" + info.deliveryAddress
             }

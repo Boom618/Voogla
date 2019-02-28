@@ -29,13 +29,10 @@ class SendOutAdapter(val context: Context, layout: Int, datas: MutableList<SendO
         }
 
         val addr = info.provinceLevel + info.cityLevel + info.countyLevel
-        val stringAddr = when (addr.length >= 14) {
-            true -> {
-                addr + "\n" + info.deliveryAddress
-            }
-            else -> {
-                addr + info.deliveryAddress
-            }
+        val addrAll = addr + info.deliveryAddress
+        val stringAddr = when (addrAll.length >= 15) {
+            true -> addr + "\n" + info.deliveryAddress
+            else -> addrAll
         }
         holder.setText(R.id.tv_state_type, type)
             .setText(R.id.tv_number, info.deliveryNo)

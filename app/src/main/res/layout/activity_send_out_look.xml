@@ -14,7 +14,9 @@
 
     <android.support.constraint.ConstraintLayout
             android:background="@color/white"
-            android:layout_margin="@dimen/x10"
+            android:layout_marginStart="@dimen/x10"
+            android:layout_marginTop="@dimen/x10"
+            android:layout_marginBottom="@dimen/x10"
             android:paddingBottom="@dimen/x20"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -23,7 +25,7 @@
                 android:id="@+id/tv_receipt"
                 android:text="@string/send_out_receipt"
                 android:layout_width="wrap_content"
-                android:layout_marginStart="@dimen/x20"
+                android:layout_marginStart="@dimen/x16"
                 style="@style/itemProductStyle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_send_out_receipt"

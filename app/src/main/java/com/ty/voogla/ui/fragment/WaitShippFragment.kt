@@ -61,7 +61,7 @@ class WaitShippFragment : BaseFragment(), VooglaContract.ListView<SendOutListDat
             android.R.color.holo_orange_light, android.R.color.holo_green_light)
 
         //设置下拉时圆圈的背景颜色
-        view.refreshLayout.setProgressBackgroundColorSchemeResource(android.R.color.holo_green_light)
+        //view.refreshLayout.setProgressBackgroundColorSchemeResource(android.R.color.holo_green_light)
 
         view.refreshLayout.setOnRefreshListener {
             presenter.getSendOutList2(companyNo, deliveryState)
@@ -139,7 +139,7 @@ class WaitShippFragment : BaseFragment(), VooglaContract.ListView<SendOutListDat
     }
 
     override fun showResponse(response: ResponseInfo) {
-        ToastUtil.showToast(response.msg)
+        ToastUtil.showToast("成功")
     }
 
     companion object {

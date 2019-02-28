@@ -37,33 +37,6 @@ class SendOutActivity : BaseActivity() {
 
         stl.setViewPager(viewpager)
 
-//        stl.setTabData(mTitles)
-//        stl.setOnTabSelectListener(object : OnTabSelectListener{
-//            override fun onTabSelect(position: Int) {
-//                viewpager.currentItem = position
-//            }
-//
-//            override fun onTabReselect(position: Int) {
-//            }
-//
-//        })
-//
-//        viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
-//            override fun onPageScrollStateChanged(position: Int) {
-//
-//            }
-//
-//            override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
-//            }
-//
-//            override fun onPageSelected(position: Int) {
-//                stl.currentTab = position
-//            }
-//
-//        })
-//
-//        viewpager.currentItem = 0
-
     }
 
     override fun initTwoView() {

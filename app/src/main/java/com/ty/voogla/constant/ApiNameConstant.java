@@ -18,12 +18,14 @@ public class ApiNameConstant {
     /**
      * 少杰
      */
-    public static final String BASE_URL2 = "http://192.168.11.6:3060/";
+//    public static final String BASE_URL2 = "http://192.168.11.6:3060/";
+    public static final String BASE_URL2 = "http://192.168.11.29:4001/";
 
     /**
      * 齐超
      */
-    public static final String BASE_URL3 = "http://192.168.11.4:10000/";
+//    public static final String BASE_URL3 = "http://192.168.11.4:10000/";
+    public static final String BASE_URL3 = "http://192.168.11.29:9202/";
 
     /**
      * --------------------------------- 系统登录 ----------------------------------------

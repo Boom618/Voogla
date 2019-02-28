@@ -69,7 +69,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
     /**
      * 记录产品码（防止出库的箱码中含有该产品码）
      */
-    String proCode = "";
+    private String proCode = "";
 
     /**
      * 二维码、类别
@@ -349,6 +349,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
             //ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
         } else {
             if (CodeConstant.QR_CODE_0701.equals(codeClass)){
+                // 产品码
                 presenter.getQrCodeList(code,CodeConstant.QR_CODE_0701);
                 lastCode = code;
             }else{
@@ -433,7 +434,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
             ToastUtil.showToast("该产品码所关联箱码已在列表中");
             return;
         }
-        sendOutjudegCode(companyNo, CodeConstant.QR_CODE_0701, goodsNo, proCode);
+        sendOutjudegCode(companyNo, CodeConstant.QR_CODE_0701, goodsNo, lastCode);
 
     }
 

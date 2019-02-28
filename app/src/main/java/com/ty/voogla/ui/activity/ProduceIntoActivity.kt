@@ -65,6 +65,7 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.ListView<ProductIntoD
                 val batchNo = v.text.toString().trim { it <= ' ' }
 
                 presenter.getProduceList(companyNo,batchNo)
+                DialogUtil.hideInputWindow(v.context,v)
             }
             true
         }
