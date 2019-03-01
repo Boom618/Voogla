@@ -76,14 +76,11 @@ public class MainPdaJavaActivity extends BaseActivity implements View.OnClickLis
                 gotoActivity(UserContentActivity.class);
             default:
                 break;
-
         }
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         moveTaskToBack(true);
-
     }
 }

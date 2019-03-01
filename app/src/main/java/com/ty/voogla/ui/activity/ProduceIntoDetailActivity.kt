@@ -298,7 +298,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         val inTime = tv_select_time.text.toString().trim { it <= ' ' }
 
         if (goodsNo.isNullOrEmpty() ||
-            wareName.isNullOrEmpty()
+            wareName.isEmpty()
         ) {
             ToastUtil.showToast("请补全入库信息")
             return null

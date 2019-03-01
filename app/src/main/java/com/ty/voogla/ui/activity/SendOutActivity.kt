@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
-import com.flyco.tablayout.listener.OnTabSelectListener
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.ui.fragment.WaitShippFragment
@@ -39,10 +37,7 @@ class SendOutActivity : BaseActivity() {
 
     }
 
-    override fun initTwoView() {
-
-
-    }
+    override fun initTwoView() {}
 
 
     class MyPagerAdapter(fm: FragmentManager, private val mFragment: List<Fragment>) : FragmentPagerAdapter(fm) {

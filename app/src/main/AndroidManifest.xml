@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ty.voogla">
+          xmlns:tools="http://schemas.android.com/tools" package="com.ty.voogla">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_PROFILE"/>
@@ -29,7 +29,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:name=".base.MainApp"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            tools:ignore="GoogleAppIndexingWarning">
         <!--<activity android:name=".ui.activity.LoginMobActivity"/>-->
         <activity
                 android:name=".ui.activity.LoginMobActivity"
@@ -43,9 +44,6 @@
 
         <activity android:name=".ui.activity.MainPdaJavaActivity"/>
         <activity android:name=".ui.activity.ProduceIntoActivity"/>
-        <activity android:name=".ui.activity.WarehousingIntoActivity"/>
-        <activity android:name=".ui.activity.WarehousingOutActivity"/>
-        <activity android:name=".ui.activity.WarehousingIntoDetailActivity"/>
 
         <activity android:name=".ui.activity.MainMobActivity"/>
         <activity android:name=".ui.activity.UserContentActivity"/>
@@ -69,7 +67,6 @@
         <activity android:name=".ui.activity.ProductIntoLookActivity"/>
         <activity android:name=".ui.activity.BoxLinkLookActivity"/>
         <activity android:name=".ui.activity.SendOutActivity"/>
-        <activity android:name=".ui.activity.SendOutNextActivity"/>
         <activity android:name=".ui.activity.SendOutLookActivity"/>
         <activity android:name=".ui.activity.BoxLinkJavaActivity3"/>
         <activity android:name=".ui.activity.SendOutNextActivity2"/>

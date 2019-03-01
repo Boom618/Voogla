@@ -348,7 +348,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
         final String qrCodeType = result.getQrCodeType();
         // 套码编号
         buApplyNo = result.getBuApplyNo();
-        boolean currentPackage = buApplyNo == null ? false : true;
+        boolean currentPackage = buApplyNo != null;
         // 箱码 A0702  产品吗 A0701
         final String codeClass = qrCodeType.equals("2") ? CodeConstant.QR_CODE_0702 : CodeConstant.QR_CODE_0701;
 

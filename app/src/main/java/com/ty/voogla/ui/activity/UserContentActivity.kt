@@ -18,21 +18,9 @@ class UserContentActivity : BaseActivity() {
         get() = R.layout.activity_user_content_mob
 
 
-    override fun onBaseCreate(savedInstanceState: Bundle?) {
-    }
+    override fun onBaseCreate(savedInstanceState: Bundle?) {}
 
-    override fun initOneData() {
-
-
-    }
-
-    private fun getLayout(): Int {
-        return if (isPhone) {
-            R.layout.activity_user_content_mob
-        } else {
-            R.layout.activity_user_content_pda
-        }
-    }
+    override fun initOneData() {}
 
     override fun initTwoView() {
 

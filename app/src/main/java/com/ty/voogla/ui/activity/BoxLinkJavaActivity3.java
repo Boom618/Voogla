@@ -67,11 +67,6 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
     private String goodsNo;
 
     /**
-     * 记录产品码（防止出库的箱码中含有该产品码）
-     */
-    private String proCode = "";
-
-    /**
      * 二维码、类别
      */
     private String lastCode = "";

@@ -205,7 +205,7 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
      * deliveryNo 发货单编号
      * 是否窜货(01否,02是)
      */
-    fun checkInfoConfirm(companyNo: String, deliveryNo: String, fleeFlag: String) {
+    private fun checkInfoConfirm(companyNo: String, deliveryNo: String, fleeFlag: String) {
 
         presenter.checkInfoConfirm(companyNo, deliveryNo, fleeFlag)
 

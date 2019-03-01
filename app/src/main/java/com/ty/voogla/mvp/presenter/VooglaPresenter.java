@@ -49,11 +49,11 @@ public class VooglaPresenter implements VooglaContract.Presenter {
     /**
      * 扫码页面单独接口（四个请求）
      *
-     * @param view
+     * @param boxView
      */
-    public VooglaPresenter(VooglaContract.BoxLinkView view) {
+    public VooglaPresenter(VooglaContract.BoxLinkView boxView) {
         httpMethods = HttpMethods.getInstance();
-        this.boxView = view;
+        this.boxView = boxView;
     }
 
     public void disposable() {
@@ -278,7 +278,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onError(Throwable e) {
-                iView.showError(e.getMessage());
+                boxView.showError(e.getMessage());
             }
         }, companyNo, qrCode, qrCodeClass);
     }
@@ -327,7 +327,11 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onError(Throwable e) {
-
+                if (boxView == null) {
+                    iListView.showError(e.getMessage());
+                } else {
+                    boxView.showError(e.getMessage());
+                }
             }
         }, qrCode,qrCodeType);
 

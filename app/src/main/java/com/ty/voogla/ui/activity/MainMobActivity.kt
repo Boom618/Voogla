@@ -37,16 +37,16 @@ class MainMobActivity : BaseActivity() {
 
     }
 
-    override fun onBackPressed() {
-        // exist app 会调用：onPause()和 onStop()
-        moveTaskToBack(true)
-    }
-
     companion object {
 
 
         var barcodeObject: BarcodeReader? = null
             private set
+    }
+
+    override fun onBackPressed() {
+        // exist app 会调用：onPause()和 onStop()
+        moveTaskToBack(true)
     }
 
     override fun onDestroy() {

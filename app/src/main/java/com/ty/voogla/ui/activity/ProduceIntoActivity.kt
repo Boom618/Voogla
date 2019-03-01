@@ -70,8 +70,6 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.ListView<ProductIntoD
             true
         }
 
-
-
         tv_product.setOnClickListener { gotoActivity(ProduceIntoDetailActivity::class.java) }
 
     }
