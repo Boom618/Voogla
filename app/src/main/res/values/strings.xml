@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Voogla</string>
+    <string name="app_name">敷尔佳</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
