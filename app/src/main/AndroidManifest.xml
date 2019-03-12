@@ -1,21 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ty.voogla">
+          xmlns:tools="http://schemas.android.com/tools" package="com.ty.voogla">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+
+    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!--手持机 PDA 权限-->
+    <uses-permission android:name="com.honeywell.decode.permission.DECODE"/>
+
     <application
             android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@mipmap/launch"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:name=".base.MainApp"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:networkSecurityConfig="@xml/network_security_config"
+            tools:ignore="GoogleAppIndexingWarning"
+            tools:targetApi="n">
+        <!--<activity android:name=".ui.activity.LoginMobActivity"/>-->
         <activity
-                android:name=".ui.activity.LoginActivity"
+                android:name=".ui.activity.LoginMobActivity"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,8 +43,36 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.MainActivity"/>
-        <activity android:name=".ui.activity.BoxLinkActivity"/>
+
+        <activity android:name=".ui.activity.MainPdaJavaActivity"/>
+        <activity android:name=".ui.activity.ProduceIntoActivity"/>
+
+        <activity android:name=".ui.activity.MainMobActivity"/>
+        <activity android:name=".ui.activity.UserContentActivity"/>
+        <activity android:name=".ui.activity.InspectionActivity"/>
+        <activity android:name=".ui.activity.ProduceIntoDetailActivity"/>
+
+        <!-- 对接 PDA 50k Barcode Start -->
+        <activity
+                android:label="Barcode"
+                android:name=".ui.activity.BoxLinkJavaActivity2"
+                android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.AUTOCODEACTIVITY"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <!-- 对接 PDA 50k Barcode End -->
+
+        <activity android:name=".ui.activity.ProductIntoLookActivity"/>
+        <activity android:name=".ui.activity.BoxLinkLookActivity"/>
+        <activity android:name=".ui.activity.SendOutActivity"/>
+        <activity android:name=".ui.activity.SendOutLookActivity"/>
+        <activity android:name=".ui.activity.BoxLinkJavaActivity3"/>
+        <activity android:name=".ui.activity.SendOutNextActivity2"/>
+
     </application>
 
 </manifest>

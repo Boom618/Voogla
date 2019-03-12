@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Voogla</string>
+    <string name="app_name">敷尔佳</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -12,4 +12,64 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- 项目 String -->
+    <string name="app_name_mob">敷尔佳溯源稽查系统</string>
+    <string name="app_name_pda">敷尔佳溯源管理系统</string>
+    <string name="phone">手机号</string>
+    <string name="password">密码</string>
+    <string name="welcome_ch">欢迎登录管理系统</string>
+    <string name="welcome_ch_check">欢迎登陆稽查系统</string>
+    <string name="welcome_en">Welcome to login system</string>
+    <string name="change_pass">修改密码</string>
+    <string name="login_out">退出登陆</string>
+    <string name="inspection_system">稽查系统</string>
+    <string name="company_profile">公司信息</string>
+    <string name="search_view">输入箱码和产品码</string>
+    <string name="send_organization">发货组织</string>
+    <string name="receipt_organization">收货组织</string>
+    <string name="send_address">发货地址</string>
+    <string name="send_state">状态</string>
+    <string name="send_address_">发货地址：</string>
+    <string name="receipt_address">收货地址</string>
+    <string name="search">搜索</string>
+    <string name="login">登录</string>
+    <string name="box_link">箱码关联</string>
+    <string name="look_detail">查看明细</string>
+    <string name="produce_into">生产入库</string>
+    <string name="storage_info">已入库信息</string>
+    <string name="input_product_number">输入生产批次号</string>
+    <string name="product_name">产品名称</string>
+    <string name="warehousing_number">入库数量</string>
+    <string name="warehousing_time">入库时间</string>
+    <string name="product_spec">规格</string>
+    <string name="warehousing_address">所在仓库</string>
+    <string name="warehousing_user">操作员</string>
+    <string name="product_batch">生产批次号：</string>
+    <string name="product_batch_house">入库批次号：</string>
+    <string name="select_pro_name">请选择产品名称</string>
+    <string name="select_house">请输入仓库：</string>
+    <string name="into_house_time">入库时间</string>
+    <string name="select_spec">规格选择</string>
+    <string name="goto_box_link">前往箱码关联</string>
+    <string name="house_detail">入库明细</string>
+    <string name="current_amount">当前数量：</string>
+    <string name="box_type">类型</string>
+    <string name="box_number">码号</string>
+    <string name="box_operate">操作</string>
+    <string name="look">查看</string>
+    <string name="input_send_out_number">输入发货单号</string>
+    <string name="send_out">发货出库</string>
+    <string name="send_out_date">发货日期</string>
+    <string name="send_out_date_">出库时间：</string>
+    <string name="send_out_state">状态</string>
+    <string name="send_out_detail">发货明细</string>
+    <string name="send_amount_wait">待发货数量</string>
+    <string name="box_amount">已扫箱码数</string>
+    <string name="product_amount">已扫产品数</string>
+    <string name="scan_code">扫码出库</string>
+    <string name="send_out_receipt">发货单号：</string>
+    <string name="code_detail">码号明细</string>
+    <string name="confirm_the_good">确认窜货</string>
+    <string name="confirm_delete">确认删除</string>
 </resources>

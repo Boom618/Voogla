@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:background="@mipmap/log_bg"
+        android:layout_height="match_parent">
+
+    <ImageView
+            android:id="@+id/image_logo"
+            android:src="@mipmap/log_logo"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/x71"
+            android:layout_width="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/image_logo"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_18"
+            android:textColor="@color/white"
+            android:text="@string/app_name_mob"
+            android:layout_height="wrap_content"/>
+
+
+    <EditText android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/et_user_name"
+              android:hint="@string/phone"
+              android:paddingStart="@dimen/space_20"
+              android:drawableStart="@mipmap/icon_zh"
+              android:textColorHint="@color/white"
+              android:background="@mipmap/log_input"
+              android:paddingBottom="@dimen/space_8"
+              android:textSize="@dimen/text_14"
+              android:layout_marginTop="@dimen/space_50"
+              android:drawablePadding="@dimen/space_10"
+              app:layout_constraintLeft_toLeftOf="parent"
+              app:layout_constraintRight_toRightOf="parent"
+              app:layout_constraintTop_toBottomOf="@+id/image_logo"
+              android:inputType="phone"/>
+
+
+    <EditText android:layout_width="wrap_content"
+              android:id="@+id/et_user_pass"
+              android:hint="@string/password"
+              android:drawableStart="@mipmap/icon_mm"
+              android:textColorHint="@color/white"
+              android:background="@mipmap/log_input"
+              android:paddingStart="@dimen/space_20"
+              android:paddingBottom="@dimen/space_8"
+              android:layout_marginTop="@dimen/x17"
+              android:textSize="@dimen/text_14"
+              android:drawablePadding="@dimen/space_10"
+              app:layout_constraintLeft_toLeftOf="parent"
+              app:layout_constraintRight_toRightOf="parent"
+              app:layout_constraintTop_toBottomOf="@+id/et_user_name"
+              android:inputType="textPassword"
+              android:layout_height="wrap_content"/>
+
+    <!-- android:background="@mipmap/log_btn"   @drawable/button_color -->
+
+    <Button android:layout_width="wrap_content"
+            android:id="@+id/login_mob"
+            android:background="@mipmap/log_btn"
+            android:layout_marginTop="@dimen/x17"
+            app:layout_constraintLeft_toLeftOf="@id/et_user_pass"
+            android:textColor="@color/theme_color"
+            app:layout_constraintRight_toRightOf="@id/et_user_pass"
+            app:layout_constraintTop_toBottomOf="@+id/et_user_pass"
+            android:layout_height="wrap_content"/>
+
+</android.support.constraint.ConstraintLayout>

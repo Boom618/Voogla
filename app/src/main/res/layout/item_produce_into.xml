@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/space_10"
+        android:background="@color/white"
+        android:layout_marginStart="@dimen/space_6"
+        android:layout_marginEnd="@dimen/space_6"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:id="@+id/tv_number"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/space_15"
+            android:text="1756838695678908765"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_16"
+            android:layout_height="wrap_content"/>
+
+    <!--android:background="@mipmap/determine_btn"-->
+    <!--android:layout_marginEnd="@dimen/space_10" -->
+    <!--app:layout_constraintBottom_toBottomOf="@+id/tv_number" -->
+    <TextView
+            android:id="@+id/image_confirm"
+            android:background="@drawable/button_color"
+            android:layout_width="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/look_detail"
+            android:paddingStart="@dimen/x20"
+            android:paddingEnd="@dimen/x20"
+            android:paddingTop="@dimen/x6"
+            android:paddingBottom="@dimen/x6"
+            android:layout_marginEnd="@dimen/space_10"
+            android:layout_marginTop="@dimen/x12"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/theme_color"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/view_line1"
+            app:layout_constraintTop_toBottomOf="@+id/tv_number"
+            android:layout_width="match_parent"
+            style="@style/lineView"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/view_line1"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_number"
+            android:text="@string/product_name"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_product_name"
+            app:layout_constraintTop_toBottomOf="@+id/view_line1"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/image_confirm"
+            android:text="@string/product_name"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/view_line2"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_name"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            style="@style/lineView"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/view_line2"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_number"
+            android:text="@string/product_spec"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_product_spec"
+            app:layout_constraintTop_toBottomOf="@+id/view_line2"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/image_confirm"
+            android:text="36件/箱"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/view_line3"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_spec"
+            android:layout_width="match_parent"
+            style="@style/lineView"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/view_line3"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_number"
+            android:text="@string/warehousing_number"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_into_number"
+            app:layout_constraintTop_toBottomOf="@+id/view_line3"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/image_confirm"
+            android:text="50箱"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/view_line4"
+            app:layout_constraintTop_toBottomOf="@+id/tv_into_number"
+            android:layout_width="match_parent"
+            style="@style/lineView"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/view_line4"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_number"
+            android:text="@string/warehousing_time"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_into_time"
+            app:layout_constraintTop_toBottomOf="@+id/view_line4"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/image_confirm"
+            android:text="2019年1月1日"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/view_line5"
+            app:layout_constraintTop_toBottomOf="@+id/tv_into_time"
+            android:layout_width="match_parent"
+            style="@style/lineView"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/view_line5"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_number"
+            android:text="@string/warehousing_address"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_into_address"
+            app:layout_constraintTop_toBottomOf="@+id/view_line5"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/image_confirm"
+            android:text="上海敷尔佳1号仓"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:paddingBottom="@dimen/space_10"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/view_line6"
+            app:layout_constraintTop_toBottomOf="@+id/tv_into_address"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            style="@style/lineView"/>
+
+    <TextView
+            app:layout_constraintTop_toBottomOf="@+id/view_line6"
+            android:layout_marginTop="@dimen/space_10"
+            app:layout_constraintStart_toStartOf="@+id/tv_number"
+            android:text="@string/warehousing_user"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_into_user"
+            app:layout_constraintTop_toBottomOf="@+id/view_line6"
+            android:layout_marginTop="@dimen/space_10"
+            android:paddingBottom="@dimen/space_10"
+            app:layout_constraintEnd_toEndOf="@id/image_confirm"
+            android:text="王勇"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_14"
+            android:layout_height="wrap_content"/>
+
+
+</android.support.constraint.ConstraintLayout>

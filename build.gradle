@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.3.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -19,6 +19,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 
@@ -38,7 +39,7 @@ ext {
             iconDevelop     : "",
     ]
 
-    minSdkVersion               = 21
+    minSdkVersion               = 19
     targetSdkVersion            = 28
     compileSdkVersion           = 28
     buildToolsVersion           = '28.0.3'
@@ -49,7 +50,7 @@ ext {
     okhttp3Version              = '3.11.0'
     butterknifeVersion          = '8.8.1'
     rx2Version                  = '2.2.0'
-    rx2AndroidVersion           = '2.0.2'
+    rx2AndroidVersion           = '2.1.0'
     googleGsonVersion           = '2.8.5'
     CircleProgressBarVersion    = '2.0.0'
     rvadapterVersion            = '3.0.3'
@@ -62,4 +63,6 @@ ext {
     lifecycle_version           = '2.0.0'
     bugly_version               = '2.8.6'
     leakcanary_version          = '1.6.2'
+    rxpermissions_version       = '0.10.2'
+    tablayout_version           = '2.1.2@aar'
 }

@@ -2,9 +2,26 @@
 <resources>
     <color name="colorPrimary">#ff212121</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <!--<color name="colorAccent">#D81B60</color>-->
+    <color name="colorAccent">#979797</color>
 
     <!--// ==================================== -->
-    <color name="theme_color">#0B69B8</color>
+    <color name="theme_color">#2dc7f7</color>
     <color name="white">#FFFFFF</color>
+    <color name="white_bg">#F0F0F0</color>
+    <color name="text_color">#D1D1D4</color>
+    <color name="view_line">#979797</color>
+
+    <color name="txt_main_color">#424242</color><!--主字体颜色-->
+    <color name="txt_product_color">#8E8E93</color><!--主字体颜色-->
+    <color name="txt_send_out_color">#5B5B5B</color><!--主字体颜色-->
+
+    <!--// Dialog =========================== -->
+    <color name="white_light">#dddddd</color>
+    <color name="black_light">#363636</color>
+    <color name="gray">#dcdcdc</color>
+    <color name="black">#000000</color>
+    <color name="user_change_pass">#1FA0C8</color>
+
+    <!--// ==================================== -->
 </resources>

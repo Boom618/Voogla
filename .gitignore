@@ -40,3 +40,8 @@ local.properties
 *.json
 
 build/
+.idea/workspace.xml
+.idea/workspace.xml
+Voogla.iml
+app/app.iml
+app/app.iml
