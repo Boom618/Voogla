@@ -3,9 +3,6 @@ package com.ty.voogla.ui.fragment
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.scwang.smartrefresh.header.MaterialHeader
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter
 import com.ty.voogla.R
 import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.adapter.SendOutAdapter
@@ -21,8 +18,6 @@ import com.ty.voogla.widght.NormalAlertDialog
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import kotlinx.android.synthetic.main.content_list_fragment.*
 import kotlinx.android.synthetic.main.content_list_fragment.view.*
-import android.view.MotionEvent
-
 
 
 /**
@@ -30,7 +25,7 @@ import android.view.MotionEvent
  *
  * 待发货
  */
-class WaitShippFragment : BaseFragment(), VooglaContract.ListView<SendOutListData.ListBean> {
+class WaitShipFragment : BaseFragment(), VooglaContract.ListView<SendOutListData.ListBean> {
 
 
     private val presenter = VooglaPresenter(this)
@@ -144,8 +139,8 @@ class WaitShippFragment : BaseFragment(), VooglaContract.ListView<SendOutListDat
 
     companion object {
 
-        fun newInstance(tag: String): WaitShippFragment {
-            val fragment = WaitShippFragment()
+        fun newInstance(tag: String): WaitShipFragment {
+            val fragment = WaitShipFragment()
             val args = Bundle()
             args.putString("type", tag)
             fragment.arguments = args

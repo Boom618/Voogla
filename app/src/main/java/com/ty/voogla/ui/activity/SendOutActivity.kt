@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
-import com.ty.voogla.ui.fragment.WaitShippFragment
+import com.ty.voogla.ui.fragment.WaitShipFragment
 import kotlinx.android.synthetic.main.activity_send_out.*
 
 /**
@@ -26,9 +26,9 @@ class SendOutActivity : BaseActivity() {
     override fun initOneData() {
         initToolBar(R.string.send_out)
 
-        mFragment.add(WaitShippFragment.newInstance("01"))
-        mFragment.add(WaitShippFragment.newInstance("02"))
-        mFragment.add(WaitShippFragment.newInstance("03"))
+        mFragment.add(WaitShipFragment.newInstance("01"))
+        mFragment.add(WaitShipFragment.newInstance("02"))
+        mFragment.add(WaitShipFragment.newInstance("03"))
 
         val mAdapter = MyPagerAdapter(supportFragmentManager, mFragment)
         viewpager.adapter = mAdapter
