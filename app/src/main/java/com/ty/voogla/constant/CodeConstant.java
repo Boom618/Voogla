@@ -20,15 +20,6 @@ public final class CodeConstant {
     public static final String SERVICE_SUCCESS = "success";
     public static final int SERVICE_STATUS = 200;
 
-
-    /**
-     * 按键码 131 or 135 : K3A手柄键   139 : G3A F1键
-     */
-    public static final int KEY_CODE_131 = 131;
-    public static final int KEY_CODE_135 = 135;
-    public static final int KEY_CODE_139 = 139;
-
-
     /**
      * 区分箱码绑定页面
      */

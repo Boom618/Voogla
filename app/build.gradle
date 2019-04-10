@@ -145,6 +145,8 @@ dependencies {
     // log
     //implementation 'com.elvishew:xlog:1.6.1'
     implementation "com.orhanobut:logger:${ZBConfig.loggerVersion}"
+    // toasty
+    implementation 'com.github.GrenderG:Toasty:1.4.1'
 
     // progressbar
     //implementation "com.mikhaellopez:circularprogressbar:${ZBConfig.CircleProgressBarVersion}"
@@ -157,7 +159,6 @@ dependencies {
 
     // adapter
     implementation "com.zhy:base-rvadapter:${ZBConfig.rvadapterVersion}"
-    //implementation files('libs/pdasdk.jar')
 //    implementation project(":DataCollectionLib")
     implementation files('libs/DataCollection.jar')
 

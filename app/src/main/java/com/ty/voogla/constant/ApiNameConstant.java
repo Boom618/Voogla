@@ -19,17 +19,17 @@ public class ApiNameConstant {
      * 少杰
      */
 //    public static final String BASE_URL2 = "http://192.168.11.6:3060/";
-    public static final String BASE_URL2 = "http://192.168.11.29:4001/";
-//    public static final String BASE_URL2 = "http:fej.dkzer.com/";
+//    public static final String BASE_URL2 = "http://192.168.11.29:4001/";
+    public static final String BASE_URL2 = "http:fej.dkzer.com/";
 
     /**
      * 齐超
      */
 //    public static final String BASE_URL3 = "http://192.168.11.4:10000/";
-    public static final String BASE_URL3 = "http://192.168.11.29:9202/";
-//    public static final String BASE_URL3 = "http://fuerjia.dkzer.com/";
+//    public static final String BASE_URL3 = "http://192.168.11.29:9202/";
+    public static final String BASE_URL3 = "http://fuerjia.dkzer.com/";
 
-    /**
+    /*
      * --------------------------------- 系统登录 ----------------------------------------
      */
 
@@ -44,7 +44,7 @@ public class ApiNameConstant {
     public static final String USER_LOGOUT = "sys/user/logout";
 
 
-    /**
+    /*
      * --------------------------------- 生产入库 ----------------------------------------
      */
 
@@ -89,7 +89,7 @@ public class ApiNameConstant {
      */
     public static final String QR_CODE_LIST = "corp/im/qrcode-info";
 
-    /**
+    /*
      * --------------------------------- 发货出库 ----------------------------------------
      */
 
@@ -124,7 +124,7 @@ public class ApiNameConstant {
      */
     public static final String CODE_JUDGE_SEND = "corp/im/commodity-output-judge";
 
-    /**
+    /*
      * --------------------------------- 稽查 ----------------------------------------
      */
 

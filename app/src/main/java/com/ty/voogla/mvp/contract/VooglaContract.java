@@ -1,6 +1,5 @@
 package com.ty.voogla.mvp.contract;
 
-import com.ty.voogla.base.BaseResponse;
 import com.ty.voogla.base.ResponseInfo;
 import com.ty.voogla.bean.produce.DecodeCode;
 
@@ -13,9 +12,6 @@ import java.util.List;
  * MVP  Contract 契约类
  */
 public interface VooglaContract {
-
-    interface Model {
-    }
 
     interface View<T> {
         /**

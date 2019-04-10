@@ -105,14 +105,14 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
                 selectTime = TimeWidght.getTime(CodeConstant.DATE_SIMPLE_H_M_S, date)
                 tv_select_time.text = selectTime
 
-                ToastUtil.showToast(selectTime)
+                ToastUtil.showSuccess(selectTime)
             }
         }
 
         tv_to_box_link.setOnClickListener {
 
             if (listDetail.size >= 10) {
-                ToastUtil.showToast("请先提交")
+                ToastUtil.showWarning("请先提交")
                 return@setOnClickListener
             }
             // 广播跳转
@@ -124,7 +124,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
                 SimpleCache.putString(CodeConstant.GOODS_SPEC, spec)
                 startActivityForResult(intent, CodeConstant.REQUEST_CODE_INTO)
             } else {
-                ToastUtil.showToast("请选择对应的商品和规格")
+                ToastUtil.showWarning("请选择对应的商品和规格")
             }
         }
 
@@ -167,7 +167,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         adapter.notifyDataSetChanged()
 
         tv_number.text = "0"
-        ToastUtil.showToast("清空数据")
+        ToastUtil.showWarning("清空数据")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -227,10 +227,10 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             override fun onSuccess(info: ResponseInfo) {
                 if (CodeConstant.SERVICE_SUCCESS == info.msg) {
                     // 入库成功（保存）
-                    ToastUtil.showToast("入库成功")
+                    ToastUtil.showSuccess("入库成功")
                     finish()
                 } else {
-                    ToastUtil.showToast("入库失败")
+                    ToastUtil.showError("入库失败")
                 }
             }
 
@@ -238,7 +238,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             }
 
             override fun onError(e: Throwable) {
-                ToastUtil.showToast(e.message)
+                ToastUtil.showError(e.message)
             }
 
         }, body)
@@ -263,7 +263,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         }
         val distinct = tempList.distinct()
         if (distinct.size != boxSize) {
-            ToastUtil.showToast("请删除重复箱码")
+            ToastUtil.showWarning("请删除重复箱码")
             return null
         }
         //主信息
@@ -271,11 +271,11 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         val userInfo = SimpleCache.getUserInfo()
         val position = SharedP.getGoodNo(this)
         if (position == -1) {
-            ToastUtil.showToast("请选择商品和规格")
+            ToastUtil.showWarning("请选择商品和规格")
             return null
         }
         if (boxSize == 0) {
-            ToastUtil.showToast("请前往箱码关联")
+            ToastUtil.showWarning("请前往箱码关联")
             return null
         }
         for (i in 0 until boxSize) {
@@ -300,7 +300,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         if (goodsNo.isNullOrEmpty() ||
             wareName.isEmpty()
         ) {
-            ToastUtil.showToast("请补全入库信息")
+            ToastUtil.showWarning("请补全入库信息")
             return null
         }
 
@@ -344,7 +344,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     }
 
     override fun showError(msg: String?) {
-        ToastUtil.showToast(msg)
+        ToastUtil.showError(msg)
     }
 
     override fun onDestroy() {

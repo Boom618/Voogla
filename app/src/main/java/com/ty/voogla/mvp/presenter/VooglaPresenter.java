@@ -76,7 +76,6 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onSuccess(BaseResponse<UserInfo> response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
                     UserInfo userInfo = response.getData();
-                    //SimpleCache.putString(CodeConstant.SESSION_ID_KEY, userInfo.getSessionID());
                     SimpleCache.putUserInfo(userInfo);
                     iView.showSuccess(userInfo);
                 } else {
@@ -99,7 +98,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
         httpMethods.getProductList(new SingleObserver<BaseResponse<ProductIntoData>>() {
             @Override
             public void onSubscribe(Disposable d) {
-
+                disposable = d;
             }
 
             @Override
@@ -152,7 +151,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
     /**
      * 获取产品列表信息
      *
-     * @param companyNo
+     * @param companyNo 编号
      */
     public void getProductListInfo(String companyNo) {
         httpMethods.getProductListInfo(new SingleObserver<BaseResponse<ProductListInfoData>>() {
@@ -283,17 +282,6 @@ public class VooglaPresenter implements VooglaContract.Presenter {
         }, companyNo, qrCode, qrCodeClass);
     }
 
-    /**
-     * 二维码解码  flatMap 操作
-     */
-    public void decodeUrlCodeMap(SingleObserver<DecodeCode> observer, String secret) {
-
-        // 齐超 地址
-        HttpMethods http = new HttpMethods(ApiNameConstant.BASE_URL3);
-
-
-    }
-
 
     /**
      * 箱码和产品码互查
@@ -337,38 +325,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
     }
 
-    /** ------------------------------------  发货出库 ------------------------------------*/
-
-    /**
-     * 获取发货单信息
-     *
-     * @param companyNo
-     */
-    public void getSendOutList(String companyNo) {
-        httpMethods.getSendOutList(new SingleObserver<BaseResponse<SendOutListData>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                disposable = d;
-            }
-
-            @Override
-            public void onSuccess(BaseResponse<SendOutListData> response) {
-                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
-                    SendOutListData data = response.getData();
-
-                    iListView.showSuccess(data.getList());
-                } else {
-                    iListView.showError(response.getMsg());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                iListView.showError(e.getMessage());
-
-            }
-        }, companyNo);
-    }
+    /* ------------------------------------  发货出库 ------------------------------------*/
 
     /**
      * 获取发货单信息(分状态)
@@ -545,38 +502,9 @@ public class VooglaPresenter implements VooglaContract.Presenter {
         }, body);
     }
 
-    /**
+    /*
      * --------------------------------- 稽查 ----------------------------------------
      */
-
-    /**
-     * @param qrCodeClass 二维码分类
-     * @param qrCode      二维码
-     */
-    public void checkInfoList(String qrCodeClass, String qrCode) {
-        httpMethods.checkInfoList(new SingleObserver<BaseResponse<CheckInfoList>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                disposable = d;
-            }
-
-            @Override
-            public void onSuccess(BaseResponse<CheckInfoList> response) {
-                if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
-                    CheckInfoList data = response.getData();
-                    iView.showSuccess(data);
-                } else {
-                    iView.showError(response.getMsg());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                iView.showError(e.getMessage());
-            }
-        }, qrCodeClass, qrCode);
-
-    }
 
     /**
      * 稽查确认

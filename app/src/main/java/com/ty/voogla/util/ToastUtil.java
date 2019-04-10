@@ -1,6 +1,7 @@
 package com.ty.voogla.util;
 
 import android.widget.Toast;
+import es.dmoral.toasty.Toasty;
 
 /**
  * @author TY on 2018/12/20.
@@ -9,5 +10,18 @@ public class ToastUtil {
 
     public static void showToast(String msg) {
         Toast.makeText(ResourceUtil.getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void showSuccess(String msg) {
+        Toasty.success(ResourceUtil.getContext(), msg, Toast.LENGTH_SHORT, false).show();
+    }
+
+
+    public static void showError(String msg) {
+        Toasty.error(ResourceUtil.getContext(), msg, Toast.LENGTH_SHORT, false).show();
+    }
+
+    public static void showWarning(String msg) {
+        Toasty.warning(ResourceUtil.getContext(), msg, Toast.LENGTH_SHORT, false).show();
     }
 }

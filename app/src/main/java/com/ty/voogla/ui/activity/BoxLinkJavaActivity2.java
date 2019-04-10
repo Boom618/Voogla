@@ -28,6 +28,7 @@ import com.ty.voogla.util.ToastUtil;
 import com.ty.voogla.widght.DialogUtil;
 import com.ty.voogla.widght.NormalAlertDialog;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import es.dmoral.toasty.Toasty;
 import io.reactivex.disposables.Disposable;
 import org.jetbrains.annotations.Nullable;
 
@@ -183,6 +184,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
                             repeatCodeList.remove(position);
                             adapter.notifyItemRemoved(position);
                             adapter.notifyItemRangeChanged(position, qrCodeInfos.size() - position);
+                            ToastUtil.showSuccess("删除成功");
                         }
                     });
                 } else {
@@ -261,7 +263,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
                 }
             }
             if (temp != 1) {
-                ToastUtil.showToast("有且只能有一个箱码");
+                ToastUtil.showWarning("有且只能有一个箱码");
             } else {
                 Intent intent = new Intent();
                 intent.putExtra(CodeConstant.BOX_CODE, boxCode);
@@ -273,7 +275,8 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
                 finish();
             }
         } else {
-            ToastUtil.showToast("产品数量和指定规格不一致");
+            ToastUtil.showWarning("产品数量和指定规格不一致");
+            // 该产品规格为24，实际为10，是否继续绑定
         }
 
 
@@ -386,7 +389,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
             if (qrCodeType.equals("2")) {
                 isContainsCode(code, codeClass);
             } else {
-                ToastUtil.showToast("【套码类型】请直接扫描箱码号");
+                ToastUtil.showWarning("【套码类型】请直接扫描箱码号");
             }
         }
     }
@@ -403,7 +406,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
         boolean repeatCode = RepeatCode.isRepeatCode(code, allCode);
 
         if (repeatCode) {
-            ToastUtil.showToast("重复码号");
+            ToastUtil.showWarning("重复码号");
         } else {
             int size = qrCodeInfos.size();
             if (size == 0) {
@@ -411,7 +414,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
                 httpJudegCode(code, codeClass);
             } else {
                 if (repeatCodeList.contains(code)) {
-                    ToastUtil.showToast("重复码号");
+                    ToastUtil.showWarning("重复码号");
                     //ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
                 } else {
                     // 入库校验
@@ -518,21 +521,21 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
 
         qrCodeInfos.clear();
         repeatCodeList.clear();
-        ArrayList<String> data = codeList;
-        int qrCodeSize = data.size();
+//        ArrayList<String> data = codeList;
+        int qrCodeSize = codeList.size();
         if (qrCodeSize != specNumber) {
-            ToastUtil.showToast("请扫指定规格的套码");
+            ToastUtil.showWarning("请扫指定规格的套码");
         } else {
             for (int i = 0; i < qrCodeSize; i++) {
                 QrCodeListData qrCodeList = new QrCodeListData();
-                qrCodeList.setQrCodeClass("A0701");
-                qrCodeList.setQrCode(data.get(i));
+                qrCodeList.setQrCodeClass(CodeConstant.QR_CODE_0701);
+                qrCodeList.setQrCode(codeList.get(i));
                 qrCodeInfos.add(qrCodeList);
                 //
-                repeatCodeList.add(data.get(i));
+                repeatCodeList.add(codeList.get(i));
             }
             QrCodeListData code = new QrCodeListData();
-            code.setQrCodeClass("A0702");
+            code.setQrCodeClass(CodeConstant.QR_CODE_0702);
             code.setQrCode(currentCode);
 
             qrCodeInfos.add(code);
@@ -546,7 +549,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
 
     @Override
     public void showError(String msg) {
-        ToastUtil.showToast(msg);
+        ToastUtil.showError(msg);
 
     }
 
@@ -559,7 +562,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements BarcodeReader.
                 barcodeReader.claim();
             } catch (ScannerUnavailableException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Scanner unavailable", Toast.LENGTH_SHORT).show();
+                ToastUtil.showError("扫码功能不可用,请重启设备");
             }
         }
     }
