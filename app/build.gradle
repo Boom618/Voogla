@@ -98,20 +98,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    // glide
-//    implementation "com.github.bumptech.glide:glide:${ZBConfig.glideVersion}"
-
-    // butter knife
-//    implementation "com.jakewharton:butterknife:${ZBConfig.butterknifeVersion}"
-//    kapt "com.jakewharton:butterknife-compiler:${ZBConfig.butterknifeVersion}"
-
-    // eventbus
-//    implementation "org.greenrobot:eventbus:${ZBConfig.eventbusVersion}"
-
     // google EasyPermissions
     implementation 'pub.devrel:easypermissions:2.0.0'
-    // Rx permissions
-    //implementation "com.github.tbruyelle:rxpermissions:${ZBConfig.rxpermissions_version}"
 
     // dex 合并
     implementation 'com.android.support:multidex:1.0.3'
@@ -161,8 +149,6 @@ dependencies {
     implementation "com.zhy:base-rvadapter:${ZBConfig.rvadapterVersion}"
 //    implementation project(":DataCollectionLib")
     implementation files('libs/DataCollection.jar')
-
-    //implementation "com.zhouyou:rxeasyhttp:${ZBConfig.rxeasyhttpVersion}"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"
     implementation "org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"
