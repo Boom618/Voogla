@@ -33,10 +33,10 @@ public class MexxenActivity extends Activity {
 
     private Button mButtonAimLight, mButtonDecodeLight;
     private TextView mTextViewCodeResult, mTextViewCodeSize, mTextKyeCode;
-
-    public static final String SCANNER_READ = "SCANNER_READ";
-
     public Context mContext;
+
+
+    private static final String SCANNER_READ = "SCANNER_READ";
     private BarcodeManager mBarcodeManager;
     private BarcodeConfig mBarcodeConfig;
 

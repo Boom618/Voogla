@@ -8,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.honeywell.aidc.*;
+import com.mexxen.barcode.BarcodeConfig;
+import com.mexxen.barcode.BarcodeManager;
 import com.ty.voogla.R;
 import com.ty.voogla.adapter.BoxLinkAdapter;
 import com.ty.voogla.adapter.LayoutInit;
@@ -21,7 +21,6 @@ import com.ty.voogla.data.SimpleCache;
 import com.ty.voogla.data.SparseArrayUtil;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.mvp.presenter.VooglaPresenter;
-import com.ty.voogla.ui.activity.scan.BarcodeProperties;
 import com.ty.voogla.util.ToastUtil;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import io.reactivex.disposables.Disposable;
@@ -36,10 +35,13 @@ import java.util.Iterator;
  * <p>
  * 箱码绑定 --> 扫码(出库)
  */
-public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.BarcodeListener,
-        BarcodeReader.TriggerListener, VooglaContract.BoxLinkView {
+public class BoxLinkJavaActivity3 extends BaseActivity implements  VooglaContract.BoxLinkView {
 
-    private BarcodeReader barcodeReader;
+    // SDK 相关
+    private static final String SCANNER_READ = "SCANNER_READ";
+    private BarcodeManager mBarcodeManager;
+    private BarcodeConfig mBarcodeConfig;
+
     private RecyclerView boxRecycler;
     private boolean triggerState = false;
 
@@ -197,27 +199,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
         // otherwise, the onDestory will trigger when orientation changes
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        // get bar code instance from MainActivity
-        barcodeReader = MainPdaJavaActivity.getBarcodeObject();
 
-        if (barcodeReader != null) {
-
-            // register bar code event listener
-            barcodeReader.addBarcodeListener(this);
-
-            // set the trigger mode to client control
-            try {
-                barcodeReader.setProperty(BarcodeReader.PROPERTY_TRIGGER_CONTROL_MODE,
-                        BarcodeReader.TRIGGER_CONTROL_MODE_CLIENT_CONTROL);
-            } catch (UnsupportedPropertyException e) {
-                Toast.makeText(this, "Failed to apply properties", Toast.LENGTH_SHORT).show();
-            }
-            // register trigger state change listener
-            barcodeReader.addTriggerListener(this);
-
-            // 设置 50k 属性
-            BarcodeProperties.setProperties(barcodeReader);
-        }
 
     }
 
@@ -229,55 +211,18 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
 
     /*--------------- 扫码  start  ------------**/
 
-    @Override
-    public void onBarcodeEvent(final BarcodeReadEvent event) {
+    public void onBarcodeEvent() {
 
-        String dataString = event.getBarcodeData();
 
-        presenter.decodeUrlCode(dataString);
+        presenter.decodeUrlCode("dataString");
 
     }
 
     public void continuousScanning(boolean bState) {
-        try {
-            //turn on/off backlight
-            barcodeReader.light(bState);
-            //开关瞄准线
-            barcodeReader.aim(bState);
-            //开关解码功能
-            barcodeReader.decode(bState);
-        } catch (ScannerUnavailableException e) {
-            e.printStackTrace();
-        } catch (ScannerNotClaimedException e) {
-            e.printStackTrace();
-        }
-        triggerState = bState;
+
     }
 
-    // When using Automatic Trigger control do not need to implement the
-    // onTriggerEvent function
-    @Override
-    public void onTriggerEvent(TriggerStateChangeEvent event) {
 
-        if (event.getState()) {
-            //turn on/off aimer, illumination and decoding
-            try {
-                barcodeReader.aim(!triggerState);
-                barcodeReader.light(!triggerState);
-                barcodeReader.decode(!triggerState);
-
-                triggerState = !triggerState;
-            } catch (ScannerNotClaimedException e) {
-                e.printStackTrace();
-            } catch (ScannerUnavailableException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void onFailureEvent(BarcodeFailureEvent event) {
-    }
 
 
 
@@ -442,37 +387,19 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements BarcodeReader.
     @Override
     public void onResume() {
         super.onResume();
-        if (barcodeReader != null) {
-            try {
-                // 这个很关键
-                barcodeReader.claim();
-            } catch (ScannerUnavailableException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Scanner unavailable", Toast.LENGTH_SHORT).show();
-            }
-        }
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (barcodeReader != null) {
-            // release the scanner claim so we don't get any scanner
-            // notifications while paused.
-            barcodeReader.release();
-        }
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (barcodeReader != null) {
-            // unregister barcode event listener
-            barcodeReader.removeBarcodeListener(this);
 
-            // unregister trigger state change listener
-            barcodeReader.removeTriggerListener(this);
-        }
         if (disposable != null) {
             disposable.dispose();
         }

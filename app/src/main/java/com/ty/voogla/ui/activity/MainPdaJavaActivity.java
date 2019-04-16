@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.honeywell.aidc.AidcManager;
-import com.honeywell.aidc.BarcodeReader;
 import com.ty.voogla.R;
 import com.ty.voogla.base.BaseActivity;
 import org.jetbrains.annotations.Nullable;
@@ -15,9 +13,6 @@ import org.jetbrains.annotations.Nullable;
  * @author TY on 2019/1/12.
  */
 public class MainPdaJavaActivity extends BaseActivity implements View.OnClickListener {
-
-    private static BarcodeReader barcodeReader;
-    private AidcManager manager;
 
     @Override
     protected int getActivityLayout() {
@@ -34,19 +29,6 @@ public class MainPdaJavaActivity extends BaseActivity implements View.OnClickLis
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        AidcManager.create(this, new AidcManager.CreatedCallback() {
-
-            @Override
-            public void onCreated(AidcManager aidcManager) {
-                manager = aidcManager;
-                try {
-                    barcodeReader = manager.createBarcodeReader();
-                } catch (Exception e) {
-                    Toast.makeText(MainPdaJavaActivity.this, "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
     }
 
     @Override
@@ -57,10 +39,6 @@ public class MainPdaJavaActivity extends BaseActivity implements View.OnClickLis
         ImageView user = findViewById(R.id.image_user);
         setViewOnClickListener(this, product, send, user);
 
-    }
-
-    static BarcodeReader getBarcodeObject() {
-        return barcodeReader;
     }
 
     @Override

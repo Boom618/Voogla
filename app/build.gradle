@@ -148,7 +148,6 @@ dependencies {
     // adapter
     implementation "com.zhy:base-rvadapter:${ZBConfig.rvadapterVersion}"
 //    implementation project(":DataCollectionLib")
-    implementation files('libs/DataCollection.jar')
     implementation files('libs/ScanerLibrary V1.5.jar')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"
