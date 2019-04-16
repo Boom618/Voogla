@@ -20,6 +20,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.*;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -65,6 +66,8 @@ public class HttpMethods {
     }
 
     private void init(String url) {
+        HttpLoggingInterceptor log = new HttpLoggingInterceptor();
+        log.setLevel(HttpLoggingInterceptor.Level.BODY);
         // 创建OKHttpClient
         OkHttpClient.Builder client = new OkHttpClient.Builder()
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
@@ -84,7 +87,8 @@ public class HttpMethods {
                 })
                 //.addInterceptor(new SessionInterceptor()) // 用 cookies 不用 session
                 // 日志拦截器
-                .addInterceptor(new LogInterceptor());
+//                .addInterceptor(new LogInterceptor())
+                .addInterceptor(log);
 
         Retrofit mRetrofit = new Retrofit.Builder()
                 .client(client.build())

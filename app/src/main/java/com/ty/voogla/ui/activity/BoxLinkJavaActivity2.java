@@ -28,7 +28,6 @@ import com.ty.voogla.util.ToastUtil;
 import com.ty.voogla.widght.DialogUtil;
 import com.ty.voogla.widght.NormalAlertDialog;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
-import es.dmoral.toasty.Toasty;
 import io.reactivex.disposables.Disposable;
 import org.jetbrains.annotations.Nullable;
 
