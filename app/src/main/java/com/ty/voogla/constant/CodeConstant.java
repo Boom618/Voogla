@@ -68,6 +68,10 @@ public final class CodeConstant {
      */
     public static final String QR_CODE_0701 = "A0701";
     public static final String QR_CODE_0702 = "A0702";
+    /**
+     * 手持机 扫码
+     */
+    public static final String SCANNER_READ = "SCANNER_READ";
 
 
     /**
@@ -91,6 +95,8 @@ public final class CodeConstant {
     public static final int REQUEST_CODE_INTO = 100;
     public static final int REQUEST_CODE_OUT = 101;
     public static final int RESULT_CODE = 100;
+    public static final int KEY_CODE_223 = 223;
+    public static final int KEY_CODE_224 = 224;
 
     /**
      * 用户数据 check@corp 稽查  im@corp PDA

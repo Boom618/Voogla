@@ -27,6 +27,7 @@
                 android:layout_marginTop="@dimen/x18"
                 android:layout_marginStart="@dimen/x28"
                 app:layout_constraintBottom_toBottomOf="@+id/et_batch_number"
+                android:layout_marginBottom="@dimen/x12"
                 app:layout_constraintStart_toStartOf="parent"
                 android:text="@string/product_batch"
                 android:textColor="@color/txt_product_color"
@@ -36,6 +37,7 @@
                 android:id="@+id/et_batch_number"
                 android:layout_marginEnd="@dimen/x28"
                 app:layout_constraintStart_toEndOf="@id/tv_product_batch"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
@@ -46,6 +48,7 @@
                 android:textSize="@dimen/text_14"
                 android:layout_marginTop="@dimen/x18"
                 android:layout_marginStart="@dimen/x28"
+                android:layout_marginBottom="@dimen/x12"
                 app:layout_constraintBottom_toBottomOf="@+id/et_select_house"
                 app:layout_constraintStart_toStartOf="parent"
                 android:text="@string/select_house"

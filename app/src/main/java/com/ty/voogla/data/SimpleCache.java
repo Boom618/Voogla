@@ -1,9 +1,7 @@
 package com.ty.voogla.data;
 
 
-import android.util.SparseArray;
 import com.ty.voogla.bean.UserInfo;
-import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean;
 import com.ty.voogla.bean.sendout.QrCodeListData;
 import com.ty.voogla.util.ResourceUtil;
 
@@ -35,14 +33,6 @@ public class SimpleCache {
         aCache.put("qrCode", qrCode);
     }
 
-    /**
-     * 入库
-     * @param boxCode
-     */
-    public static void putInBoxCode(InBoxCodeDetailInfosBean boxCode){
-        aCache.put("boxCode",boxCode);
-    }
-
     public static String getString(String key) {
         return aCache.getAsString(key);
     }
@@ -55,9 +45,7 @@ public class SimpleCache {
         return (ArrayList<QrCodeListData>) aCache.getAsObject("qrCode");
     }
 
-    public static InBoxCodeDetailInfosBean getBoxCode(){
-        return (InBoxCodeDetailInfosBean) aCache.getAsObject("boxCode");
-    }
+
 
     /**
      * 移除某个key

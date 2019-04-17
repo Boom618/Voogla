@@ -18,10 +18,11 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!--手持机 PDA 权限 赫盛 5020-->
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 
-    <!--手持机 PDA 权限-->
-    <uses-permission android:name="com.honeywell.decode.permission.DECODE"/>
+    <!--手持机 PDA 权限 敷尔佳 -->
+    <!--<uses-permission android:name="com.honeywell.decode.permission.DECODE"/>-->
     <!--android:roundIcon="@mipmap/ic_launcher_round"-->
     <application
             android:allowBackup="true"
@@ -52,21 +53,7 @@
         <activity android:name=".ui.activity.UserContentActivity"/>
         <activity android:name=".ui.activity.InspectionActivity"/>
         <activity android:name=".ui.activity.ProduceIntoDetailActivity"/>
-
-        <!-- 对接 PDA 50k Barcode Start -->
-        <activity
-                android:label="Barcode"
-                android:name=".ui.activity.BoxLinkJavaActivity2"
-                android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.AUTOCODEACTIVITY"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <!-- 对接 PDA 50k Barcode End -->
-
+        <activity android:name=".ui.activity.BoxLinkJavaActivity2"/>
         <activity android:name=".ui.activity.ProductIntoLookActivity"/>
         <activity android:name=".ui.activity.BoxLinkLookActivity"/>
         <activity android:name=".ui.activity.SendOutActivity"/>

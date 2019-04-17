@@ -66,7 +66,7 @@ public class HttpMethods {
     }
 
     private void init(String url) {
-        HttpLoggingInterceptor log = new HttpLoggingInterceptor();
+        final HttpLoggingInterceptor log = new HttpLoggingInterceptor();
         log.setLevel(HttpLoggingInterceptor.Level.BODY);
         // 创建OKHttpClient
         OkHttpClient.Builder client = new OkHttpClient.Builder()
@@ -82,6 +82,12 @@ public class HttpMethods {
                     public List<Cookie> loadForRequest(HttpUrl url) {
                         // 加载新的 cookie
                         List<Cookie> cookies = cookieStore.get(url.host());
+                        if (cookies != null) {
+                            Log.e("cookies",cookies.toString());
+                        }else{
+                            Log.e("cookies","cookies is null");
+                        }
+
                         return cookies != null ? cookies : new ArrayList<Cookie>();
                     }
                 })

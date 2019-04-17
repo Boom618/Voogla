@@ -20,6 +20,7 @@ object DialogUtil {
      * @param context
      * @param view
      */
+    @JvmStatic
     fun hideInputWindow(context: Context, view: View) {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
@@ -79,7 +80,7 @@ object DialogUtil {
                         goodView.text = goodData[which]
                         specView.text = specData[which]
                         SharedP.putGoodNo(context, which)
-                        ToastUtil.showToast(goodData[which])
+                        ToastUtil.showSuccess(goodData[which])
                     })
                 } else {
                     // 首次选择 or 选择的是同一个商品
@@ -87,7 +88,7 @@ object DialogUtil {
                     goodView.text = goodData[which]
                     specView.text = specData[which]
                     SharedP.putGoodNo(context, which)
-                    ToastUtil.showToast(goodData[which])
+                    ToastUtil.showSuccess(goodData[which])
                 }
 
             }

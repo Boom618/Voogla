@@ -5,10 +5,14 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.mexxen.barcode.BarcodeConfig;
+import com.mexxen.barcode.BarcodeEvent;
+import com.mexxen.barcode.BarcodeListener;
 import com.mexxen.barcode.BarcodeManager;
 import com.ty.voogla.R;
 import com.ty.voogla.adapter.BoxLinkAdapter;
@@ -22,13 +26,18 @@ import com.ty.voogla.data.SparseArrayUtil;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.mvp.presenter.VooglaPresenter;
 import com.ty.voogla.util.ToastUtil;
+import com.ty.voogla.util.scan.PDAUtil;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author TY on 2019/1/12.
@@ -38,9 +47,9 @@ import java.util.Iterator;
 public class BoxLinkJavaActivity3 extends BaseActivity implements  VooglaContract.BoxLinkView {
 
     // SDK 相关
-    private static final String SCANNER_READ = "SCANNER_READ";
     private BarcodeManager mBarcodeManager;
     private BarcodeConfig mBarcodeConfig;
+    private BarcodeListener listener;
 
     private RecyclerView boxRecycler;
     private boolean triggerState = false;
@@ -91,7 +100,9 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements  VooglaContrac
 
 
     private VooglaPresenter presenter = new VooglaPresenter(this);
-    private Disposable disposable;
+    private Disposable subscribe;
+    // 检测是否在扫码中 默认 false
+    private boolean isScanIng = false;
 
     /**
      * 箱码数量显示
@@ -133,7 +144,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements  VooglaContrac
             @Override
             public void onClick(View v) {
                 if (qrCodeInfos.size() == 0) {
-                    ToastUtil.showToast("码数量不能为空");
+                    ToastUtil.showWarning("码数量不能为空");
                     return;
                 }
                 Intent intent = new Intent();
@@ -198,39 +209,93 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements  VooglaContrac
         // set lock the orientation
         // otherwise, the onDestory will trigger when orientation changes
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-
-
     }
 
     @Override
     protected void initTwoView() {
+        mBarcodeConfig = new BarcodeConfig(this);
+        mBarcodeManager = new BarcodeManager(this);
+        // 扫码监听
+        if (listener == null) {
+            listener = new BarcodeListener() {
+                @Override
+                public void barcodeEvent(BarcodeEvent event) {
+                    // TODO Auto-generated method stub
+                    Log.d("TAG", "---->>heww barcodeEvent() event =" + event.getOrder());
+                    // 当条码事件的命令为“SCANNER_READ”时，进行操作
+                    if (event.getOrder().equals(CodeConstant.SCANNER_READ)) {
+                        // 扫码结果
+                        handleResult();
+                    }
+                }
+            };
+        }
 
+        mBarcodeManager.addListener(listener);
+
+        // 初始化 聚光，补光
+        PDAUtil.initBarcodeConfig(mBarcodeConfig);
 
     }
+    private void handleResult() {
+        Log.d("TAG", "---->>heww handleResult()");
+        // 调用 getBarcode()方法读取条码信息
 
-    /*--------------- 扫码  start  ------------**/
-
-    public void onBarcodeEvent() {
-
-
-        presenter.decodeUrlCode("dataString");
-
+        String barcode = mBarcodeManager.getBarcode();
+        if (barcode != null) {
+            int size = barcode.length();
+            Log.d("TAG", "---->>heww handleResult() barcode =" + barcode + ",size=" + size);
+            ToastUtil.showSuccess("barcode = " + barcode);
+            presenter.decodeUrlCode(barcode);
+        } else {
+            ToastUtil.showError("扫码失败");
+        }
     }
 
-    public void continuousScanning(boolean bState) {
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // 扫码按键
+        if (keyCode == CodeConstant.KEY_CODE_223 || keyCode == CodeConstant.KEY_CODE_224) {
+            // 在扫码中
+            if (isScanIng) {
+                stopScaner();
+            }else{
+                handleStartScaner();
+            }
+        }
+        isScanIng = !isScanIng;
 
+        return true;
     }
 
+    /**
+     * 继续扫码
+     */
+    private void handleStartScaner() {
+        subscribe = Observable.interval(1, TimeUnit.SECONDS, Schedulers.io())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        Log.i("TAG", "accept aLong = " + aLong);
+                        mBarcodeManager.startScanner();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        ToastUtil.showError(throwable.getMessage());
+                    }
+                });
+    }
 
-
-
-
-    /*--------------- 扫码  end  ------------**/
-
-
-
-
+    /**
+     * 停止扫码
+     */
+    private void stopScaner() {
+        if (subscribe != null) {
+            subscribe.dispose();
+        }
+        mBarcodeManager.stopScanner();
+    }
 
     /**
      * 解码成功【01】
@@ -278,14 +343,14 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements  VooglaContrac
             for (int i = 0; i < listData.size(); i++) {
                 String qrCode = listData.get(i).getQrCode();
                 if (qrCode.equals(code)) {
-                    ToastUtil.showToast("重复码请重试");
+                    ToastUtil.showWarning("重复码请重试");
                     return;
                 }
             }
         }
 
         if (repeatCodeList.contains(code)) {
-            ToastUtil.showToast("重复码请重试");
+            ToastUtil.showWarning("重复码请重试");
             //ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
         } else {
             if (CodeConstant.QR_CODE_0701.equals(codeClass)){
@@ -300,7 +365,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements  VooglaContrac
                     keyPro = iteratorPro.next();
                     String boxCode = ownProCode.get(keyPro);
                     if (code.equals(boxCode)) {
-                        ToastUtil.showToast("该箱码中有对应的产品码已出库");
+                        ToastUtil.showWarning("该箱码中有对应的产品码已出库");
                         return;
                     }
                 }
@@ -356,9 +421,6 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements  VooglaContrac
         adapter.notifyItemInserted(qrCodeInfos.size());
         adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
 
-        // 继续扫码
-        continuousScanning(true);
-
     }
 
     /**
@@ -371,7 +433,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements  VooglaContrac
     public void getCodeList(ArrayList<String> codeList) {
         pro2BoxCode = codeList.get(0);
         if (repeatCodeList.contains(pro2BoxCode)) {
-            ToastUtil.showToast("该产品码所关联箱码已在列表中");
+            ToastUtil.showWarning("该产品码所关联箱码已在列表中");
             return;
         }
         sendOutjudegCode(companyNo, CodeConstant.QR_CODE_0701, goodsNo, lastCode);
@@ -380,7 +442,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements  VooglaContrac
 
     @Override
     public void showError(String msg) {
-        ToastUtil.showToast(msg);
+        ToastUtil.showError(msg);
 
     }
 
@@ -400,8 +462,10 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements  VooglaContrac
     public void onDestroy() {
         super.onDestroy();
 
-        if (disposable != null) {
-            disposable.dispose();
+        if (subscribe != null) {
+            subscribe.dispose();
         }
+        mBarcodeManager.dismiss();
+        mBarcodeManager.removeListener(listener);
     }
 }

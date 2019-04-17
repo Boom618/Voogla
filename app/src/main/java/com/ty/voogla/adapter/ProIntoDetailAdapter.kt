@@ -21,6 +21,7 @@ class ProIntoDetailAdapter(val context: Context, layout: Int,datas: MutableList<
     override fun convert(holder: ViewHolder, info: InBoxCodeDetailInfosBean, position: Int) {
 
         holder.setText(R.id.tv_code, info.qrCode)
+            .setText(R.id.tv_company_box,"企业箱号：${info.comBoxCode}")
 
         val editView = holder.itemView.findViewById<ImageView>(R.id.image_edit)
 
@@ -29,6 +30,7 @@ class ProIntoDetailAdapter(val context: Context, layout: Int,datas: MutableList<
             intent.putExtra(CodeConstant.PAGE_STATE_KEY,CodeConstant.PAGE_BOX_LINK_EDIT)
             intent.putExtra("boxCode",info.qrCode)
             intent.putExtra("position",position)
+            intent.putExtra("comBoxCode",info.comBoxCode)
             context.startActivity(intent)
         }
 

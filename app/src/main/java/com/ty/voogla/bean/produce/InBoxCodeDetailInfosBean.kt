@@ -13,11 +13,13 @@ class InBoxCodeDetailInfosBean : Serializable {
     /**
      * boxCode : 箱码
      * buApplyNo: 套码
+     * comBoxCode: 企业箱号
      * qrCodeInfos : [{"generateNo":"二维码生成编号","qrCode":"产品码"}]
      */
 
     var qrCode: String? = null
     var buApplyNo: String? = null
     var qrCodeClass: String? = null
+    var comBoxCode: String? = null
     var qrCodeInfos: MutableList<QrCodeListData>? = null
 }

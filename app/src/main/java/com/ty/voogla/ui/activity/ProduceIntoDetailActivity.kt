@@ -69,11 +69,15 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     private val presenter = VooglaPresenter(this)
     // 套码编号
     private var buApplyNo: String? = null
+    // 企业箱号
+    private var comBoxCode: String? = null
 
     override val activityLayout: Int
         get() = R.layout.activity_product_into_detail
 
     override fun onBaseCreate(savedInstanceState: Bundle?) {
+        // 首次进来清空入库数据
+        SparseArrayUtil.clearInBoxCode(this)
     }
 
     override fun initOneData() {
@@ -118,7 +122,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             // 广播跳转
             val spec = tv_select_spec.text.toString().trim { spec -> spec <= ' ' }
             if (tv_select_spec.text.isNotEmpty()) {
-                val intent = Intent("android.intent.action.AUTOCODEACTIVITY")
+                val intent = Intent(this,BoxLinkJavaActivity2::class.java)
                 intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_BOX_LINK)
                 // 商品规格
                 SimpleCache.putString(CodeConstant.GOODS_SPEC, spec)
@@ -179,12 +183,14 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
                     // 入库
                     boxCode = data.getStringExtra("boxCode")
                     buApplyNo = data.getStringExtra("buApplyNo")
+                    comBoxCode = data.getStringExtra("comBoxCode")
                     qrCodeInfos = SimpleCache.getQrCode()
 
                     val data = InBoxCodeDetailInfosBean()
                     data.qrCode = boxCode
                     data.buApplyNo = buApplyNo
                     data.qrCodeClass = "A0702"
+                    data.comBoxCode = comBoxCode
                     data.qrCodeInfos = qrCodeInfos
 
                     listDetail.add(data)
@@ -195,12 +201,14 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
                     // 修改
                     boxCode = data?.getStringExtra("boxCode")
                     buApplyNo = data?.getStringExtra("buApplyNo")
+                    comBoxCode = data?.getStringExtra("comBoxCode")
                     val position = data?.getIntExtra(CodeConstant.SEND_POSITION, 0)!!
                     qrCodeInfos = SimpleCache.getQrCode()
                     val data = InBoxCodeDetailInfosBean()
                     data.qrCode = boxCode
                     data.buApplyNo = buApplyNo
                     data.qrCodeClass = "A0702"
+                    data.comBoxCode = comBoxCode
                     data.qrCodeInfos = qrCodeInfos
 
                     listDetail.add(position, data)
