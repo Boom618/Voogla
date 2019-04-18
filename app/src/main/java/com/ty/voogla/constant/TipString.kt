@@ -8,4 +8,5 @@ package com.ty.voogla.constant
 object TipString {
 
     const val scanError = "扫码失败"
+    const val repeatCodeTryAgain = "重复码请重试"
 }

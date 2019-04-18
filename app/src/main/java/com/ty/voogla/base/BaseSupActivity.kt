@@ -8,11 +8,12 @@ import android.view.View
 import android.widget.TextView
 import com.ty.voogla.R
 import com.ty.voogla.data.ACache
+import me.yokeyword.fragmentation.SupportActivity
 
 /**
  * @author TY
  */
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseSupActivity : SupportActivity() {
 
     //    private var mUnbinder: Unbinder? = null
     private var mCache: ACache? = null
@@ -97,7 +98,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
         // 右边监听事件
         val right = findViewById<TextView>(R.id.tv_right)
-        if (!rightText.isNullOrEmpty()) {
+        if (rightText.isNullOrEmpty()) {
             right.text = rightText
         }
 

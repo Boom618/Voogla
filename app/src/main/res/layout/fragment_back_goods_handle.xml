@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+            android:id="@+id/tv_back"
+            android:text="退货时间："
+            android:layout_marginTop="@dimen/x20"
+            android:textSize="@dimen/text_18"
+            android:layout_marginStart="@dimen/x10"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x10"
+            android:layout_marginEnd="@dimen/x10"
+            android:background="@drawable/shape_black_min_radius"
+            android:drawableStart="@mipmap/ic_date"
+            android:drawableEnd="@mipmap/ic_bottom"
+            android:drawablePadding="@dimen/space_10"
+            android:gravity="center_vertical"
+            android:padding="@dimen/space_7"
+            tools:text="2018-08-31 14:18"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_back"
+            app:layout_constraintLeft_toRightOf="@+id/tv_back"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textColor="@color/txt_main_color"
+            android:textSize="@dimen/text_14"/>
+
+    <TextView
+            android:id="@+id/tv_user"
+            android:text="操作员："
+            android:layout_marginTop="@dimen/x10"
+            android:textSize="@dimen/text_18"
+            android:layout_marginStart="@dimen/x10"
+            android:layout_marginBottom="@dimen/x6"
+            app:layout_constraintBottom_toBottomOf="@+id/ed_name"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/ed_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <EditText
+            android:id="@+id/ed_name"
+            android:layout_marginTop="@dimen/x18"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time"
+            app:layout_constraintLeft_toRightOf="@+id/tv_user"
+            app:layout_constraintRight_toRightOf="parent"
+            android:maxLines="1"
+            android:maxLength="10"
+            android:imeOptions="actionDone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_back_style"
+            android:text="退货方式："
+            android:layout_marginTop="@dimen/x10"
+            android:textSize="@dimen/text_18"
+            android:layout_marginStart="@dimen/x10"
+            app:layout_constraintBottom_toBottomOf="@+id/switch_back"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/switch_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <Switch
+            android:id="@+id/switch_back"
+            android:layout_marginTop="@dimen/x10"
+            app:layout_constraintTop_toBottomOf="@+id/ed_name"
+            app:layout_constraintLeft_toRightOf="@+id/tv_back_style"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+    <!-- TODO　列表明细 -->
+
+</android.support.constraint.ConstraintLayout>

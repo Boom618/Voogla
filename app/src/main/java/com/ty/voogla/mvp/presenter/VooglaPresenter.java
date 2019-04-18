@@ -509,8 +509,8 @@ public class VooglaPresenter implements VooglaContract.Presenter {
     /**
      * 稽查确认
      *
-     * @param companyNo
-     * @param deliveryNo
+     * @param companyNo companyNo
+     * @param deliveryNo deliveryNo
      */
     public void checkInfoConfirm(String companyNo, String deliveryNo,String fleeFlag) {
         httpMethods.checkInfoConfirm(new SingleObserver<ResponseInfo>() {

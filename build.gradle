@@ -54,7 +54,7 @@ ext {
     googleGsonVersion           = '2.8.5'
     CircleProgressBarVersion    = '2.0.0'
     rvadapterVersion            = '3.0.3'
-    PickerViewVersion           = '4.1.6'
+    PickerViewVersion           = '4.1.7'
     loggerVersion               = '2.2.0'
     SmartRefreshVersion         = '1.1.0-alpha-14'
     glideVersion                = '4.7.1'

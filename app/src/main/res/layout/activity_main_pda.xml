@@ -29,6 +29,14 @@
             android:text="@string/welcome_en"
             android:layout_height="wrap_content"/>
 
+    <Button
+            android:id="@+id/back_goods"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/back_goods"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     <ImageView
             android:id="@+id/image_product"
             android:background="@mipmap/product_card"

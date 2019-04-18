@@ -72,4 +72,13 @@
     <string name="code_detail">码号明细</string>
     <string name="confirm_the_good">确认窜货</string>
     <string name="confirm_delete">确认删除</string>
+    <string name="back_goods">退货</string>
+    <string name="back_goods_list">退货列表</string>
+    <string name="back_goods_look">退货明细</string>
+    <string name="scan_setting">扫码设置</string>
+    <string name="scan_fast">快</string>
+    <string name="scan_slow">慢</string>
+    <string name="aim_setting">补光设置</string>
+    <string name="aim_open">开</string>
+    <string name="aim_close">关</string>
 </resources>

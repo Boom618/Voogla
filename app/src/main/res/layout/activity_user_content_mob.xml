@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"/>
 
     <TextView
-            android:text="扫码速度"
+            android:text="@string/scan_setting"
             android:textSize="@dimen/text_18"
             android:layout_marginStart="@dimen/x20"
             app:layout_constraintBottom_toBottomOf="@+id/velocity"
@@ -95,8 +95,8 @@
     <Switch
             android:id="@+id/velocity"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textOn="快"
-            android:textOff="慢"
+            android:textOn="@string/scan_fast"
+            android:textOff="@string/scan_slow"
             android:showText="true"
             android:layout_marginEnd="@dimen/x20"
             android:layout_marginTop="@dimen/x20"
@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"/>
 
     <TextView
-            android:text="开启补光"
+            android:text="@string/aim_setting"
             android:textSize="@dimen/text_18"
             android:layout_marginStart="@dimen/x20"
             app:layout_constraintBottom_toBottomOf="@+id/aimLight"
@@ -119,8 +119,8 @@
     <Switch
             android:id="@+id/aimLight"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textOn="开"
-            android:textOff="关"
+            android:textOn="@string/aim_open"
+            android:textOff="@string/aim_close"
             android:showText="true"
             android:layout_marginEnd="@dimen/x20"
             android:layout_marginTop="@dimen/x30"
