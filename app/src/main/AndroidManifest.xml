@@ -38,6 +38,7 @@
         <!--<activity android:name=".ui.MexxenActivity"/>-->
         <activity
                 android:name=".ui.activity.LoginMobActivity"
+                android:screenOrientation="portrait"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -46,20 +47,33 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.MainPdaJavaActivity"/>
-        <activity android:name=".ui.activity.ProduceIntoActivity"/>
+        <activity android:name=".ui.activity.MainPdaJavaActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.ProduceIntoActivity"
+                  android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.activity.MainMobActivity"/>
-        <activity android:name=".ui.activity.UserContentActivity"/>
-        <activity android:name=".ui.activity.InspectionActivity"/>
-        <activity android:name=".ui.activity.ProduceIntoDetailActivity"/>
-        <activity android:name=".ui.activity.BoxLinkJavaActivity2"/>
-        <activity android:name=".ui.activity.ProductIntoLookActivity"/>
-        <activity android:name=".ui.activity.BoxLinkLookActivity"/>
-        <activity android:name=".ui.activity.SendOutActivity"/>
-        <activity android:name=".ui.activity.SendOutLookActivity"/>
-        <activity android:name=".ui.activity.BoxLinkJavaActivity3"/>
-        <activity android:name=".ui.activity.SendOutNextActivity2"/>
+        <activity android:name=".ui.activity.MainMobActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.UserContentActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.InspectionActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.ProduceIntoDetailActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.BoxLinkJavaActivity2"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.ProductIntoLookActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.BoxLinkLookActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.SendOutActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.SendOutLookActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.BoxLinkJavaActivity3"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.SendOutNextActivity2"
+                  android:screenOrientation="portrait"/>
 
     </application>
 

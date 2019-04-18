@@ -2,9 +2,10 @@ package com.ty.voogla.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import com.ty.voogla.BuildConfig.*
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
+import com.ty.voogla.constant.CodeConstant
+import com.ty.voogla.data.SharedP
 import com.ty.voogla.ui.ActivitiesHelper
 import com.ty.voogla.data.SimpleCache
 import kotlinx.android.synthetic.main.activity_user_content_mob.*
@@ -40,6 +41,46 @@ class UserContentActivity : BaseActivity() {
             // 清数据
             SimpleCache.clearAll()
             ActivitiesHelper.get().finishAll()
+        }
+        setSwitchVelocity()
+        setAimLight()
+    }
+
+    /**
+     * 设置扫码速度
+     */
+    private fun setSwitchVelocity() {
+        when (SharedP.getKeyBoolean(this, CodeConstant.SP_VELOCITY)) {
+            false -> velocity.isChecked = false
+            true -> velocity.isChecked = true
+        }
+        velocity.setOnCheckedChangeListener { _, isChecked ->
+            when (isChecked) {
+                false -> {
+//                    velocity.isChecked = true
+                    SharedP.putKeyBoolean(this, CodeConstant.SP_VELOCITY, false)
+                }
+                true -> {
+//                    velocity.isChecked = false
+                    SharedP.putKeyBoolean(this, CodeConstant.SP_VELOCITY, true)
+                }
+            }
+        }
+    }
+
+    /**
+     * 设置补光
+     */
+    private fun setAimLight() {
+        when (SharedP.getKeyBoolean(this, CodeConstant.SP_LIGHT)) {
+            false -> aimLight.isChecked = false
+            true -> aimLight.isChecked = true
+        }
+        aimLight.setOnCheckedChangeListener { _, isChecked ->
+            when (isChecked) {
+                false -> SharedP.putKeyBoolean(this, CodeConstant.SP_LIGHT, false)
+                true -> SharedP.putKeyBoolean(this, CodeConstant.SP_LIGHT, true)
+            }
         }
     }
 }

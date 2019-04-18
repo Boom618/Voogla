@@ -23,7 +23,9 @@ import com.ty.voogla.bean.produce.DecodeCode;
 import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean;
 import com.ty.voogla.bean.sendout.QrCodeListData;
 import com.ty.voogla.constant.CodeConstant;
+import com.ty.voogla.constant.TipString;
 import com.ty.voogla.data.RepeatCode;
+import com.ty.voogla.data.SharedP;
 import com.ty.voogla.data.SimpleCache;
 import com.ty.voogla.data.SparseArrayUtil;
 import com.ty.voogla.mvp.contract.VooglaContract;
@@ -104,8 +106,9 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
 
 
     private VooglaPresenter presenter = new VooglaPresenter(this);
-//    private Disposable disposable;
     private Disposable subscribe;
+
+    private int timeScan = 1000;
 
     /**
      * 箱码数量显示
@@ -258,23 +261,26 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
         }
 
         mBarcodeManager.addListener(listener);
-
+        // 扫码速度 补光灯
+        boolean velocity = SharedP.getKeyBoolean(this, CodeConstant.SP_VELOCITY);
+        boolean light = SharedP.getKeyBoolean(this, CodeConstant.SP_LIGHT);
+        if (velocity) {
+            timeScan = 700;
+        } else {
+            timeScan = 1000;
+        }
         // 初始化 聚光，补光
-        PDAUtil.initBarcodeConfig(mBarcodeConfig);
+        PDAUtil.initBarcodeConfig(mBarcodeConfig,light);
     }
 
     private void handleResult() {
-        Log.d("TAG", "---->>heww handleResult()");
-        // 调用 getBarcode()方法读取条码信息
-
         String barcode = mBarcodeManager.getBarcode();
         if (barcode != null) {
             int size = barcode.length();
             Log.d("TAG", "---->>heww handleResult() barcode =" + barcode + ",size=" + size);
-            ToastUtil.showSuccess("barcode = " + barcode);
             presenter.decodeUrlCode(barcode);
         } else {
-            ToastUtil.showError("扫码失败");
+            ToastUtil.showError(TipString.scanError);
         }
     }
 
@@ -356,10 +362,12 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // 扫码按键
         if (keyCode == CodeConstant.KEY_CODE_223 || keyCode == CodeConstant.KEY_CODE_224) {
+            companyView.clearFocus();
+            // DialogUtil.hideInputWindow(v.getContext(), v);
             // 在扫码中
             if (isScanIng) {
                 stopScaner();
-            }else{
+            } else {
                 handleStartScaner();
             }
         }
@@ -372,7 +380,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
      * 继续扫码
      */
     private void handleStartScaner() {
-        subscribe = Observable.interval(1, TimeUnit.SECONDS, Schedulers.io())
+        subscribe = Observable.interval(timeScan, TimeUnit.MILLISECONDS, Schedulers.io())
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {

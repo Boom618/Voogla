@@ -71,4 +71,33 @@ object SharedP {
             .putInt(key, -1)
             .apply()
     }
+
+    /** ---------------------存指定 key 的 Boolean 值 ----------------------------*/
+
+
+
+    @JvmStatic
+    fun putKeyBoolean(context: Context, key: String, boolean: Boolean) {
+        context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(key, boolean)
+            .apply()
+    }
+
+    @JvmStatic
+    fun getKeyBoolean(context: Context, key: String): Boolean {
+        return context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
+            .getBoolean(key, false)
+    }
+
+    /**
+     * 重置 key
+     */
+    @JvmStatic
+    fun clearKeyBoolean(context: Context, key: String) {
+        context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
+            .edit()
+            .putInt(key, -1)
+            .apply()
+    }
 }

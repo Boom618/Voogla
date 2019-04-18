@@ -84,8 +84,12 @@ public final class CodeConstant {
 
     /**
      * SharedPreferences 文件名
+     * velocity 扫码速度
+     * light 补光
      */
     public static final String SP_SHARED = "shared";
+    public static final String SP_VELOCITY = "velocity";
+    public static final String SP_LIGHT = "light";
 
     /**
      * 相机 请求、响应 状态码

@@ -21,17 +21,21 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowAnimationStyle">@style/normalDialogAnim</item>
+        <!--<item name="android:windowAnimationStyle">@style/normalDialogAnim</item>-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <style name="normalDialogAnim" parent="android:Animation">
-        <item name="@android:windowEnterAnimation">@anim/normal_dialog_enter
-        </item>
-        <item name="@android:windowExitAnimation">@anim/normal_dialog_exit
-        </item>
-    </style>
+    <!--<style name="normalDialogAnim" parent="android:Animation">-->
+        <!--<item name="@android:windowEnterAnimation">@anim/normal_dialog_enter-->
+        <!--</item>-->
+        <!--<item name="@android:windowExitAnimation">@anim/normal_dialog_exit-->
+        <!--</item>-->
+    <!--</style>-->
 
+    <!--启动背景  防止启动白屏或黑屏（取决于主题是 Dark 还是 Light）情况-->
+    <style name="AppThemeLauncher" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@mipmap/log_bg</item>
+    </style>
 
     <!-- 删除 item dialog   end -->
 
@@ -45,17 +49,20 @@
         <item name="android:backgroundDimAmount">0.5</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowAnimationStyle">@style/bottomDialogAnim</item>
+        <!--<item name="android:windowAnimationStyle">@style/bottomDialogAnim</item>-->
     </style>
 
-    <style name="bottomDialogAnim" parent="android:Animation">
-        <item name="@android:windowEnterAnimation">@anim/bottom_dialog_enter
-        </item>
-        <item name="@android:windowExitAnimation">@anim/bottom_dialog_exit
-        </item>
-    </style>
-    <!-- 供应商 选择  end -->
+    <!--<style name="bottomDialogAnim" parent="android:Animation">-->
+        <!--<item name="@android:windowEnterAnimation">@anim/bottom_dialog_enter-->
+        <!--</item>-->
+        <!--<item name="@android:windowExitAnimation">@anim/bottom_dialog_exit-->
+        <!--</item>-->
+    <!--</style>-->
 
+    <!-- Switch 控件颜色 -->
+    <style name="SwitchTheme" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/switch_text_selector</item>
+    </style>
 
     <!-- 列表详情字体大小  start -->
 

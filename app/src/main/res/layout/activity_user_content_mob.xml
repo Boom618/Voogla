@@ -83,6 +83,54 @@
             android:text="@string/company_profile"
             android:layout_height="wrap_content"/>
 
+    <TextView
+            android:text="扫码速度"
+            android:textSize="@dimen/text_18"
+            android:layout_marginStart="@dimen/x20"
+            app:layout_constraintBottom_toBottomOf="@+id/velocity"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <Switch
+            android:id="@+id/velocity"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textOn="快"
+            android:textOff="慢"
+            android:showText="true"
+            android:layout_marginEnd="@dimen/x20"
+            android:layout_marginTop="@dimen/x20"
+            android:switchTextAppearance="@style/SwitchTheme"
+            android:thumb="@drawable/switch_custom_thumb_selector"
+            android:track="@drawable/switch_custom_track_selector"
+            app:layout_constraintTop_toBottomOf="@+id/tv_company_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:text="开启补光"
+            android:textSize="@dimen/text_18"
+            android:layout_marginStart="@dimen/x20"
+            app:layout_constraintBottom_toBottomOf="@+id/aimLight"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <Switch
+            android:id="@+id/aimLight"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textOn="开"
+            android:textOff="关"
+            android:showText="true"
+            android:layout_marginEnd="@dimen/x20"
+            android:layout_marginTop="@dimen/x30"
+            android:switchTextAppearance="@style/SwitchTheme"
+            android:thumb="@drawable/switch_custom_thumb_selector"
+            android:track="@drawable/switch_custom_track_selector"
+            app:layout_constraintTop_toBottomOf="@+id/velocity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     <Button
             android:id="@+id/bt_login_out"
             android:background="@mipmap/signout_btn"
