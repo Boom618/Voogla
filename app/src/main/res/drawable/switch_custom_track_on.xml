@@ -3,8 +3,8 @@
        android:shape="rectangle">
     <!-- 滑动开启 【滑块颜色】-->
     <solid android:color="#FFF74299" />
-    <stroke
-            android:width="5dp"
-            android:color="#00000000" />
-    <corners android:radius="20dp" />
+    <!--<stroke-->
+            <!--android:width="5dp"-->
+            <!--android:color="#00000000" />-->
+    <corners android:radius="10dp" />
 </shape>

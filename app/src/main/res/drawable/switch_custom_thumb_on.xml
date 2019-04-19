@@ -3,6 +3,7 @@
        android:shape="oval">
     <!--Switch 开启状态  【按钮颜色】-->
     <solid android:color="#FFF74299" />
+    <!--height 在 thumb 属性中 控制 Switch 控件高度-->
     <size
             android:width="20dp"
             android:height="20dp" />
