@@ -21,12 +21,13 @@ class ProIntoLookAdapter(val context: Context, layout: Int, datas: List<ProductI
     override fun convert(holder: ViewHolder, info: ProductInputInfo.InWareDetailInfosBean, position: Int) {
 
         holder.setText(R.id.tv_code, info.qrCode)
+            .setText(R.id.tv_company_box, "企业箱号：${info.comBoxCode}")
 
         holder.itemView.findViewById<TextView>(R.id.tv_look).setOnClickListener {
             val intent = Intent(context, BoxLinkLookActivity::class.java)
 
-            intent.putExtra(CodeConstant.LOOK_TYPE,"product")
-            intent.putExtra("qrCode",info.qrCode)
+            intent.putExtra(CodeConstant.LOOK_TYPE, "product")
+            intent.putExtra("qrCode", info.qrCode)
             context.startActivity(intent)
         }
 

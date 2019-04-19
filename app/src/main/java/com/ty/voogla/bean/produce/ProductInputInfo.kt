@@ -22,25 +22,19 @@ class ProductInputInfo {
          * wareName : 仓库名称
          */
 
-        var companyAttr: String? = null
         var companyNo: String? = null
-        var creator: String? = null
         var goodsNo: String? = null
-        var inNum: String? = null
-        var inTime: String? = null
-        var inWareDesc: String? = null
         var unit: String? = null
-        var wareName: String? = null
-        var productBatchNo: String? = null
     }
 
     class InWareDetailInfosBean {
 
 
+        // comBoxCode 企业箱号
         var companyNo: String? = null
         var inBatchNo: String? = null
-        var batchNo: String? = null
         var goodsNo: String? = null
+        var comBoxCode: String? = null
         var qrCodeClass: String? = null
         var qrCode: String? = null
         var goodsName: String? = null

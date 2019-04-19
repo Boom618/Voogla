@@ -2,17 +2,16 @@ package com.ty.voogla.ui.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.SparseArray
 import com.ty.voogla.R
 import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.adapter.ProIntoLookAdapter
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.produce.ProductInputInfo
+import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
-import com.ty.voogla.data.SimpleCache
-import com.ty.voogla.data.SparseArrayUtil
+import com.ty.voogla.util.ToastUtil
 import kotlinx.android.synthetic.main.activity_product_into_look.*
 
 /**
@@ -74,7 +73,7 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
     }
 
     override fun showError(msg: String) {
-
+        ToastUtil.showError(msg)
     }
 
 }

@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.activity_product_into.*
  */
 class ProduceIntoActivity : BaseActivity(), VooglaContract.ListView<ProductIntoData.ListBean> {
 
-    lateinit var adapter: ProductIntoAdapter
+    private lateinit var adapter: ProductIntoAdapter
 
     // 企业编号  归属单位
     private val companyNo = SimpleCache.getUserInfo().companyNo
@@ -114,7 +114,7 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.ListView<ProductIntoD
 
     override fun showError(msg: String) {
 
-        ToastUtil.showToast(msg)
+        ToastUtil.showError(msg)
 
     }
 }

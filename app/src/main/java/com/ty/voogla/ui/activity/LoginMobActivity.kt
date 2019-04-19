@@ -82,7 +82,7 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View<UserInfo> {
     }
     override fun showError(msg: String) {
 
-        ToastUtil.showToast(msg)
+        ToastUtil.showError(msg)
     }
 
     override fun onDestroy() {

@@ -85,7 +85,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onError(Throwable e) {
-                iView.showError(e.getMessage());
+                iView.showError("登录失败");
             }
         }, username, password);
     }
@@ -200,7 +200,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onError(Throwable e) {
-                iView.showError(e.getMessage());
+                iView.showError("获取数据失败");
 
             }
         }, companyNo, inBatchNo);

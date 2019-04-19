@@ -31,13 +31,13 @@
                 android:layout_marginStart="@dimen/x10"
                 android:layout_marginEnd="@dimen/x24"
                 android:maxLines="1"
-                android:maxLength="16"
+                android:maxLength="3"
                 app:layout_constraintLeft_toRightOf="@+id/mark"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/top"
                 android:layout_width="0dp"
                 android:imeOptions="actionDone"
-                android:inputType="text"
+                android:inputType="number"
                 app:layout_constraintHorizontal_weight="1"
                 android:layout_height="wrap_content"/>
 

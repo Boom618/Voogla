@@ -78,6 +78,15 @@
             android:layout_marginTop="@dimen/x10"
             app:layout_constraintTop_toBottomOf="@+id/ed_name"
             app:layout_constraintLeft_toRightOf="@+id/tv_back_style"
+            android:textOn="整单"
+            android:textOff="散货"
+            android:showText="true"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:layout_marginStart="@dimen/x20"
+            android:switchTextAppearance="@style/SwitchTheme"
+            android:thumb="@drawable/switch_custom_thumb_selector"
+            android:track="@drawable/switch_custom_track_selector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

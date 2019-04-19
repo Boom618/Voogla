@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import com.ty.voogla.R
 import com.ty.voogla.adapter.InspectionAdapter
@@ -17,6 +16,7 @@ import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.CheckInfoList
 import com.ty.voogla.bean.produce.DecodeCode
 import com.ty.voogla.constant.CodeConstant
+import com.ty.voogla.constant.TipString
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.net.HttpMethods
@@ -42,18 +42,12 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
 
     lateinit var adapter: InspectionAdapter
 
-    // 扫描跳转Activity RequestCode
-    private val REQUEST_CODE: Int = 100
     // 请求 CAMERA 权限码
     private val REQUEST_CAMERA_PERM: Int = 101
 
-    // 企业编号
-//    private var companyNo: String? = null
     private var list = mutableListOf<CheckInfoList.ListBean>()
 
     private val presenter = VooglaPresenter(this)
-    // 当前确认 position
-    private var currentPosition = 0
 
     private lateinit var currentCode:String
     private lateinit var currentCodeClass:String
@@ -159,7 +153,7 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
             }
 
             override fun onError(e: Throwable) {
-                ToastUtil.showToast(e.message)
+                ToastUtil.showError(e.message)
             }
         }, qrCodeClass, code)
     }
@@ -174,11 +168,6 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
     override fun showResponse(response: ResponseInfo) {
         // list 数据没更新  不能 notify, 方案 1：重新获取数据
         httpCheckList(currentCodeClass, currentCode)
-        //ToastUtil.showToast(response.msg)
-//        list.removeAt(currentPosition)
-//        adapter.notifyDataSetChanged()
-//        adapter.notifyItemChanged(currentPosition)
-//        adapter.notifyItemRangeChanged(currentPosition, list.size - currentPosition)
     }
 
     /**
@@ -190,7 +179,7 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
         // 确认操作 取反
         val flag = if (fleeFlag == "01") "02" else "01"
         confirmView.setOnClickListener { view ->
-            DialogUtil.deleteItemDialog(view.context, "温馨提示", pointContent, NormalAlertDialog.onNormalOnclickListener {
+            DialogUtil.deleteItemDialog(view.context, TipString.tips, pointContent, NormalAlertDialog.onNormalOnclickListener {
                 checkInfoConfirm(companyNo, deliveryNo, flag)
                 it.dismiss()
             })
@@ -217,7 +206,7 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
             // Have permission, do the thing!
 //            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             val intent = Intent(this, CaptureActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE)
+            startActivityForResult(intent, CodeConstant.RESULT_CODE)
         } else {
             // Ask for one permission
             // 申请权限 Dialog
@@ -232,7 +221,7 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == CodeConstant.RESULT_CODE) {
             //处理扫描结果（在界面上显示）
             val bundle = data?.extras
             if (CodeUtils.RESULT_SUCCESS == bundle?.getInt(CodeUtils.RESULT_TYPE)) {
@@ -240,12 +229,11 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
 
                 presenter.decodeUrlCode(result)
 
-                //ed_search.setText(result)
             } else {
-                ToastUtil.showToast("解析二维码失败")
+                ToastUtil.showError("解析二维码失败")
             }
         } else if (requestCode == REQUEST_CAMERA_PERM) {
-            ToastUtil.showToast("从设置页面返回...")
+            ToastUtil.showWarning("从设置页面返回...")
         }
     }
 

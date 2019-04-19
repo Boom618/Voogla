@@ -8,6 +8,7 @@ import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.data.SharedP
 import com.ty.voogla.ui.ActivitiesHelper
 import com.ty.voogla.data.SimpleCache
+import com.ty.voogla.util.ToastUtil
 import kotlinx.android.synthetic.main.activity_user_content_mob.*
 
 /**
@@ -57,11 +58,11 @@ class UserContentActivity : BaseActivity() {
         velocity.setOnCheckedChangeListener { _, isChecked ->
             when (isChecked) {
                 false -> {
-//                    velocity.isChecked = true
+                    ToastUtil.showSuccess("慢")
                     SharedP.putKeyBoolean(this, CodeConstant.SP_VELOCITY, false)
                 }
                 true -> {
-//                    velocity.isChecked = false
+                    ToastUtil.showSuccess("快")
                     SharedP.putKeyBoolean(this, CodeConstant.SP_VELOCITY, true)
                 }
             }
@@ -81,6 +82,7 @@ class UserContentActivity : BaseActivity() {
                 false -> SharedP.putKeyBoolean(this, CodeConstant.SP_LIGHT, false)
                 true -> SharedP.putKeyBoolean(this, CodeConstant.SP_LIGHT, true)
             }
+            ToastUtil.showSuccess(if (isChecked) "开" else "关")
         }
     }
 }

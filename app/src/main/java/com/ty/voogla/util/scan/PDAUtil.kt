@@ -17,11 +17,10 @@ object PDAUtil {
     @JvmStatic
     fun initBarcodeConfig(mBarcodeConfig: BarcodeConfig, openLight: Boolean) {
         val isDecodeLight = mBarcodeConfig.isDecodeingIlluminiation
-        val isAim = mBarcodeConfig.isDecodeAimIlluminiation
         // isDecodeLight = false 开启聚光，其他情况不管
-        when (isDecodeLight) {
+        when (mBarcodeConfig.isDecodeAimIlluminiation) {
             false -> {
-                mBarcodeConfig.isDecodeingIlluminiation = true
+                mBarcodeConfig.isDecodeAimIlluminiation = true
                 mBarcodeConfig.setScannerParamsChange()
             }
             else -> {
@@ -29,14 +28,14 @@ object PDAUtil {
         }
         when (openLight) {
             false -> {
-                if (isAim) {
-                    mBarcodeConfig.isDecodeAimIlluminiation = false
+                if (isDecodeLight) {
+                    mBarcodeConfig.isDecodeingIlluminiation = false
                     mBarcodeConfig.setScannerParamsChange()
                 }
             }
             true -> {
-                if (!isAim) {
-                    mBarcodeConfig.isDecodeAimIlluminiation = true
+                if (!isDecodeLight) {
+                    mBarcodeConfig.isDecodeingIlluminiation = true
                     mBarcodeConfig.setScannerParamsChange()
                 }
             }

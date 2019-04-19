@@ -26,7 +26,7 @@
             android:text="@string/app_name_mob"
             android:layout_height="wrap_content"/>
 
-
+    <!--测试：18800000001 正式：13621749172-->
     <EditText android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:id="@+id/et_user_name"
@@ -39,13 +39,13 @@
               android:textSize="@dimen/text_14"
               android:layout_marginTop="@dimen/space_50"
               android:drawablePadding="@dimen/space_10"
-              android:text="13621749172"
+              android:text="18800000001"
               app:layout_constraintLeft_toLeftOf="parent"
               app:layout_constraintRight_toRightOf="parent"
               app:layout_constraintTop_toBottomOf="@+id/image_logo"
               android:inputType="phone"/>
 
-
+    <!--测试：000001 正式：124578-->
     <EditText android:layout_width="wrap_content"
               android:id="@+id/et_user_pass"
               android:hint="@string/password"
@@ -57,7 +57,7 @@
               android:layout_marginTop="@dimen/x17"
               android:textSize="@dimen/text_14"
               android:drawablePadding="@dimen/space_10"
-              android:text="124578"
+              android:text="000001"
               app:layout_constraintLeft_toLeftOf="parent"
               app:layout_constraintRight_toRightOf="parent"
               app:layout_constraintTop_toBottomOf="@+id/et_user_name"

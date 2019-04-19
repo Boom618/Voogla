@@ -6,6 +6,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseSupFragment
+import com.ty.voogla.constant.TipString
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
 import kotlinx.android.synthetic.main.fragment_back_good.view.*
@@ -50,7 +51,7 @@ class BackGoodsFragment : BaseSupFragment() {
         super.onSupportVisible()
         // 当对用户可见时 回调
         // 不管是 父Fragment还是子Fragment 都有效！
-        initToolBar(R.string.back_goods_list, "退货", View.OnClickListener {
+        initToolBar(R.string.back_goods_list, TipString.retrueGoods, View.OnClickListener {
             start(BackGoodsHandleFrg.newInstance())
         })
     }
