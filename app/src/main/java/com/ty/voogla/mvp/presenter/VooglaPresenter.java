@@ -85,7 +85,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onError(Throwable e) {
-                iView.showError("登录失败");
+                iView.showError(e.getMessage());
             }
         }, username, password);
     }
@@ -244,7 +244,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onError(Throwable e) {
                 if (boxView == null) {
                     iView.showError(e.getMessage());
-                }else{
+                } else {
                     boxView.showError(e.getMessage());
                 }
             }
@@ -288,7 +288,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
      *
      * @param qrCode
      */
-    public void getQrCodeList(String qrCode,String qrCodeType) {
+    public void getQrCodeList(String qrCode, String qrCodeType) {
         httpMethods.getQrCodeList(new SingleObserver<BaseResponse<ArrayList<String>>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -321,7 +321,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
                     boxView.showError(e.getMessage());
                 }
             }
-        }, qrCode,qrCodeType);
+        }, qrCode, qrCodeType);
 
     }
 
@@ -332,7 +332,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
      *
      * @param companyNo
      */
-    public void getSendOutList2(String companyNo,String deliveryState) {
+    public void getSendOutList2(String companyNo, String deliveryState) {
         httpMethods.getSendOutList2(new SingleObserver<BaseResponse<SendOutListData>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -355,7 +355,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
                 iListView.showError(e.getMessage());
 
             }
-        }, companyNo,deliveryState);
+        }, companyNo, deliveryState);
     }
 
     /**
@@ -509,10 +509,10 @@ public class VooglaPresenter implements VooglaContract.Presenter {
     /**
      * 稽查确认
      *
-     * @param companyNo companyNo
+     * @param companyNo  companyNo
      * @param deliveryNo deliveryNo
      */
-    public void checkInfoConfirm(String companyNo, String deliveryNo,String fleeFlag) {
+    public void checkInfoConfirm(String companyNo, String deliveryNo, String fleeFlag) {
         httpMethods.checkInfoConfirm(new SingleObserver<ResponseInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -532,7 +532,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onError(Throwable e) {
                 iView.showError(e.getMessage());
             }
-        }, companyNo, deliveryNo,fleeFlag);
+        }, companyNo, deliveryNo, fleeFlag);
     }
 
 }

@@ -17,6 +17,6 @@ object TipString {
     const val repeatCodeTryAgain = "重复码请重试"
     const val boxCodeNotNull = "箱码和企业箱号不能为空"
     const val scanCompleteSpecCode = "请扫指定规格的套码"
-    const val boxCodeNotThanSpec = "箱码数量不能大于规格数量"
+    const val boxCodeNotThanSpec = "产品码数量不能大于规格数量"
     const val gotoScanBoxCode = "【套码类型】请直接扫描箱码号"
 }

@@ -7,6 +7,7 @@ import com.ty.voogla.R
 import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean
 import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.ui.activity.BoxLinkJavaActivity2
+import com.ty.voogla.ui.activity.ProduceIntoDetailActivity
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 
@@ -31,7 +32,7 @@ class ProIntoDetailAdapter(val context: Context, layout: Int,datas: MutableList<
             intent.putExtra("boxCode",info.qrCode)
             intent.putExtra("position",position)
             intent.putExtra("comBoxCode",info.comBoxCode)
-            context.startActivity(intent)
+            (context as ProduceIntoDetailActivity).startActivityForResult(intent, CodeConstant.REQUEST_CODE_INTO)
         }
 
     }

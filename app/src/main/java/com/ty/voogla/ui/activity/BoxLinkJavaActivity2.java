@@ -31,6 +31,7 @@ import com.ty.voogla.data.SparseArrayUtil;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.mvp.presenter.VooglaPresenter;
 import com.ty.voogla.util.ToastUtil;
+import com.ty.voogla.util.ZBLog;
 import com.ty.voogla.util.scan.PDAUtil;
 import com.ty.voogla.widght.DialogUtil;
 import com.ty.voogla.widght.NormalAlertDialog;
@@ -172,6 +173,11 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
             // 套码有值
             buApplyNo = allCode.get(sendPosition).getBuApplyNo();
             qrCodeInfos.addAll(infos);
+            // 修改 -- 初始化重复码（存放产品码）
+            for(int i = 0;i<infos.size();i++){
+                String qrCode = infos.get(i).getQrCode();
+                repeatCodeList.add(qrCode);
+            }
 
             numberCode.setText(String.valueOf(this.qrCodeInfos.size()));
             initToolBar(R.string.box_link, TipString.save, new View.OnClickListener() {
@@ -194,7 +200,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
 
                 ImageView deleteView = holder.itemView.findViewById(R.id.image_delete);
 
-                // 套码 【默认 true 】
+                // 非套码
                 if (buApplyNo == null) {
 
                     deleteView.setOnClickListener(new View.OnClickListener() {
@@ -328,35 +334,34 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
 
         //  规格大小
         if (size == specNumber) {
-            Intent intent = new Intent();
-            intent.putExtra(CodeConstant.BOX_CODE, boxString);
-            intent.putExtra(CodeConstant.RESULT_TYPE, type);
-            intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
-            intent.putExtra("buApplyNo", buApplyNo);
-            intent.putExtra("comBoxCode", companyString);
-            SimpleCache.putQrCode(qrCodeInfos);
-            setResult(CodeConstant.RESULT_CODE, intent);
+            gotoProductActivity(type, boxString, companyString);
             finish();
         } else {
             // 该产品规格为24，实际为10，是否继续绑定
-            String tip = "该产品规格" + specNumber + ",实际为 " + size + " 继续绑定";
+            String tip = "该产品规格" + specNumber + ",实际为 " + size + " 是否继续绑定";
             DialogUtil.deleteItemDialog(this, TipString.tips, tip, new NormalAlertDialog.onNormalOnclickListener() {
                 @Override
                 public void onNormalClick(NormalAlertDialog dialog) {
-                    Intent intent = new Intent();
-                    intent.putExtra(CodeConstant.BOX_CODE, boxString);
-                    intent.putExtra(CodeConstant.RESULT_TYPE, type);
-                    intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
-                    intent.putExtra("buApplyNo", buApplyNo);
-                    intent.putExtra("comBoxCode", companyString);
-                    SimpleCache.putQrCode(qrCodeInfos);
-                    setResult(CodeConstant.RESULT_CODE, intent);
+                    gotoProductActivity(type, boxString, companyString);
                     dialog.dismiss();
                     finish();
                 }
             });
         }
     }
+
+    private void gotoProductActivity(String type, String boxString, String companyString) {
+        Intent intent = new Intent();
+        intent.putExtra(CodeConstant.BOX_CODE, boxString);
+        intent.putExtra(CodeConstant.RESULT_TYPE, type);
+        intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
+        intent.putExtra("buApplyNo", buApplyNo);
+        intent.putExtra("comBoxCode", companyString);
+        SimpleCache.putQrCode(qrCodeInfos);
+        setResult(CodeConstant.RESULT_CODE, intent);
+    }
+
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -537,10 +542,10 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
                     // 产品码
                     qrCodeInfos.add(qrCode);
                     repeatCodeList.add(currentCode);
-
-                    numberCode.setText(String.valueOf(qrCodeInfos.size()));
-                    adapter.notifyItemInserted(qrCodeInfos.size());
-                    adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
+                    int size = qrCodeInfos.size();
+                    numberCode.setText(String.valueOf(size));
+                    adapter.notifyItemInserted(size);
+                    adapter.notifyItemRangeChanged(size, size);
                 }
             }
         }

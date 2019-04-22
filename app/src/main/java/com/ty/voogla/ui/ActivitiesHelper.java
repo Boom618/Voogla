@@ -107,6 +107,14 @@ public class ActivitiesHelper implements Application.ActivityLifecycleCallbacks 
         ZBLog.INSTANCE.d(TAG, "onActivityDestroyed:size:" + activities.size());
     }
 
+    /**
+     * 获取当前 Activity
+     * @return Activity
+     */
+    public Activity getLastActivity(){
+        return activities.getLast().get();
+    }
+
     public boolean isAppFrontOfUser() {
         return lastStartActivity != null;
     }

@@ -119,7 +119,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
                 ToastUtil.showWarning("请先提交")
                 return@setOnClickListener
             }
-            // 广播跳转
+            // 跳转
             val spec = tv_select_spec.text.toString().trim { spec -> spec <= ' ' }
             if (tv_select_spec.text.isNotEmpty()) {
                 val intent = Intent(this,BoxLinkJavaActivity2::class.java)
@@ -211,7 +211,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
                     data.comBoxCode = comBoxCode
                     data.qrCodeInfos = qrCodeInfos
 
-                    listDetail.add(position, data)
+                    listDetail[position] = data
                     // 【文件写入】修改成功更新存的数据,在扫码是校验是否有重复码（箱码和产品码）
                     SparseArrayUtil.putQrCodeList(this, listDetail)
                 }

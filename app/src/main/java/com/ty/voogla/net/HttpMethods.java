@@ -68,8 +68,9 @@ public class HttpMethods {
     private void init(String url) {
         final HttpLoggingInterceptor log = new HttpLoggingInterceptor();
         log.setLevel(HttpLoggingInterceptor.Level.BODY);
+        log.setLevel(HttpLoggingInterceptor.Level.HEADERS);
         // 创建OKHttpClient
-        OkHttpClient.Builder client = new OkHttpClient.Builder()
+        OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .cookieJar(new CookieJar() {
                     @Override
@@ -93,11 +94,12 @@ public class HttpMethods {
                 })
                 //.addInterceptor(new SessionInterceptor()) // 用 cookies 不用 session
                 // 日志拦截器
-//                .addInterceptor(new LogInterceptor())
-                .addInterceptor(log);
+                .addInterceptor(new LogInterceptor())
+                .addInterceptor(log)
+                .build();
 
         Retrofit mRetrofit = new Retrofit.Builder()
-                .client(client.build())
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create(buildGson()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .baseUrl(url)
