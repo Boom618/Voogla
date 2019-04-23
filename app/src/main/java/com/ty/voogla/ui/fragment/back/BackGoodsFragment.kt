@@ -51,7 +51,7 @@ class BackGoodsFragment : BaseSupFragment() {
         super.onSupportVisible()
         // 当对用户可见时 回调
         // 不管是 父Fragment还是子Fragment 都有效！
-        initToolBar(R.string.back_goods_list, TipString.retrueGoods, View.OnClickListener {
+        initToolBar(R.string.back_goods_list, TipString.returnGoods, View.OnClickListener {
             start(BackGoodsHandleFrg.newInstance())
         })
     }

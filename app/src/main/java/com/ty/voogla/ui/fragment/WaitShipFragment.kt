@@ -9,11 +9,14 @@ import com.ty.voogla.adapter.SendOutAdapter
 import com.ty.voogla.base.BaseFragment
 import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.sendout.SendOutListData
+import com.ty.voogla.constant.TipString
 import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
+import com.ty.voogla.util.FullDialog
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
+import com.ty.voogla.widght.LoadingDialog
 import com.ty.voogla.widght.NormalAlertDialog
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import kotlinx.android.synthetic.main.content_list_fragment.*
@@ -52,8 +55,10 @@ class WaitShipFragment : BaseFragment(), VooglaContract.ListView<SendOutListData
         // 设置 Footer 为 球脉冲 样式
 //        view.refreshLayout!!.setRefreshFooter(BallPulseFooter(view.context!!).setSpinnerStyle(SpinnerStyle.Scale))
 
-        view.refreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
-            android.R.color.holo_orange_light, android.R.color.holo_green_light)
+        view.refreshLayout.setColorSchemeResources(
+            android.R.color.holo_blue_light, android.R.color.holo_red_light,
+            android.R.color.holo_orange_light, android.R.color.holo_green_light
+        )
 
         //设置下拉时圆圈的背景颜色
         //view.refreshLayout.setProgressBackgroundColorSchemeResource(android.R.color.holo_green_light)
@@ -125,16 +130,25 @@ class WaitShipFragment : BaseFragment(), VooglaContract.ListView<SendOutListData
         refreshLayout.isRefreshing = false
         listData.clear()
         listData.addAll(data)
-        adapter!!.notifyDataSetChanged()
+        adapter?.notifyDataSetChanged()
     }
 
     override fun showError(msg: String) {
         refreshLayout.isRefreshing = false
-        ToastUtil.showToast(msg)
+        ToastUtil.showError(msg)
     }
 
     override fun showResponse(response: ResponseInfo) {
-        ToastUtil.showToast("成功")
+        ToastUtil.showSuccess("成功")
+    }
+
+    private var dialog: LoadingDialog? = null
+    override fun showLoading() {
+        dialog = FullDialog.showLoading(context!!, TipString.loading)
+    }
+
+    override fun hideLoading() {
+        dialog?.dismiss()
     }
 
     companion object {

@@ -368,7 +368,6 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
         // 扫码按键
         if (keyCode == CodeConstant.KEY_CODE_223 || keyCode == CodeConstant.KEY_CODE_224) {
             companyView.clearFocus();
-            // DialogUtil.hideInputWindow(v.getContext(), v);
             // 在扫码中
             if (isScanIng) {
                 stopScaner();
@@ -413,7 +412,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
     /**
      * 解码成功 【 01 】
      *
-     * @param result
+     * @param result 解码结果
      */
     @Override
     public void decodeCode(DecodeCode.ResultBean result) {
@@ -470,7 +469,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
     /**
      * 检查是否已扫码 code 【 02 】
      *
-     * @param code
+     * @param code 码号
      */
     private void isContainsCode(String code, String codeClass) {
 
@@ -487,7 +486,6 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
             } else {
                 if (repeatCodeList.contains(code)) {
                     ToastUtil.showWarning(TipString.repeatCode);
-                    //ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
                 } else {
                     // 入库校验
                     httpJudegCode(code, codeClass);
@@ -515,7 +513,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
     /**
      * 入库码校验 【 04 】
      *
-     * @param response
+     * @param response response
      */
     @Override
     public void produceJudegCode(String response) {
@@ -582,7 +580,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
     /**
      * 出库码校验
      *
-     * @param response
+     * @param response response
      */
     @Override
     public void sendJudegCode(String response) {
@@ -593,7 +591,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
     /**
      * 根据套码获取产品码
      *
-     * @param codeList
+     * @param codeList 产品码列表
      */
     @Override
     public void getCodeList(ArrayList<String> codeList) {

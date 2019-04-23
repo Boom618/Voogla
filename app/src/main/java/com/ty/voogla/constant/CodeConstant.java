@@ -19,6 +19,8 @@ public final class CodeConstant {
      */
     public static final String SERVICE_SUCCESS = "success";
     public static final int SERVICE_STATUS = 200;
+    public static final String SERVICE_401 = "401";
+    public static final String SERVICE_500 = "500";
 
     /**
      * 区分箱码绑定页面

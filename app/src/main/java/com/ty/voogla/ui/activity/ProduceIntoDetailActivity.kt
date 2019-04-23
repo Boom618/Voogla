@@ -17,6 +17,7 @@ import com.ty.voogla.bean.produce.ProductListInfoData
 import com.ty.voogla.bean.sendout.QrCodeListData
 import com.ty.voogla.connector.SelectGoods
 import com.ty.voogla.constant.CodeConstant
+import com.ty.voogla.constant.TipString
 import com.ty.voogla.data.SharedP
 import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.data.SparseArrayUtil
@@ -24,8 +25,10 @@ import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.net.HttpMethods
 import com.ty.voogla.net.RequestBodyJson
+import com.ty.voogla.util.FullDialog
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
+import com.ty.voogla.widght.LoadingDialog
 import com.ty.voogla.widght.TimeWidght
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import io.reactivex.SingleObserver
@@ -88,7 +91,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     override fun initTwoView() {
 
 
-        initToolBar(R.string.produce_into, "保存", View.OnClickListener {
+        initToolBar(R.string.produce_into, TipString.save, View.OnClickListener {
             produceIntoSave(initReqBody())
         })
 
@@ -116,19 +119,19 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         tv_to_box_link.setOnClickListener {
 
             if (listDetail.size >= 10) {
-                ToastUtil.showWarning("请先提交")
+                ToastUtil.showWarning(TipString.commitPlease)
                 return@setOnClickListener
             }
             // 跳转
             val spec = tv_select_spec.text.toString().trim { spec -> spec <= ' ' }
             if (tv_select_spec.text.isNotEmpty()) {
-                val intent = Intent(this,BoxLinkJavaActivity2::class.java)
+                val intent = Intent(this, BoxLinkJavaActivity2::class.java)
                 intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_BOX_LINK)
                 // 商品规格
                 SimpleCache.putString(CodeConstant.GOODS_SPEC, spec)
                 startActivityForResult(intent, CodeConstant.REQUEST_CODE_INTO)
             } else {
-                ToastUtil.showWarning("请选择对应的商品和规格")
+                ToastUtil.showWarning(TipString.selectGoodsAndSpec)
             }
         }
 
@@ -171,7 +174,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         adapter.notifyDataSetChanged()
 
         tv_number.text = "0"
-        ToastUtil.showWarning("清空数据")
+        ToastUtil.showWarning(TipString.deleteData)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -235,10 +238,10 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             override fun onSuccess(info: ResponseInfo) {
                 if (CodeConstant.SERVICE_SUCCESS == info.msg) {
                     // 入库成功（保存）
-                    ToastUtil.showSuccess("入库成功")
+                    ToastUtil.showSuccess(TipString.intoSuccess)
                     finish()
                 } else {
-                    ToastUtil.showError("入库失败")
+                    ToastUtil.showError(TipString.intoFailure)
                 }
             }
 
@@ -271,7 +274,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         }
         val distinct = tempList.distinct()
         if (distinct.size != boxSize) {
-            ToastUtil.showWarning("请删除重复箱码")
+            ToastUtil.showWarning(TipString.deleteRepeatBox)
             return null
         }
         //主信息
@@ -279,11 +282,11 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         val userInfo = SimpleCache.getUserInfo()
         val position = SharedP.getGoodNo(this)
         if (position == -1) {
-            ToastUtil.showWarning("请选择商品和规格")
+            ToastUtil.showWarning(TipString.selectGoodsAndSpec)
             return null
         }
         if (boxSize == 0) {
-            ToastUtil.showWarning("请前往箱码关联")
+            ToastUtil.showWarning(TipString.gotoBoxLink)
             return null
         }
         for (i in 0 until boxSize) {
@@ -308,7 +311,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         if (goodsNo.isNullOrEmpty() ||
             wareName.isEmpty()
         ) {
-            ToastUtil.showWarning("请补全入库信息")
+            ToastUtil.showWarning(TipString.perfectIntoMessage)
             return null
         }
 
@@ -353,6 +356,14 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
     override fun showError(msg: String?) {
         ToastUtil.showError(msg)
+    }
+    private var dialog: LoadingDialog? = null
+    override fun showLoading() {
+        dialog = FullDialog.showLoading(this, TipString.loading)
+    }
+
+    override fun hideLoading() {
+        dialog?.dismiss()
     }
 
     override fun onDestroy() {

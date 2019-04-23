@@ -68,7 +68,6 @@ public class HttpMethods {
     private void init(String url) {
         final HttpLoggingInterceptor log = new HttpLoggingInterceptor();
         log.setLevel(HttpLoggingInterceptor.Level.BODY);
-        log.setLevel(HttpLoggingInterceptor.Level.HEADERS);
         // 创建OKHttpClient
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)

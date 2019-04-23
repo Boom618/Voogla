@@ -228,6 +228,25 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         finish();
 
     }
+//    private var dialog: LoadingDialog? = null
+//    override fun showLoading() {
+//        dialog = FullDialog.showLoading(this, TipString.loading)
+//    }
+//
+//    override fun hideLoading() {
+//        dialog?.dismiss()
+//    }
+
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
 
     @Override
     protected void onDestroy() {

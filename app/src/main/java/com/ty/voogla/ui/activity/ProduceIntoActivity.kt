@@ -10,11 +10,14 @@ import com.ty.voogla.adapter.ProductIntoAdapter
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.produce.ProductIntoData
+import com.ty.voogla.constant.TipString
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.data.SimpleCache
+import com.ty.voogla.util.FullDialog
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
+import com.ty.voogla.widght.LoadingDialog
 import com.ty.voogla.widght.NormalAlertDialog
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import kotlinx.android.synthetic.main.activity_product_into.*
@@ -116,5 +119,13 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.ListView<ProductIntoD
 
         ToastUtil.showError(msg)
 
+    }
+    private var dialog: LoadingDialog? = null
+    override fun showLoading() {
+        dialog = FullDialog.showLoading(this, TipString.loading)
+    }
+
+    override fun hideLoading() {
+        dialog?.dismiss()
     }
 }

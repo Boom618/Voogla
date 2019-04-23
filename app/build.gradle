@@ -116,11 +116,12 @@ dependencies {
 
     //Gson解析
     implementation "com.google.code.gson:gson:${ZBConfig.googleGsonVersion}"
-
+    // ch rome 浏览器：chrome://inspect
+//    implementation 'com.facebook.stetho:stetho:1.5.1'
     //日志拦截器
     implementation "com.squareup.okhttp3:logging-interceptor:${ZBConfig.okhttp3Version}"
 
-    //rxjava相关依赖
+    //rxJava相关依赖
     implementation "io.reactivex.rxjava2:rxjava:${ZBConfig.rx2Version}"
     implementation "io.reactivex.rxjava2:rxandroid:${ZBConfig.rx2AndroidVersion}"
 

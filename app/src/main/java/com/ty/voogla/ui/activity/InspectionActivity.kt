@@ -20,8 +20,10 @@ import com.ty.voogla.constant.TipString
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.net.HttpMethods
+import com.ty.voogla.util.FullDialog
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
+import com.ty.voogla.widght.LoadingDialog
 import com.ty.voogla.widght.NormalAlertDialog
 import com.uuzuche.lib_zxing.activity.CaptureActivity
 import com.uuzuche.lib_zxing.activity.CodeUtils
@@ -253,9 +255,16 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
      * 拒绝
      */
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-        ToastUtil.showToast("拒绝权限")
+        ToastUtil.showWarning("拒绝权限")
+    }
+    private var dialog: LoadingDialog? = null
+    override fun showLoading() {
+        dialog = FullDialog.showLoading(this, TipString.loading)
     }
 
+    override fun hideLoading() {
+        dialog?.dismiss()
+    }
     /**
      * 授予权限
      */

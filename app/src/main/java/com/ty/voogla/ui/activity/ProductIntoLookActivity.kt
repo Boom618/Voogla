@@ -8,10 +8,13 @@ import com.ty.voogla.adapter.ProIntoLookAdapter
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.produce.ProductInputInfo
+import com.ty.voogla.constant.TipString
 import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
+import com.ty.voogla.util.FullDialog
 import com.ty.voogla.util.ToastUtil
+import com.ty.voogla.widght.LoadingDialog
 import kotlinx.android.synthetic.main.activity_product_into_look.*
 
 /**
@@ -74,6 +77,15 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
 
     override fun showError(msg: String) {
         ToastUtil.showError(msg)
+    }
+
+    private var dialog: LoadingDialog? = null
+    override fun showLoading() {
+        dialog = FullDialog.showLoading(this, TipString.loading)
+    }
+
+    override fun hideLoading() {
+        dialog?.dismiss()
     }
 
 }

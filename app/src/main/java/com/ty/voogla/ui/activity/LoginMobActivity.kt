@@ -2,16 +2,20 @@ package com.ty.voogla.ui.activity
 
 import android.os.Bundle
 import android.util.Log
+import com.socks.library.KLog
 import com.ty.voogla.BuildConfig.*
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.UserInfo
 import com.ty.voogla.constant.CodeConstant
+import com.ty.voogla.constant.TipString
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
+import com.ty.voogla.util.FullDialog
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.util.WindowUtil
+import com.ty.voogla.widght.LoadingDialog
 import kotlinx.android.synthetic.main.activity_login_mob.*
 
 /**
@@ -52,27 +56,25 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View<UserInfo> {
             val name = et_user_name.text.toString().trim { it <= ' ' }
             val pass = et_user_pass.text.toString().trim { it <= ' ' }
             if (name.isNotEmpty() && pass.isNotEmpty()) {
-                presenter.getData(name, pass)
+                presenter.login(name, pass)
             }
         }
 
     }
 
-    override fun showSuccess(data:UserInfo) {
+    override fun showSuccess(data: UserInfo) {
         // check@corp 稽查  im@corp PDA
         val httpPhone = data.roleNo!!.contains(CodeConstant.USER_PHONE)
         val httpPda = data.roleNo!!.contains(CodeConstant.USER_PDA)
         if (isPhone) {
-            if (httpPhone) {
-                gotoActivity(MainMobActivity::class.java, true)
-            }else{
-                ToastUtil.showToast("无权限,请联系管理员")
+            when (httpPhone) {
+                true -> gotoActivity(MainMobActivity::class.java, true)
+                false -> ToastUtil.showToast("无权限,请联系管理员")
             }
         } else {
-            if (httpPda){
-                gotoActivity(MainPdaJavaActivity::class.java, true)
-            }else{
-                ToastUtil.showToast("无权限,请联系管理员")
+            when (httpPda) {
+                true -> gotoActivity(MainPdaJavaActivity::class.java, true)
+                false -> ToastUtil.showToast("无权限,请联系管理员")
             }
         }
     }
@@ -80,9 +82,19 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View<UserInfo> {
     override fun showResponse(response: ResponseInfo) {
 
     }
+
     override fun showError(msg: String) {
 
         ToastUtil.showError(msg)
+    }
+
+    private var dialog: LoadingDialog? = null
+    override fun showLoading() {
+        dialog = FullDialog.showLoading(this, TipString.loading)
+    }
+
+    override fun hideLoading() {
+        dialog?.dismiss()
     }
 
     override fun onDestroy() {

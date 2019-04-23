@@ -36,9 +36,11 @@
             tools:targetApi="n">
         <!--<activity android:name=".ui.activity.LoginMobActivity"/>-->
         <!--<activity android:name=".ui.MexxenActivity"/>-->
+        <!--singleTop 栈顶模式，登录成功会 finish 掉当前 Ac-->
         <activity
                 android:name=".ui.activity.LoginMobActivity"
                 android:screenOrientation="portrait"
+                android:launchMode="singleTop"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

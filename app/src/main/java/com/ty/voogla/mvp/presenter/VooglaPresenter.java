@@ -24,7 +24,7 @@ import java.util.ArrayList;
 /**
  * @author TY on 2018/12/20.
  */
-public class VooglaPresenter implements VooglaContract.Presenter {
+public class VooglaPresenter {
 
     private HttpMethods httpMethods;
 
@@ -63,9 +63,8 @@ public class VooglaPresenter implements VooglaContract.Presenter {
     }
 
 
-    @Override
-    public void getData(String username, String password) {
-
+    public void login(String username, String password) {
+        iView.showLoading();
         httpMethods.userLogin(new SingleObserver<BaseResponse<UserInfo>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -74,6 +73,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onSuccess(BaseResponse<UserInfo> response) {
+                iView.hideLoading();
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
                     UserInfo userInfo = response.getData();
                     SimpleCache.putUserInfo(userInfo);
@@ -85,6 +85,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onError(Throwable e) {
+                iView.hideLoading();
                 iView.showError(e.getMessage());
             }
         }, username, password);
