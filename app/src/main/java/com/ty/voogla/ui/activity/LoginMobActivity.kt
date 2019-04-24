@@ -2,7 +2,6 @@ package com.ty.voogla.ui.activity
 
 import android.os.Bundle
 import android.util.Log
-import com.socks.library.KLog
 import com.ty.voogla.BuildConfig.*
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
@@ -57,6 +56,8 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View<UserInfo> {
             val pass = et_user_pass.text.toString().trim { it <= ' ' }
             if (name.isNotEmpty() && pass.isNotEmpty()) {
                 presenter.login(name, pass)
+            } else {
+                ToastUtil.showWarning(TipString.phoneAndPassNotNull)
             }
         }
 
@@ -69,12 +70,12 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View<UserInfo> {
         if (isPhone) {
             when (httpPhone) {
                 true -> gotoActivity(MainMobActivity::class.java, true)
-                false -> ToastUtil.showToast("无权限,请联系管理员")
+                false -> ToastUtil.showWarning(TipString.notPermission)
             }
         } else {
             when (httpPda) {
                 true -> gotoActivity(MainPdaJavaActivity::class.java, true)
-                false -> ToastUtil.showToast("无权限,请联系管理员")
+                false -> ToastUtil.showWarning(TipString.notPermission)
             }
         }
     }

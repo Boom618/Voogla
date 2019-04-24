@@ -3,7 +3,6 @@ package com.ty.voogla.base;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDexApplication;
-import com.google.gson.Gson;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
@@ -18,11 +17,9 @@ import me.yokeyword.fragmentation.helper.ExceptionHandler;
 /**
  * @author TY
  */
-//public class MainApp extends Application {
 public class MainApp extends MultiDexApplication {
 
     public static Context context;
-    private static Gson gson;
     public static ACache mCache;
 
 
@@ -50,7 +47,7 @@ public class MainApp extends MultiDexApplication {
         }
         LeakCanary.install(this);
 
-        /**
+        /*
          * 管理 AC 栈
          */
         ActivitiesHelper.init(this);
@@ -76,20 +73,5 @@ public class MainApp extends MultiDexApplication {
         return context;
     }
 
-    public static Gson buildGson() {
-        if (gson == null) {
-            gson = new Gson();
-//                    .setLenient()
-//                    .registerTypeAdapter(Integer.class, new IntegerDefault0Adapter())
-//                    .registerTypeAdapter(int.class, new IntegerDefault0Adapter())
-//                    .registerTypeAdapter(Double.class, new DoubleDefault0Adapter())
-//                    .registerTypeAdapter(double.class, new DoubleDefault0Adapter())
-//                    .registerTypeAdapter(Long.class, new LongDefault0Adapter())
-//                    .registerTypeAdapter(long.class, new LongDefault0Adapter())
-//                    .registerTypeAdapter(String.class, new StringDefault0Adapter())
-//                    .create();
-        }
-        return gson;
-    }
 
 }

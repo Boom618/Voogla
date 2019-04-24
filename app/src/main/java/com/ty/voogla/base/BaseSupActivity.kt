@@ -29,7 +29,6 @@ abstract class BaseSupActivity : SupportActivity() {
         super.onCreate(savedInstanceState)
         setContentView(activityLayout)
 
-//        mUnbinder = ButterKnife.bind(this)
         mCache = ACache.get(application)
 
         initOneData()
@@ -146,6 +145,5 @@ abstract class BaseSupActivity : SupportActivity() {
         super.onDestroy()
         clearCache()
 
-//        mUnbinder!!.unbind()
     }
 }

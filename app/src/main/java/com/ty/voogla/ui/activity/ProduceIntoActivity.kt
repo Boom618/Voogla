@@ -7,7 +7,7 @@ import android.view.inputmethod.EditorInfo
 import com.ty.voogla.R
 import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.adapter.ProductIntoAdapter
-import com.ty.voogla.base.BaseActivity
+import com.ty.voogla.base.BaseSupActivity
 import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.produce.ProductIntoData
 import com.ty.voogla.constant.TipString
@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.activity_product_into.*
  *
  * 生产入库（PDA 端）
  */
-class ProduceIntoActivity : BaseActivity(), VooglaContract.ListView<ProductIntoData.ListBean> {
+class ProduceIntoActivity : BaseSupActivity(), VooglaContract.ListView<ProductIntoData.ListBean> {
 
     private lateinit var adapter: ProductIntoAdapter
 
@@ -92,7 +92,7 @@ class ProduceIntoActivity : BaseActivity(), VooglaContract.ListView<ProductIntoD
             adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
                 override fun onItemLongClick(view: View, holder: RecyclerView.ViewHolder, position: Int): Boolean {
 
-                    DialogUtil.deleteItemDialog(view.context, "温馨提示","确认删除", NormalAlertDialog.onNormalOnclickListener {
+                    DialogUtil.deleteItemDialog(view.context, TipString.tips,"确认删除", NormalAlertDialog.onNormalOnclickListener {
 
                         presenter.deleteProduct(companyNo, data[position].inBatchNo, companyAttr)
                         isDelete = true

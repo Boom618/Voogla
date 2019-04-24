@@ -91,7 +91,6 @@ public class HttpMethods {
                         return cookies != null ? cookies : new ArrayList<Cookie>();
                     }
                 })
-                //.addInterceptor(new SessionInterceptor()) // 用 cookies 不用 session
                 // 日志拦截器
                 .addInterceptor(new LogInterceptor())
                 .addInterceptor(log)
@@ -99,7 +98,7 @@ public class HttpMethods {
 
         Retrofit mRetrofit = new Retrofit.Builder()
                 .client(client)
-                .addConverterFactory(GsonConverterFactory.create(buildGson()))
+                .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .baseUrl(url)
                 .build();

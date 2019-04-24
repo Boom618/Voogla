@@ -54,8 +54,10 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
     // http list 数据
     private List<SendOutListInfo.DeliveryDetailInfosBean> deliveryList;
 
-    // item 箱码
-    private HashMap<Integer, ArrayList<QrCodeListData>> hashMapCode;
+    /**
+     * item 箱码
+     */
+    private HashMap<Integer, ArrayList<QrCodeListData>> hashMapCode = new HashMap<>();
     private VooglaPresenter presenter = new VooglaPresenter(this);
 
     private RecyclerView recyclerView;

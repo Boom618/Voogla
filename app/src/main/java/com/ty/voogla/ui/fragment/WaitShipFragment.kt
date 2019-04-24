@@ -106,7 +106,16 @@ class WaitShipFragment : BaseFragment(), VooglaContract.ListView<SendOutListData
 
         deliveryState = arguments!!.getString("type")!!
         //    发货状态(01待发货,02已发货,03已收货)
-        presenter.getSendOutList2(companyNo, deliveryState)
+        when (deliveryState) {
+            "02", "03" -> presenter.getSendOutList2(companyNo, deliveryState)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (isVisble) {
+            presenter.getSendOutList2(companyNo, deliveryState)
+        }
     }
 
     override fun onResume() {
