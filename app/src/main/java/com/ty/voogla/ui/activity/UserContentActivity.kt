@@ -2,6 +2,9 @@ package com.ty.voogla.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import com.ty.voogla.BuildConfig
+import com.ty.voogla.BuildConfig.*
 import com.ty.voogla.R
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.constant.CodeConstant
@@ -22,7 +25,16 @@ class UserContentActivity : BaseActivity() {
 
     override fun onBaseCreate(savedInstanceState: Bundle?) {}
 
-    override fun initOneData() {}
+    override fun initOneData() {
+        when (isPhone) {
+            true -> {
+                tv_scan_sett.visibility = View.GONE
+                velocity.visibility = View.GONE
+                tv_light_sett.visibility = View.GONE
+                aimLight.visibility = View.GONE
+            }
+        }
+    }
 
     override fun initTwoView() {
 
