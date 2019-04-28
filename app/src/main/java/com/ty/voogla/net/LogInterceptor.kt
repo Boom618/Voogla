@@ -34,6 +34,7 @@ class LogInterceptor : Interceptor {
             val activity = ActivitiesHelper.get().lastActivity
             val intent = Intent(activity, LoginMobActivity::class.java)
             activity.startActivity(intent)
+            ActivitiesHelper.get().finishAll()
             throw Throwable(TipString.loginRetry)
         }
         KLog.json(TAG, content)
