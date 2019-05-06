@@ -76,7 +76,7 @@ class WaitShipFragment : BaseFragment(), VooglaContract.ListView<SendOutListData
 
                 val deliveryNo = listData[position].deliveryNo!!
                 if (listData[position].deliveryState == "02") {
-                    DialogUtil.deleteItemDialog(
+                    DialogUtil.leftRightDialog(
                         view.context,
                         "温馨提示",
                         "确认删除",

@@ -85,7 +85,7 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
             @Override
             public void onClick(View v) {
 
-                DialogUtil.deleteItemDialog(v.getContext(), "温馨提示", "确认发货", new NormalAlertDialog.onNormalOnclickListener() {
+                DialogUtil.leftRightDialog(v.getContext(), "温馨提示", "确认发货", new NormalAlertDialog.onNormalOnclickListener() {
                     @Override
                     public void onNormalClick(NormalAlertDialog dialog) {
                         sendOutSave(initReqBody());

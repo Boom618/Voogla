@@ -181,7 +181,7 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
         // 确认操作 取反
         val flag = if (fleeFlag == "01") "02" else "01"
         confirmView.setOnClickListener { view ->
-            DialogUtil.deleteItemDialog(view.context, TipString.tips, pointContent, NormalAlertDialog.onNormalOnclickListener {
+            DialogUtil.leftRightDialog(view.context, TipString.tips, pointContent, NormalAlertDialog.onNormalOnclickListener {
                 checkInfoConfirm(companyNo, deliveryNo, flag)
                 it.dismiss()
             })

@@ -9,6 +9,7 @@ object TipString {
 
     const val tips = "温馨提示"
     const val save = "保存"
+    const val saveData = "保存数据"
     const val returnGoods = "退货"
     const val scanError = "扫码失败"
     const val repeatCode = "重复码号"
@@ -25,7 +26,7 @@ object TipString {
     const val repeatCodeTryAgain = "重复码请重试"
     const val notPermission = "无权限,请联系管理员"
     const val perfectIntoMessage = "请补全入库信息"
-    const val boxCodeNotNull = "箱码和企业箱号不能为空"
+    const val boxCodeNotNull = "箱码不能为空"
     const val phoneAndPassNotNull = "手机号或密码不能为空"
     const val selectGoodsAndSpec = "请选择对应的商品和规格"
     const val scanCompleteSpecCode = "请扫指定规格的套码"

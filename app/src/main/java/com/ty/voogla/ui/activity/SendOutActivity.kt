@@ -5,58 +5,87 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.ty.voogla.R
+import com.ty.voogla.adapter.LayoutInit
+import com.ty.voogla.adapter.SendOutAdapter
 import com.ty.voogla.base.BaseActivity
+import com.ty.voogla.base.ResponseInfo
+import com.ty.voogla.bean.sendout.SendOutListData
+import com.ty.voogla.constant.TipString
+import com.ty.voogla.data.SimpleCache
+import com.ty.voogla.mvp.contract.VooglaContract
+import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.ui.fragment.WaitShipFragment
+import com.ty.voogla.util.FullDialog
+import com.ty.voogla.util.ToastUtil
+import com.ty.voogla.widght.LoadingDialog
 import kotlinx.android.synthetic.main.activity_send_out.*
+import kotlinx.android.synthetic.main.content_list_fragment.*
+import kotlinx.android.synthetic.main.content_list_fragment.view.*
 
 /**
  * @author TY on 2019/1/14.
  * 发货出库
  */
-class SendOutActivity : BaseActivity() {
+class SendOutActivity : BaseActivity(), VooglaContract.ListView<SendOutListData.ListBean> {
 
-    private val mFragment = mutableListOf<Fragment>()
+//    private val mFragment = mutableListOf<Fragment>()
+
+    private val presenter = VooglaPresenter(this)
+    private val listData: MutableList<SendOutListData.ListBean> = mutableListOf()
+
+    private var companyNo: String? = null
+
+    private var adapter: SendOutAdapter? = null
 
     override val activityLayout: Int
         get() = R.layout.activity_send_out
 
     override fun onBaseCreate(savedInstanceState: Bundle?) {
+        refreshLayout_out.setColorSchemeResources(
+            android.R.color.holo_blue_light, android.R.color.holo_red_light,
+            android.R.color.holo_orange_light, android.R.color.holo_green_light
+        )
+        refreshLayout_out.setOnRefreshListener {
+            presenter.getSendOutList2(companyNo, "01")
+        }
+        LayoutInit.initLayoutManager(this, recyclerView_out)
+        adapter = SendOutAdapter(this, R.layout.item_send_out, listData)
+        recyclerView_out.adapter = adapter
     }
 
     override fun initOneData() {
         initToolBar(R.string.send_out)
-
-        mFragment.add(WaitShipFragment.newInstance("01"))
-        mFragment.add(WaitShipFragment.newInstance("02"))
-        mFragment.add(WaitShipFragment.newInstance("03"))
-
-        val mAdapter = MyPagerAdapter(supportFragmentManager, mFragment)
-        viewpager.adapter = mAdapter
-
-        stl.setViewPager(viewpager)
+        companyNo = SimpleCache.getUserInfo().companyNo
+        presenter.getSendOutList2(companyNo, "01")
 
     }
 
     override fun initTwoView() {}
 
 
-    class MyPagerAdapter(fm: FragmentManager, private val mFragment: List<Fragment>) : FragmentPagerAdapter(fm) {
-
-        //private val mTitles = arrayOf("未发货", "已发货", "已收货")
-        override fun getCount(): Int {
-            return mFragment.size
-        }
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            return mTitles[position]
-        }
-
-        override fun getItem(position: Int): Fragment {
-            return mFragment[position]
-        }
+    override fun showSuccess(data: MutableList<SendOutListData.ListBean>) {
+        refreshLayout_out.isRefreshing = false
+        listData.clear()
+        listData.addAll(data)
+        adapter?.notifyDataSetChanged()
     }
-    companion object {
-        val mTitles = arrayOf("未发货", "已发货", "已收货")
+
+    override fun showError(msg: String) {
+        refreshLayout.isRefreshing = false
+        ToastUtil.showError(msg)
+    }
+
+    override fun showResponse(response: ResponseInfo) {
+        ToastUtil.showSuccess("成功")
+    }
+
+    private var dialog: LoadingDialog? = null
+    override fun showLoading() {
+        dialog = FullDialog.showLoading(this, TipString.loading)
+    }
+
+    override fun hideLoading() {
+        dialog?.dismiss()
     }
 
 }

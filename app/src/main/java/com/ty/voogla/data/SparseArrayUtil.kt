@@ -36,7 +36,6 @@ object SparseArrayUtil {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-
         }
     }
 

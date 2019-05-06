@@ -34,7 +34,7 @@ object DialogUtil {
      * @param pointContent 内容
      */
     @JvmStatic
-    fun deleteItemDialog(
+    fun leftRightDialog(
         context: Context,
         titleText: String,
         pointContent: String,
@@ -73,7 +73,7 @@ object DialogUtil {
                 if (temp != -1 && temp != which) {
 
                     // 选择不同商品
-                    deleteItemDialog(context, "温馨提示","重置数据？", NormalAlertDialog.onNormalOnclickListener {
+                    leftRightDialog(context, "温馨提示","重置数据？", NormalAlertDialog.onNormalOnclickListener {
                         select.removeGoods()
                         it.dismiss()
                         dialog.dismiss()

@@ -23,21 +23,18 @@ import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.data.SparseArrayUtil
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
-import com.ty.voogla.net.HttpMethods
 import com.ty.voogla.net.RequestBodyJson
 import com.ty.voogla.util.FullDialog
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
 import com.ty.voogla.widght.LoadingDialog
+import com.ty.voogla.widght.NormalAlertDialog
 import com.ty.voogla.widght.TimeWidght
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
-import io.reactivex.SingleObserver
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_product_into_detail.*
 import okhttp3.RequestBody
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * @author TY on 2019/1/11.
@@ -233,26 +230,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         if (body == null) {
             return
         }
-
-        HttpMethods.getInstance().addProduct(object : SingleObserver<ResponseInfo> {
-            override fun onSuccess(info: ResponseInfo) {
-                if (CodeConstant.SERVICE_SUCCESS == info.msg) {
-                    // 入库成功（保存）
-                    ToastUtil.showSuccess(TipString.intoSuccess)
-                    finish()
-                } else {
-                    ToastUtil.showError(TipString.intoFailure)
-                }
-            }
-
-            override fun onSubscribe(d: Disposable) {
-            }
-
-            override fun onError(e: Throwable) {
-                ToastUtil.showError(e.message)
-            }
-
-        }, body)
+        presenter.addProduct(body)
 
     }
 
@@ -263,20 +241,9 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     private fun initReqBody(): RequestBody? {
 
         val saveBean = AddProduct()
-//        val boxInfo: MutableList<InBoxCodeDetailInfosBean> = mutableListOf()
         val wareInfo = AddProduct.InWareInfoBean()
         val boxSize = listDetail.size
 
-
-        val tempList = ArrayList<String>()
-        for (i in 0 until boxSize) {
-            tempList.add(listDetail[i].qrCode!!)
-        }
-        val distinct = tempList.distinct()
-        if (distinct.size != boxSize) {
-            ToastUtil.showWarning(TipString.deleteRepeatBox)
-            return null
-        }
         //主信息
         // 归属单位
         val userInfo = SimpleCache.getUserInfo()
@@ -288,18 +255,6 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         if (boxSize == 0) {
             ToastUtil.showWarning(TipString.gotoBoxLink)
             return null
-        }
-        for (i in 0 until boxSize) {
-            val infos = listDetail[i].qrCodeInfos!!
-            var tempClass = -1
-            for (j in 0 until infos.size) {
-                if (infos[j].qrCodeClass == CodeConstant.QR_CODE_0702) {
-                    tempClass = j
-                }
-            }
-            if (tempClass > -1) {
-                infos.removeAt(tempClass)
-            }
         }
         val goodsNoStr = goodsNo[position]
         val unit = goodsUnit[position]
@@ -319,6 +274,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         wareInfo.companyAttr = userInfo.companyAttr
         wareInfo.companyNo = userInfo.companyNo
         wareInfo.creator = userInfo.userNo
+
         wareInfo.goodsNo = goodsNoStr
         wareInfo.inBoxNum = listDetail.size.toString()//"入库数量"
         wareInfo.inTime = inTime
@@ -351,12 +307,14 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     }
 
     override fun showResponse(response: ResponseInfo) {
-
+        ToastUtil.showSuccess(response.msg)
+        finish()
     }
 
     override fun showError(msg: String?) {
         ToastUtil.showError(msg)
     }
+
     private var dialog: LoadingDialog? = null
     override fun showLoading() {
         dialog = FullDialog.showLoading(this, TipString.loading)
@@ -364,6 +322,19 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
     override fun hideLoading() {
         dialog?.dismiss()
+    }
+
+    /**
+     * 监听拦截 back 键 TODO == 保存扫码
+     */
+    override fun onBackPressed() {
+        DialogUtil.leftRightDialog(this, TipString.tips, TipString.saveData, NormalAlertDialog.onNormalOnclickListener {
+
+            finish()
+            it.dismiss()
+        })
+
+        return
     }
 
     override fun onDestroy() {

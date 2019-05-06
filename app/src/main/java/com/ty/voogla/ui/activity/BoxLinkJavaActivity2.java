@@ -28,7 +28,6 @@ import com.ty.voogla.data.*;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.mvp.presenter.VooglaPresenter;
 import com.ty.voogla.util.ToastUtil;
-import com.ty.voogla.util.ZBLog;
 import com.ty.voogla.util.scan.PDAUtil;
 import com.ty.voogla.widght.DialogUtil;
 import com.ty.voogla.widght.NormalAlertDialog;
@@ -40,7 +39,6 @@ import io.reactivex.schedulers.Schedulers;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -322,7 +320,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
         final String boxString = tvBox.getText().toString().trim();
         // 企业箱号
         final String companyString = companyView.getText().toString().trim();
-        if (boxString.isEmpty() || companyString.isEmpty()) {
+        if (boxString.isEmpty()) {
             ToastUtil.showWarning(TipString.boxCodeNotNull);
             return;
         }
@@ -338,7 +336,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
         } else {
             // 该产品规格为24，实际为10，是否继续绑定
             String tip = "该产品规格" + specNumber + ",实际为 " + size + " 是否继续绑定";
-            DialogUtil.deleteItemDialog(this, TipString.tips, tip, new NormalAlertDialog.onNormalOnclickListener() {
+            DialogUtil.leftRightDialog(this, TipString.tips, tip, new NormalAlertDialog.onNormalOnclickListener() {
                 @Override
                 public void onNormalClick(NormalAlertDialog dialog) {
                     gotoProductActivity(type, boxString, companyString);
@@ -554,7 +552,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
      * 切换了码类型 套码 -> 切换成卷码
      */
     private void deleteSwitchDialog(final QrCodeListData qrCode) {
-        DialogUtil.deleteItemDialog(this, TipString.tips, TipString.resetData, new NormalAlertDialog.onNormalOnclickListener() {
+        DialogUtil.leftRightDialog(this, TipString.tips, TipString.resetData, new NormalAlertDialog.onNormalOnclickListener() {
             @Override
             public void onNormalClick(NormalAlertDialog dialog) {
                 // 更换了码类型

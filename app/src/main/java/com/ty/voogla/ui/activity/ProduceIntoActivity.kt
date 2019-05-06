@@ -92,7 +92,7 @@ class ProduceIntoActivity : BaseSupActivity(), VooglaContract.ListView<ProductIn
             adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
                 override fun onItemLongClick(view: View, holder: RecyclerView.ViewHolder, position: Int): Boolean {
 
-                    DialogUtil.deleteItemDialog(view.context, TipString.tips,"确认删除", NormalAlertDialog.onNormalOnclickListener {
+                    DialogUtil.leftRightDialog(view.context, TipString.tips,"确认删除", NormalAlertDialog.onNormalOnclickListener {
 
                         presenter.deleteProduct(companyNo, data[position].inBatchNo, companyAttr)
                         isDelete = true

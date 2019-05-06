@@ -178,6 +178,34 @@ public class VooglaPresenter {
     }
 
     /**
+     * 入库保存
+     */
+    public void addProduct(RequestBody body){
+        httpMethods.addProduct(new SingleObserver<ResponseInfo>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(ResponseInfo responseInfo) {
+                if (CodeConstant.SERVICE_SUCCESS.equals(responseInfo.getMsg())) {
+                    // 入库成功（保存）
+                    iView.showResponse(responseInfo);
+                } else {
+                    iView.showError(responseInfo.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iView.showError(e.getMessage());
+            }
+        }, body);
+
+    }
+
+    /**
      * 获取入库详情信息
      */
     public void getInputProductInfo(String companyNo, String inBatchNo) {
