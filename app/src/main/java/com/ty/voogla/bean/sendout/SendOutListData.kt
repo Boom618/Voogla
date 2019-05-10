@@ -44,6 +44,7 @@ class SendOutListData {
         var receiverName: String? = null
         var goodsName: String? = null
         var deliveryNum: String? = null
+        var unitName: String? = null
         var unitNum: String? = null
     }
 }

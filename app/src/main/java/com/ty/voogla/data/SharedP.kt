@@ -46,7 +46,6 @@ object SharedP {
     /** ---------------------存指定 key 的 position ----------------------------*/
 
 
-
     @JvmStatic
     fun putKeyPosition(context: Context, key: String, position: Int) {
         context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
@@ -75,7 +74,6 @@ object SharedP {
     /** ---------------------存指定 key 的 Boolean 值 ----------------------------*/
 
 
-
     @JvmStatic
     fun putKeyBoolean(context: Context, key: String, boolean: Boolean) {
         context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
@@ -99,5 +97,17 @@ object SharedP {
             .edit()
             .putInt(key, -1)
             .apply()
+    }
+
+    /**
+     * 退出程序，清除所有数据
+     */
+    @JvmStatic
+    fun clearAll(context: Context) {
+        context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
+            .edit()
+            .clear()
+            .apply()
+
     }
 }

@@ -12,7 +12,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 
 /**
- * @author TY on 2019/1/14.
+ * @author TY on 2019/1/14.unitNum
  */
 class SendOutAdapter(val context: Context, layout: Int, datas: MutableList<SendOutListData.ListBean>) :
     CommonAdapter<SendOutListData.ListBean>(context, layout, datas) {
@@ -35,7 +35,7 @@ class SendOutAdapter(val context: Context, layout: Int, datas: MutableList<SendO
             .setText(R.id.tv_responsible, info.shipperName)
             .setText(R.id.tv_receiver, info.receiverName)
             .setText(R.id.tv_goods_name, info.goodsName)
-            .setText(R.id.tv_goods_number, info.deliveryNum)
+            .setText(R.id.tv_goods_number, "${info.deliveryNum}/${info.unitName}")
             .setText(R.id.tv_send_out_address, stringAddr)
 
         holder.itemView.findViewById<TextView>(R.id.tv_state_type).setOnClickListener {

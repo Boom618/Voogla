@@ -53,6 +53,7 @@ class UserContentActivity : BaseActivity() {
             startActivity(intent)
             // 清数据
             SimpleCache.clearAll()
+            SharedP.clearAll(this)
             ActivitiesHelper.get().finishAll()
         }
         setSwitchVelocity()

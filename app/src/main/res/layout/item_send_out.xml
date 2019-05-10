@@ -178,6 +178,32 @@
                 android:paddingBottom="@dimen/x10"
                 android:layout_height="wrap_content"/>
 
+        <View
+                android:id="@+id/view_line7"
+                app:layout_constraintTop_toBottomOf="@+id/tv_goods_number"
+                android:layout_width="match_parent"
+                style="@style/lineView"/>
+
+        <TextView
+                app:layout_constraintTop_toBottomOf="@+id/view_line7"
+                android:layout_marginTop="@dimen/space_10"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/space_15"
+                android:text="最小单位合计"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/text_14"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                app:layout_constraintTop_toBottomOf="@+id/view_line7"
+                android:layout_marginTop="@dimen/space_10"
+                app:layout_constraintEnd_toEndOf="@id/tv_send_out_date"
+                android:text="个"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/text_14"
+                android:paddingBottom="@dimen/x10"
+                android:layout_height="wrap_content"/>
+
     </android.support.constraint.ConstraintLayout>
 
 

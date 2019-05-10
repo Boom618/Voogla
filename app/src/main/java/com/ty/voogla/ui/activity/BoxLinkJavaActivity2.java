@@ -368,7 +368,6 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
      * 继续扫码
      */
     private void handleStartScaner() {
-//        mBarcodeManager.startScanner();
         subscribe = Observable.interval(timeScan, TimeUnit.MILLISECONDS, Schedulers.io())
                 .subscribe(new Consumer<Long>() {
                     @Override

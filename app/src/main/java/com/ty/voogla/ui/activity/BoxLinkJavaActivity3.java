@@ -21,6 +21,7 @@ import com.ty.voogla.base.BaseActivity;
 import com.ty.voogla.bean.produce.DecodeCode;
 import com.ty.voogla.bean.sendout.QrCodeListData;
 import com.ty.voogla.constant.CodeConstant;
+import com.ty.voogla.data.RemoveDupData;
 import com.ty.voogla.data.SharedP;
 import com.ty.voogla.data.SimpleCache;
 import com.ty.voogla.data.SparseArrayUtil;
@@ -38,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -85,7 +87,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
     /**
      * 重复码
      */
-    private ArrayList<String> repeatCodeList = new ArrayList<>();
+//    private ArrayList<String> repeatCodeList = new ArrayList<>();
 
     /**
      * support.v4.util.ArrayMap ( 兼容 aip19 以下)
@@ -136,9 +138,9 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
             qrCodeInfos = new ArrayList();
         }
         int size = qrCodeInfos.size();
-        for (int i = 0; i < size; i++) {
-            repeatCodeList.add(qrCodeInfos.get(i).getQrCode());
-        }
+//        for (int i = 0; i < size; i++) {
+//            repeatCodeList.add(qrCodeInfos.get(i).getQrCode());
+//        }
         numberCode.setText(String.valueOf(size));
 
         initToolBar(R.string.scan_code, "保存", new View.OnClickListener() {
@@ -188,7 +190,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
 
                         qrCodeInfos.remove(position);
                         // 重复码集合
-                        repeatCodeList.remove(position);
+                        //repeatCodeList.remove(position);
                         adapter.notifyItemRemoved(position);
                         adapter.notifyItemRangeChanged(position, qrCodeInfos.size() - position);
                     }
@@ -354,28 +356,29 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
             }
         }
 
-        if (repeatCodeList.contains(code)) {
-            ToastUtil.showWarning("重复码请重试");
+//        if (repeatCodeList.contains(code)) {
+//            ToastUtil.showWarning("重复码请重试");
+//        } else {
+//
+//        }
+        if (CodeConstant.QR_CODE_0701.equals(codeClass)) {
+            // 产品码
+            presenter.getQrCodeList(code, CodeConstant.QR_CODE_0701);
+            lastCode = code;
         } else {
-            if (CodeConstant.QR_CODE_0701.equals(codeClass)) {
-                // 产品码
-                presenter.getQrCodeList(code, CodeConstant.QR_CODE_0701);
-                lastCode = code;
-            } else {
-                // 箱码,去比较所有产品码对应的箱码
-                Iterator<String> iteratorPro = ownProCode.keySet().iterator();
-                String keyPro;
-                while (iteratorPro.hasNext()) {
-                    keyPro = iteratorPro.next();
-                    String boxCode = ownProCode.get(keyPro);
-                    if (code.equals(boxCode)) {
-                        ToastUtil.showWarning("该箱码中有对应的产品码已出库");
-                        return;
-                    }
+            // 箱码,去比较所有产品码对应的箱码
+            Iterator<String> iteratorPro = ownProCode.keySet().iterator();
+            String keyPro;
+            while (iteratorPro.hasNext()) {
+                keyPro = iteratorPro.next();
+                String boxCode = ownProCode.get(keyPro);
+                if (code.equals(boxCode)) {
+                    ToastUtil.showWarning("该箱码中有对应的产品码已出库");
+                    return;
                 }
-                // 出库校验
-                sendOutjudegCode(companyNo, codeClass, goodsNo, code);
             }
+            // 出库校验
+            sendOutjudegCode(companyNo, codeClass, goodsNo, code);
         }
     }
 
@@ -412,7 +415,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
     @Override
     public void sendJudegCode(String response) {
 
-        repeatCodeList.add(lastCode);
+//        repeatCodeList.add(lastCode);
         ownProCode.put(lastCode, pro2BoxCode);
         // 校验成功直接添加数据
         QrCodeListData data = new QrCodeListData();
@@ -420,6 +423,10 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
         data.setQrCodeClass(lastCodeClass);
 
         qrCodeInfos.add(data);
+
+        List<QrCodeListData> listData = RemoveDupData.removeDupQrCode(qrCodeInfos);
+        qrCodeInfos.clear();
+        qrCodeInfos.addAll(listData);
 
         numberCode.setText(String.valueOf(qrCodeInfos.size()));
         adapter.notifyItemInserted(qrCodeInfos.size());
@@ -436,10 +443,10 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
     @Override
     public void getCodeList(ArrayList<String> codeList) {
         pro2BoxCode = codeList.get(0);
-        if (repeatCodeList.contains(pro2BoxCode)) {
-            ToastUtil.showWarning("该产品码所关联箱码已在列表中");
-            return;
-        }
+//        if (repeatCodeList.contains(pro2BoxCode)) {
+//            ToastUtil.showWarning("该产品码所关联箱码已在列表中");
+//            return;
+//        }
         sendOutjudegCode(companyNo, CodeConstant.QR_CODE_0701, goodsNo, lastCode);
 
     }
