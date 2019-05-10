@@ -128,6 +128,8 @@ dependencies {
 
     // 时间选择框
     implementation "com.contrarywind:Android-PickerView:${ZBConfig.PickerViewVersion}"
+    // spinner 下拉选择
+    implementation 'com.github.arcadefire:nice-spinner:1.4'
 
     // TabLayout 库
     implementation "com.flyco.tablayout:FlycoTabLayout_Lib:${ZBConfig.tablayout_version}"

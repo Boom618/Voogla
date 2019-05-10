@@ -11,37 +11,26 @@
             android:id="@+id/top"
             layout="@layout/top_layout"/>
 
-    <EditText
-            android:id="@+id/search_view"
+    <org.angmarch.views.NiceSpinner
+            android:id="@+id/spinner_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@mipmap/search_input"
-            android:paddingStart="@dimen/x66"
-            android:layout_marginTop="@dimen/space_6"
-            android:layout_marginBottom="@dimen/space_6"
-            android:layout_marginStart="@dimen/space_20"
-            android:layout_marginEnd="@dimen/space_20"
-            android:hint="@string/input_send_out_number"
-            android:textColorHint="@color/text_color"
-            android:imeOptions="actionSearch"
-            android:singleLine="true"/>
+            android:layout_margin="6dp"/>
+    <!--<EditText-->
+            <!--android:id="@+id/search_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@mipmap/search_input"-->
+            <!--android:paddingStart="@dimen/x66"-->
+            <!--android:layout_marginTop="@dimen/space_6"-->
+            <!--android:layout_marginBottom="@dimen/space_6"-->
+            <!--android:layout_marginStart="@dimen/space_20"-->
+            <!--android:layout_marginEnd="@dimen/space_20"-->
+            <!--android:hint="@string/input_send_out_number"-->
+            <!--android:textColorHint="@color/text_color"-->
+            <!--android:imeOptions="actionSearch"-->
+            <!--android:singleLine="true"/>-->
 
-    <!--tl_indicator_width ：下划线-->
-    <!--<com.flyco.tablayout.SlidingTabLayout-->
-    <!--android:id="@+id/stl"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="48dp"-->
-    <!--tl:tl_textsize="@dimen/text_16"-->
-    <!--tl:tl_tab_space_equal="true"-->
-    <!--tl:tl_indicator_width="0dp"-->
-    <!--tl:tl_textSelectColor="@color/theme_color"-->
-    <!--tl:tl_textUnselectColor="@color/txt_product_color"/>-->
-
-
-    <!--<android.support.v4.view.ViewPager-->
-    <!--android:id="@+id/viewpager"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"/>-->
     <android.support.v4.widget.SwipeRefreshLayout
 
             android:id="@+id/refreshLayout_out"

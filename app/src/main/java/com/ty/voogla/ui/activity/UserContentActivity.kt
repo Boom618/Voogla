@@ -38,7 +38,7 @@ class UserContentActivity : BaseActivity() {
 
     override fun initTwoView() {
 
-        val userInfo = SimpleCache.getUserInfo()
+        val userInfo = SimpleCache.userInfo
 
         tv_user_name.text = userInfo.userName
         tv_user_phone.text = userInfo.companyNo

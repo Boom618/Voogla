@@ -75,7 +75,8 @@ public final class CodeConstant {
      */
     public static final String SCANNER_READ = "SCANNER_READ";
 
-
+    // item 分割线
+    public static final int ITEM_DECORATION = 6;
     /**
      * 用户 sessionId 全局
      */
@@ -106,9 +107,12 @@ public final class CodeConstant {
 
     /**
      * 用户数据 check@corp 稽查  im@corp PDA
+     * 入库权限字符：im@corp；出库权限字符：om@corp
      */
     public static final String USER_DATA = "userData";
     public static final String USER_PHONE = "check@corp";
-    public static final String USER_PDA = "im@corp";
+    public static final String USER_PDA = "m@corp";
+    public static final String USER_PDA_IM = "im@corp";
+    public static final String USER_PDA_OM = "om@corp";
 
 }

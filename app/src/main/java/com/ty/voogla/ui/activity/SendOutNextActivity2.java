@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import com.ty.voogla.R;
@@ -12,11 +13,13 @@ import com.ty.voogla.adapter.LayoutInit;
 import com.ty.voogla.adapter.SendOutNextAdapter;
 import com.ty.voogla.base.BaseActivity;
 import com.ty.voogla.base.ResponseInfo;
+import com.ty.voogla.bean.SendStorageData;
 import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.bean.sendout.AddSendOutData;
 import com.ty.voogla.bean.sendout.QrCodeListData;
 import com.ty.voogla.bean.sendout.SendOutListInfo;
 import com.ty.voogla.constant.CodeConstant;
+import com.ty.voogla.constant.TipString;
 import com.ty.voogla.data.DateUtil;
 import com.ty.voogla.data.SimpleCache;
 import com.ty.voogla.data.SparseArrayUtil;
@@ -74,7 +77,7 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
     @Override
     protected void onBaseCreate(@Nullable Bundle savedInstanceState) {
         // 首次进来清空出库数据
-        SimpleCache.clearKey("qrCode");
+        SimpleCache.Companion.clearKey("qrCode");
     }
 
     @Override
@@ -85,18 +88,27 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
             @Override
             public void onClick(View v) {
 
-                DialogUtil.leftRightDialog(v.getContext(), "温馨提示", "确认发货", new NormalAlertDialog.onNormalOnclickListener() {
+                DialogUtil.leftRightDialog(SendOutNextActivity2.this, TipString.tips, TipString.ConfirmDelivery, new NormalAlertDialog.onNormalOnclickListener() {
                     @Override
                     public void onNormalClick(NormalAlertDialog dialog) {
                         sendOutSave(initReqBody());
                         dialog.dismiss();
                     }
-                });
+                }, false);
+            }
+        });
+        ImageView back = findViewById(R.id.iv_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backIntercept();
             }
         });
 
-        companyNo = SimpleCache.getUserInfo().getCompanyNo();
+        companyNo = SimpleCache.Companion.getUserInfo().getCompanyNo();
+        // deliveryNo 发货单号
         deliveryNo = getIntent().getStringExtra(CodeConstant.DELIVERY_NO);
+
         presenter.getSendOutListInfo(companyNo, deliveryNo);
     }
 
@@ -128,6 +140,33 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         adapter = new SendOutNextAdapter(this, R.layout.item_send_out_next, deliveryList);
         recyclerView.setAdapter(adapter);
 
+        // 有暂存数据
+        // 上次暂存的数据
+        SendStorageData storageData = null;
+        boolean storage = false;
+        try {
+            storageData = SimpleCache.Companion.sendOutNumb(deliveryNo);
+            storage = storageData.isStorage();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 设置了暂存
+        if (storage) {
+            SparseArray<Integer> boxSizeList = storageData.getBoxSizeList();
+            SparseArray<Integer> proSizeList = storageData.getProSizeList();
+            HashMap<Integer, ArrayList<QrCodeListData>> hashMap = storageData.getHashMap();
+
+            for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                View child = recyclerView.getChildAt(i);
+                TextView box = child.findViewById(R.id.tv_box_amount);
+                TextView pro = child.findViewById(R.id.tv_product_amount);
+
+                box.setText(boxSizeList.get(i) + "箱");
+                pro.setText(proSizeList.get(i) + "盒");
+            }
+            hashMapCode = hashMap;
+        }
+
     }
 
     @Override
@@ -143,7 +182,7 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
             ArrayList<QrCodeListData> listData = hashMapCode.get(position);
 
             for (int i = 0; i < listData.size(); i++) {
-                if (listData.get(i).getQrCodeClass().equals("A0701")) {
+                if (listData.get(i).getQrCodeClass().equals(CodeConstant.QR_CODE_0701)) {
                     pSize++;
                 } else {
                     bSize++;
@@ -165,16 +204,15 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
     /**
      * 构建 Body
      *
-     * @return
+     * @return RequestBody
      */
     private RequestBody initReqBody() {
 
-        UserInfo userInfo = SimpleCache.getUserInfo();
+        UserInfo userInfo = SimpleCache.Companion.getUserInfo();
         AddSendOutData send = new AddSendOutData();
         AddSendOutData.WareInfoBean info = new AddSendOutData.WareInfoBean();
 
         ArrayList<AddSendOutData.OutQrCodeDetailInfosBean> list = new ArrayList<>();
-
 
         int size = deliveryList.size();
 
@@ -194,8 +232,8 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         }
 
         if (list.size() == 0) {
-            ToastUtil.showToast("请先扫码");
-            return null ;
+            ToastUtil.showToast(TipString.scanPlease);
+            return null;
         }
 
         String time = DateUtil.getTime(new Date());
@@ -226,19 +264,54 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
 
     @Override
     public void showResponse(ResponseInfo response) {
-        ToastUtil.showToast("成功");
+        ToastUtil.showToast(response.getMsg());
         finish();
 
     }
-//    private var dialog: LoadingDialog? = null
-//    override fun showLoading() {
-//        dialog = FullDialog.showLoading(this, TipString.loading)
-//    }
-//
-//    override fun hideLoading() {
-//        dialog?.dismiss()
-//    }
 
+    /**
+     * 监听拦截 back 键 TODO == 保存扫码
+     */
+    @Override
+    public void onBackPressed() {
+
+        backIntercept();
+    }
+
+    /**
+     * back  拦截
+     */
+    private void backIntercept() {
+
+        if (boxSize.size() == 0 && proSize.size() == 0) {
+            finish();
+            return;
+        }
+
+        DialogUtil.leftRightDialog(this, TipString.tips, TipString.saveData, new NormalAlertDialog.onNormalOnclickListener() {
+            @Override
+            public void onNormalClick(NormalAlertDialog dialog) {
+                dialog.dismiss();
+                finish();
+                // 暂时数据
+                storage();
+            }
+        }, true);
+    }
+
+    /**
+     * 暂存数据
+     */
+    private void storage() {
+
+        SendStorageData data = new SendStorageData();
+        data.setStorage(true);
+        data.setBoxSizeList(boxSize);
+        data.setProSizeList(proSize);
+        data.setHashMap(hashMapCode);
+
+        SimpleCache.Companion.putSendOutNumb(deliveryNo, data);
+    }
 
     @Override
     public void showLoading() {

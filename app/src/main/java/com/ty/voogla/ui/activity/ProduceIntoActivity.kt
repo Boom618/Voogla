@@ -33,8 +33,8 @@ class ProduceIntoActivity : BaseSupActivity(), VooglaContract.ListView<ProductIn
     private lateinit var adapter: ProductIntoAdapter
 
     // 企业编号  归属单位
-    private val companyNo = SimpleCache.getUserInfo().companyNo
-    private val companyAttr = SimpleCache.getUserInfo().companyAttr
+    private val companyNo = SimpleCache.userInfo.companyNo
+    private val companyAttr = SimpleCache.userInfo.companyAttr
 
     // 回调成功标志
     private var isDelete = false
@@ -92,7 +92,7 @@ class ProduceIntoActivity : BaseSupActivity(), VooglaContract.ListView<ProductIn
             adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
                 override fun onItemLongClick(view: View, holder: RecyclerView.ViewHolder, position: Int): Boolean {
 
-                    DialogUtil.leftRightDialog(view.context, TipString.tips,"确认删除", NormalAlertDialog.onNormalOnclickListener {
+                    DialogUtil.leftRightDialog(this@ProduceIntoActivity, TipString.tips,"确认删除", NormalAlertDialog.onNormalOnclickListener {
 
                         presenter.deleteProduct(companyNo, data[position].inBatchNo, companyAttr)
                         isDelete = true

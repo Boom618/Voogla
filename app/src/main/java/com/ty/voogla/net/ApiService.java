@@ -138,7 +138,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(ApiNameConstant.SEND_OUT_LIST)
     Single<BaseResponse<SendOutListData>> getSendOutList2(@Field("companyNo") String companyNo,
-                                                          @Field("deliveryState") String deliveryState);
+                                                          @Field("deliveryState") String deliveryState,
+                                                          @Field("goodsNo") String goodsNo);
 
     /**
      * 发货单详情信息

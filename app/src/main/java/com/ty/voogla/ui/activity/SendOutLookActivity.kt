@@ -37,7 +37,7 @@ class SendOutLookActivity : BaseActivity(), VooglaContract.View<OutPutInfoData> 
         initToolBar(R.string.send_out)
         // 发货单编号
         deliveryNo = intent.getStringExtra(CodeConstant.DELIVERY_NO)
-        presenter.getSendOutPutInfo(SimpleCache.getUserInfo().companyNo, deliveryNo)
+        presenter.getSendOutPutInfo(SimpleCache.userInfo.companyNo, deliveryNo)
 
     }
 

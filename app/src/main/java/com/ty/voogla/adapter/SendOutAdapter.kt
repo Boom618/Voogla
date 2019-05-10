@@ -23,10 +23,6 @@ class SendOutAdapter(val context: Context, layout: Int, datas: MutableList<SendO
             info.deliveryState.equals("01") -> "立即发货"
             else -> "查看明细"
         }
-        val state = when {
-            info.deliveryState.equals("01") -> "待发货"
-            else -> "已发货"
-        }
 
         val addr = info.provinceLevel + info.cityLevel + info.countyLevel
         val addrAll = addr + info.deliveryAddress
@@ -35,15 +31,16 @@ class SendOutAdapter(val context: Context, layout: Int, datas: MutableList<SendO
             else -> addrAll
         }
         holder.setText(R.id.tv_state_type, type)
-            .setText(R.id.tv_number, info.deliveryNo)
             .setText(R.id.tv_send_out_date, info.deliveryDate)
+            .setText(R.id.tv_responsible, info.shipperName)
+            .setText(R.id.tv_receiver, info.receiverName)
+            .setText(R.id.tv_goods_name, info.goodsName)
+            .setText(R.id.tv_goods_number, info.deliveryNum)
             .setText(R.id.tv_send_out_address, stringAddr)
-            .setText(R.id.tv_send_out_state, state)
 
         holder.itemView.findViewById<TextView>(R.id.tv_state_type).setOnClickListener {
             when (type) {
                 "立即发货" -> {
-//                    val intent = Intent(context, SendOutNextActivity::class.java)
                     val intent = Intent(context, SendOutNextActivity2::class.java)
                     intent.putExtra(CodeConstant.DELIVERY_NO,info.deliveryNo)
                     context.startActivity(intent)

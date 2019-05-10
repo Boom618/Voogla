@@ -76,7 +76,7 @@ public class VooglaPresenter {
                 iView.hideLoading();
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
                     UserInfo userInfo = response.getData();
-                    SimpleCache.putUserInfo(userInfo);
+                    SimpleCache.Companion.putUserInfo(userInfo);
                     iView.showSuccess(userInfo);
                 } else {
                     iView.showError(response.getMsg());
@@ -361,7 +361,7 @@ public class VooglaPresenter {
      *
      * @param companyNo
      */
-    public void getSendOutList2(String companyNo, String deliveryState) {
+    public void getSendOutList2(String companyNo, String deliveryState,String goodsNo) {
         httpMethods.getSendOutList2(new SingleObserver<BaseResponse<SendOutListData>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -384,7 +384,7 @@ public class VooglaPresenter {
                 iListView.showError(e.getMessage());
 
             }
-        }, companyNo, deliveryState);
+        }, companyNo, deliveryState,goodsNo);
     }
 
     /**

@@ -65,8 +65,8 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View<UserInfo> {
 
     override fun showSuccess(data: UserInfo) {
         // check@corp 稽查  im@corp PDA
-        val httpPhone = data.roleNo!!.contains(CodeConstant.USER_PHONE)
-        val httpPda = data.roleNo!!.contains(CodeConstant.USER_PDA)
+        val httpPhone = data.roleNo.contains(CodeConstant.USER_PHONE)
+        val httpPda = data.roleNo.contains(CodeConstant.USER_PDA)
         if (isPhone) {
             when (httpPhone) {
                 true -> gotoActivity(MainMobActivity::class.java, true)

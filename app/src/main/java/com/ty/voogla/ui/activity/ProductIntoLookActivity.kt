@@ -44,7 +44,7 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
         val productHouse = intent.getStringExtra("productHouse")
         val productTime = intent.getStringExtra("productTime")
         val productSpec = intent.getStringExtra("productSpec")
-        val userName = SimpleCache.getUserInfo().userName
+        val userName = SimpleCache.userInfo.userName
 
         tv_batch_number.text = batchNumber
         tv_select_pro_name.text = "产品名称：$productName"
@@ -53,7 +53,7 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
         tv_select_spec.text = "产品规格：$productSpec"
         tv_select_user.text = "操作员：$userName"
 
-        presenter.getInputProductInfo(SimpleCache.getUserInfo().companyNo, batchNumber)
+        presenter.getInputProductInfo(SimpleCache.userInfo.companyNo, batchNumber)
 
 
     }

@@ -53,11 +53,6 @@ class SendOutListInfo {
 
         // 箱码信息
         var qrCode:ArrayList<String>? = null
-//        var qrCode:MutableSet<QrCodeListData>? = null
 
     }
-
-    /**
-     * 箱码信息
-     */
 }

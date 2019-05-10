@@ -11,6 +11,7 @@ import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.adapter.ProIntoDetailAdapter
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.base.ResponseInfo
+import com.ty.voogla.bean.ProStorageData
 import com.ty.voogla.bean.produce.AddProduct
 import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean
 import com.ty.voogla.bean.produce.ProductListInfoData
@@ -82,7 +83,28 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
     override fun initOneData() {
 
-        presenter.getProductListInfo(SimpleCache.getUserInfo().companyNo)
+//        try {
+//            val storageData = SimpleCache.storageData
+//            when (storageData.isStorage) {
+//                true -> {
+//                    // 暂存 有数据
+//                    tv_select_time.text = storageData.inTime
+//                    tv_select_pro_name.text = storageData.nameGoods
+//                    tv_select_spec.text = storageData.specGoods
+//                    et_batch_number.setText(storageData.productBatchNo)
+//                    et_select_house.setText(storageData.nameWare)
+//                    listDetail.addAll(storageData.listDetail)
+//
+//                    tv_number.text = "${listDetail.size}"
+//                    SparseArrayUtil.putQrCodeList(this, listDetail)
+//                }
+//                false -> {
+//                }
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+        presenter.getProductListInfo(SimpleCache.userInfo.companyNo)
     }
 
     override fun initTwoView() {
@@ -91,6 +113,10 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         initToolBar(R.string.produce_into, TipString.save, View.OnClickListener {
             produceIntoSave(initReqBody())
         })
+//        iv_back.setOnClickListener {
+//            // 拦截返回
+//            backIntercept()
+//        }
 
         val format = SimpleDateFormat(CodeConstant.DATE_SIMPLE_H_M_S, Locale.CHINA)
         selectTime = format.format(Date())
@@ -100,11 +126,11 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         tv_select_pro_name.setOnClickListener {
 
             //
-            DialogUtil.selectProName(it.context, goodsName, goodsSpec, tv_select_pro_name, tv_select_spec, this)
+            DialogUtil.selectProName(this, goodsName, goodsSpec, tv_select_pro_name, tv_select_spec, this)
         }
 
         // 时间选择
-        tv_select_time.setOnClickListener { v ->
+        tv_select_time.setOnClickListener {
             TimeWidght.showPickDate(this) { date, _ ->
                 selectTime = TimeWidght.getTime(CodeConstant.DATE_SIMPLE_H_M_S, date)
                 tv_select_time.text = selectTime
@@ -162,6 +188,41 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             })
     }
 
+    // back 拦截
+    private fun backIntercept() {
+        if (listDetail.size == 0) {
+            finish()
+            SimpleCache.clearKey("storage")
+            return
+        }
+        DialogUtil.leftRightDialog(this, TipString.tips, TipString.saveData, NormalAlertDialog.onNormalOnclickListener {
+            // 暂时数据
+            storage()
+            finish()
+            it.dismiss()
+        }, true)
+    }
+
+    private fun storage() {
+        val productBatchNo = et_batch_number.text.toString().trim { it <= ' ' }
+        val nameWare = et_select_house.text.toString().trim { it <= ' ' }
+        val inTime = tv_select_time.text.toString().trim { it <= ' ' }
+        val nameGoods = tv_select_pro_name.text.toString()
+        val specGoods = tv_select_spec.text.toString()
+
+        // 暂存数据
+        val storage = ProStorageData()
+        storage.isStorage = true
+        storage.inTime = inTime
+        storage.nameWare = nameWare
+        storage.nameGoods = nameGoods
+        storage.specGoods = specGoods
+        storage.productBatchNo = productBatchNo
+
+        storage.listDetail = listDetail
+        SimpleCache.putStorage(storage)
+    }
+
     /**
      * 用户更换商品 重置数据
      */
@@ -177,41 +238,40 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == CodeConstant.REQUEST_CODE_INTO && resultCode == CodeConstant.RESULT_CODE) {
 
-            val type = data?.getStringExtra(CodeConstant.RESULT_TYPE)
-            when (type) {
+            when (data!!.getStringExtra(CodeConstant.RESULT_TYPE)) {
                 "productIn" -> {
                     // 入库
                     boxCode = data.getStringExtra("boxCode")
                     buApplyNo = data.getStringExtra("buApplyNo")
                     comBoxCode = data.getStringExtra("comBoxCode")
-                    qrCodeInfos = SimpleCache.getQrCode()
+                    qrCodeInfos = SimpleCache.qrCode
 
-                    val data = InBoxCodeDetailInfosBean()
-                    data.qrCode = boxCode
-                    data.buApplyNo = buApplyNo
-                    data.qrCodeClass = "A0702"
-                    data.comBoxCode = comBoxCode
-                    data.qrCodeInfos = qrCodeInfos
+                    val boxBean = InBoxCodeDetailInfosBean()
+                    boxBean.qrCode = boxCode
+                    boxBean.buApplyNo = buApplyNo
+                    boxBean.qrCodeClass = "A0702"
+                    boxBean.comBoxCode = comBoxCode
+                    boxBean.qrCodeInfos = qrCodeInfos
 
-                    listDetail.add(data)
+                    listDetail.add(boxBean)
                     // 【文件写入】存所有数据,在扫码是校验是否有重复码（箱码和产品码）
                     SparseArrayUtil.putQrCodeList(this, listDetail)
                 }
-                else -> {
+                "productChange" -> {
                     // 修改
-                    boxCode = data?.getStringExtra("boxCode")
-                    buApplyNo = data?.getStringExtra("buApplyNo")
-                    comBoxCode = data?.getStringExtra("comBoxCode")
-                    val position = data?.getIntExtra(CodeConstant.SEND_POSITION, 0)!!
-                    qrCodeInfos = SimpleCache.getQrCode()
-                    val data = InBoxCodeDetailInfosBean()
-                    data.qrCode = boxCode
-                    data.buApplyNo = buApplyNo
-                    data.qrCodeClass = "A0702"
-                    data.comBoxCode = comBoxCode
-                    data.qrCodeInfos = qrCodeInfos
+                    boxCode = data.getStringExtra("boxCode")
+                    buApplyNo = data.getStringExtra("buApplyNo")
+                    comBoxCode = data.getStringExtra("comBoxCode")
+                    val position = data.getIntExtra(CodeConstant.SEND_POSITION, 0)
+                    qrCodeInfos = SimpleCache.qrCode
+                    val boxBean = InBoxCodeDetailInfosBean()
+                    boxBean.qrCode = boxCode
+                    boxBean.buApplyNo = buApplyNo
+                    boxBean.qrCodeClass = "A0702"
+                    boxBean.comBoxCode = comBoxCode
+                    boxBean.qrCodeInfos = qrCodeInfos
 
-                    listDetail[position] = data
+                    listDetail[position] = boxBean
                     // 【文件写入】修改成功更新存的数据,在扫码是校验是否有重复码（箱码和产品码）
                     SparseArrayUtil.putQrCodeList(this, listDetail)
                 }
@@ -246,14 +306,15 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
         //主信息
         // 归属单位
-        val userInfo = SimpleCache.getUserInfo()
+        val userInfo = SimpleCache.userInfo
         val position = SharedP.getGoodNo(this)
-        if (position == -1) {
-            ToastUtil.showWarning(TipString.selectGoodsAndSpec)
-            return null
-        }
+
         if (boxSize == 0) {
             ToastUtil.showWarning(TipString.gotoBoxLink)
+            return null
+        }
+        if (position == -1) {
+            ToastUtil.showWarning(TipString.selectGoodsAndSpec)
             return null
         }
         val goodsNoStr = goodsNo[position]
@@ -263,9 +324,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         val wareName = et_select_house.text.toString().trim { it <= ' ' }
         val inTime = tv_select_time.text.toString().trim { it <= ' ' }
 
-        if (goodsNo.isNullOrEmpty() ||
-            wareName.isEmpty()
-        ) {
+        if (goodsNo.isNullOrEmpty() || wareName.isEmpty()) {
             ToastUtil.showWarning(TipString.perfectIntoMessage)
             return null
         }
@@ -294,15 +353,15 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     /**
      * 产品列表信息
      */
-    override fun showSuccess(data: ProductListInfoData?) {
-        val list = data?.list
-        val size = list!!.size
+    override fun showSuccess(data: ProductListInfoData) {
+        val list = data.list!!
+        val size = list.size
         for (i in 0 until size) {
 
-            goodsName.add(list[i].goodsName!!)
+            goodsName.add(list[i].goodsName)
             goodsSpec.add(list[i].goodsSpec!!)
             goodsUnit.add(list[i].unit!!)
-            goodsNo.add(list[i].goodsNo!!)
+            goodsNo.add(list[i].goodsNo)
         }
     }
 
@@ -327,15 +386,11 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     /**
      * 监听拦截 back 键 TODO == 保存扫码
      */
-    override fun onBackPressed() {
-        DialogUtil.leftRightDialog(this, TipString.tips, TipString.saveData, NormalAlertDialog.onNormalOnclickListener {
-
-            finish()
-            it.dismiss()
-        })
-
-        return
-    }
+//    override fun onBackPressed() {
+////        backIntercept()
+////
+////        return
+////    }
 
     override fun onDestroy() {
         super.onDestroy()

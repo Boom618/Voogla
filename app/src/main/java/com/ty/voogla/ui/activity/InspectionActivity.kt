@@ -180,8 +180,8 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
         val pointContent = if (fleeFlag == "01") "确认窜货" else "取消窜货"
         // 确认操作 取反
         val flag = if (fleeFlag == "01") "02" else "01"
-        confirmView.setOnClickListener { view ->
-            DialogUtil.leftRightDialog(view.context, TipString.tips, pointContent, NormalAlertDialog.onNormalOnclickListener {
+        confirmView.setOnClickListener { _ ->
+            DialogUtil.leftRightDialog(this, TipString.tips, pointContent, NormalAlertDialog.onNormalOnclickListener {
                 checkInfoConfirm(companyNo, deliveryNo, flag)
                 it.dismiss()
             })

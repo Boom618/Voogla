@@ -53,7 +53,6 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
     private BarcodeListener listener;
 
     private RecyclerView boxRecycler;
-    private boolean triggerState = false;
 
     private BoxLinkAdapter adapter;
     /**
@@ -119,7 +118,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
     @Override
     protected void onBaseCreate(@Nullable Bundle savedInstanceState) {
 
-        companyNo = SimpleCache.getUserInfo().getCompanyNo();
+        companyNo = SimpleCache.Companion.getUserInfo().getCompanyNo();
 
         numberCode = findViewById(R.id.tv_code_number);
 
@@ -267,10 +266,11 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
             } else {
                 handleStartScaner();
             }
+            isScanIng = !isScanIng;
+            return true;
         }
-        isScanIng = !isScanIng;
 
-        return true;
+        return super.onKeyDown(keyCode, event);
     }
 
     /**
@@ -356,7 +356,6 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
 
         if (repeatCodeList.contains(code)) {
             ToastUtil.showWarning("重复码请重试");
-            //ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
         } else {
             if (CodeConstant.QR_CODE_0701.equals(codeClass)) {
                 // 产品码
