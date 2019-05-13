@@ -104,7 +104,8 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 //        } catch (e: Exception) {
 //            e.printStackTrace()
 //        }
-        presenter.getProductListInfo(SimpleCache.userInfo.companyNo)
+        // proInto : 是生产入库 实时更新
+        presenter.getProductListInfo(SimpleCache.userInfo.companyNo, "proInto")
     }
 
     override fun initTwoView() {

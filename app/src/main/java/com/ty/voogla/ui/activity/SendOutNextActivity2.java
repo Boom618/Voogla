@@ -13,16 +13,13 @@ import com.ty.voogla.adapter.LayoutInit;
 import com.ty.voogla.adapter.SendOutNextAdapter;
 import com.ty.voogla.base.BaseActivity;
 import com.ty.voogla.base.ResponseInfo;
-import com.ty.voogla.bean.SendStorageData;
 import com.ty.voogla.bean.UserInfo;
 import com.ty.voogla.bean.sendout.AddSendOutData;
 import com.ty.voogla.bean.sendout.QrCodeListData;
 import com.ty.voogla.bean.sendout.SendOutListInfo;
 import com.ty.voogla.constant.CodeConstant;
 import com.ty.voogla.constant.TipString;
-import com.ty.voogla.data.DateUtil;
-import com.ty.voogla.data.SimpleCache;
-import com.ty.voogla.data.SparseArrayUtil;
+import com.ty.voogla.data.*;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.mvp.presenter.VooglaPresenter;
 import com.ty.voogla.net.RequestBodyJson;
@@ -66,9 +63,6 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
     private RecyclerView recyclerView;
     private SendOutNextAdapter adapter;
 
-    private SparseArray<Integer> boxSize = new SparseArray<>();
-    private SparseArray<Integer> proSize = new SparseArray<>();
-
     @Override
     protected int getActivityLayout() {
         return R.layout.activity_send_out_next;
@@ -84,7 +78,7 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
     protected void initOneData() {
 
         recyclerView = findViewById(R.id.recycler_view_send_next);
-        initToolBar(R.string.send_out_detail, "保存", new View.OnClickListener() {
+        initToolBar(R.string.send_out_detail, TipString.save, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -108,8 +102,24 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         companyNo = SimpleCache.Companion.getUserInfo().getCompanyNo();
         // deliveryNo 发货单号
         deliveryNo = getIntent().getStringExtra(CodeConstant.DELIVERY_NO);
+        SharedP.putKeyString(this, deliveryNo);
 
-        presenter.getSendOutListInfo(companyNo, deliveryNo);
+        List<SendOutListInfo.DeliveryDetailInfosBean> outCache = null;
+        try {
+            outCache = LibraryCache.getOutCache(this, getCacheDir().getName(), deliveryNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (outCache == null || outCache.size() == 0) {
+            presenter.getSendOutListInfo(companyNo, deliveryNo);
+        } else {
+            // 有暂存数据
+            deliveryList = outCache;
+            LayoutInit.initLayoutManager(this, recyclerView);
+            adapter = new SendOutNextAdapter(this, R.layout.item_send_out_next, deliveryList);
+            recyclerView.setAdapter(adapter);
+            LibraryCache.clearCache(this, deliveryNo);
+        }
     }
 
     private void sendOutSave(RequestBody body) {
@@ -140,33 +150,6 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         adapter = new SendOutNextAdapter(this, R.layout.item_send_out_next, deliveryList);
         recyclerView.setAdapter(adapter);
 
-        // 有暂存数据
-        // 上次暂存的数据
-        SendStorageData storageData = null;
-        boolean storage = false;
-        try {
-            storageData = SimpleCache.Companion.sendOutNumb(deliveryNo);
-            storage = storageData.isStorage();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // 设置了暂存
-        if (storage) {
-            SparseArray<Integer> boxSizeList = storageData.getBoxSizeList();
-            SparseArray<Integer> proSizeList = storageData.getProSizeList();
-            HashMap<Integer, ArrayList<QrCodeListData>> hashMap = storageData.getHashMap();
-
-            for (int i = 0; i < recyclerView.getChildCount(); i++) {
-                View child = recyclerView.getChildAt(i);
-                TextView box = child.findViewById(R.id.tv_box_amount);
-                TextView pro = child.findViewById(R.id.tv_product_amount);
-
-                box.setText(boxSizeList.get(i) + "箱");
-                pro.setText(proSizeList.get(i) + "盒");
-            }
-            hashMapCode = hashMap;
-        }
-
     }
 
     @Override
@@ -177,19 +160,22 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
             int bSize = 0;
 
             int position = data.getIntExtra(CodeConstant.SEND_POSITION, -1);
-            hashMapCode = SparseArrayUtil.getQrCodeSend(this);
+//            hashMapCode = SparseArrayUtil.getQrCodeSend(this);
+            List<SendOutListInfo.DeliveryDetailInfosBean> outCache = LibraryCache.getOutCache(this, "", deliveryNo);
+            SendOutListInfo.DeliveryDetailInfosBean infosBean = outCache.get(position);
+            List<QrCodeListData> listCode = infosBean.getListCode();
 
-            ArrayList<QrCodeListData> listData = hashMapCode.get(position);
+//            ArrayList<QrCodeListData> listData = hashMapCode.get(position);
 
-            for (int i = 0; i < listData.size(); i++) {
-                if (listData.get(i).getQrCodeClass().equals(CodeConstant.QR_CODE_0701)) {
+            for (int i = 0; i < listCode.size(); i++) {
+                if (listCode.get(i).getQrCodeClass().equals(CodeConstant.QR_CODE_0701)) {
                     pSize++;
                 } else {
                     bSize++;
                 }
             }
-            boxSize.put(position, bSize);
-            proSize.put(position, pSize);
+            infosBean.setOutBoxNum(bSize);
+            infosBean.setOutGoodsNum(pSize);
 
             View child = recyclerView.getChildAt(position);
             TextView box = child.findViewById(R.id.tv_box_amount);
@@ -220,8 +206,8 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
             // 商品列
             AddSendOutData.OutQrCodeDetailInfosBean bean = new AddSendOutData.OutQrCodeDetailInfosBean();
             bean.setGoodsNo(deliveryList.get(i).getGoodsNo());
-            bean.setOutBoxNum(boxSize.get(i) + "");
-            bean.setOutGoodsNum(proSize.get(i) + "");
+            bean.setOutBoxNum(deliveryList.get(i).getOutBoxNum() + "");
+            bean.setOutGoodsNum(deliveryList.get(i).getOutGoodsNum() + "");
             bean.setUnit(deliveryList.get(i).getUnit());
             // 箱码集合
             ArrayList<QrCodeListData> listData = hashMapCode.get(i);
@@ -283,9 +269,12 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
      */
     private void backIntercept() {
 
-        if (boxSize.size() == 0 && proSize.size() == 0) {
-            finish();
-            return;
+        for (int i = 0; i < deliveryList.size(); i++) {
+            List<QrCodeListData> listCode = deliveryList.get(i).getListCode();
+            if (listCode.size() == 0) {
+                finish();
+                return;
+            }
         }
 
         DialogUtil.leftRightDialog(this, TipString.tips, TipString.saveData, new NormalAlertDialog.onNormalOnclickListener() {
@@ -303,14 +292,9 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
      * 暂存数据
      */
     private void storage() {
+        String path = getCacheDir().getName();
+        LibraryCache.SendOutCache(this, path, deliveryNo, deliveryList);
 
-        SendStorageData data = new SendStorageData();
-        data.setStorage(true);
-        data.setBoxSizeList(boxSize);
-        data.setProSizeList(proSize);
-        data.setHashMap(hashMapCode);
-
-        SimpleCache.Companion.putSendOutNumb(deliveryNo, data);
     }
 
     @Override
@@ -326,7 +310,7 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SparseArrayUtil.clearCode(this);
+        SharedP.clearKeyString(this);
         SparseArrayUtil.clearOwnProCode(this);
     }
 }

@@ -2,14 +2,12 @@ package com.ty.voogla.data
 
 
 import com.ty.voogla.bean.ProStorageData
-import com.ty.voogla.bean.SendStorageData
 import com.ty.voogla.bean.UserInfo
 import com.ty.voogla.bean.produce.ProductListInfoData
 import com.ty.voogla.bean.sendout.QrCodeListData
 import com.ty.voogla.util.ResourceUtil
 
 import java.util.ArrayList
-import java.util.HashMap
 
 /**
  * @author PVer on 2018/12/15.
@@ -40,11 +38,6 @@ class SimpleCache {
             aCache.put("storage", data)
         }
 
-        // 发货出库 暂存数据 deliveryNo 发货单 为 key
-        fun putSendOutNumb(deliveryNo: String, data: SendStorageData) {
-            aCache.put(deliveryNo, data)
-        }
-
         // 产品列表数据
         fun putProductList(data: ProductListInfoData) {
             aCache.put("product", data)
@@ -63,10 +56,6 @@ class SimpleCache {
 
         val qrCode: ArrayList<QrCodeListData>
             get() = aCache.getAsObject("qrCode") as ArrayList<QrCodeListData>
-
-        fun sendOutNumb(deliveryNo: String): SendStorageData {
-            return aCache.getAsObject(deliveryNo) as SendStorageData
-        }
 
         val productList: ProductListInfoData
             get() = aCache.getAsObject("product") as ProductListInfoData

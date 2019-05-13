@@ -153,8 +153,9 @@ public class VooglaPresenter {
      * 获取产品列表信息
      *
      * @param companyNo 编号
+     * @param type 生产入库 or 出库
      */
-    public void getProductListInfo(String companyNo) {
+    public void getProductListInfo(String companyNo, final String type) {
         httpMethods.getProductListInfo(new SingleObserver<BaseResponse<ProductListInfoData>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -164,7 +165,13 @@ public class VooglaPresenter {
             @Override
             public void onSuccess(BaseResponse<ProductListInfoData> response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
-                    iView.showSuccess(response.getData());
+                    if (type.equals("proInto")) {
+                        iView.showSuccess(response.getData());
+                    }else{
+                        // 用户可能手动添加了 产品，需要更新数据
+                        SimpleCache.Companion.clearKey("product");
+                        SimpleCache.Companion.putProductList(response.getData());
+                    }
                 } else {
                     iView.showError(response.getMsg());
                 }

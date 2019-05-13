@@ -22,6 +22,9 @@ import com.ty.voogla.widght.LoadingDialog
 import com.ty.voogla.widght.SpaceItemDecoration
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import kotlinx.android.synthetic.main.activity_send_out.*
+import android.widget.ArrayAdapter
+
+
 
 /**
  * @author TY on 2019/1/14.
@@ -71,6 +74,8 @@ class SendOutActivity : BaseActivity(), VooglaContract.ListView<SendOutListData.
     override fun initOneData() {
         initToolBar(R.string.send_out)
         companyNo = SimpleCache.userInfo.companyNo
+        // 产品列表 （用户添加了 需要更新） update 更新缓存
+        presenter.getProductListInfo(SimpleCache.userInfo.companyNo,"update")
         // 全部 list
         presenter.getSendOutList2(companyNo, "01", "")
 
@@ -88,21 +93,27 @@ class SendOutActivity : BaseActivity(), VooglaContract.ListView<SendOutListData.
                 goodsNameList.add(list[i].goodsName)
                 goodsNoList.add(list[i].goodsNo)
             }
-            spinner_view.attachDataSource(goodsNameList)
-            spinner_view.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                }
-
-                override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-
-                    presenter.getSendOutList2(companyNo, "01", goodsNoList[position])
-                }
-
-            })
+            spinner.setItems(goodsNameList)
+            spinner.setOnItemSelectedListener { view, position, id, item ->
+                presenter.getSendOutList2(companyNo, "01", goodsNoList[position])
+            }
+//            spinner_view.attachDataSource(goodsNameList)
+//            spinner_view.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+//                override fun onNothingSelected(parent: AdapterView<*>?) {
+//
+//                }
+//
+//                override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
+//
+//                    presenter.getSendOutList2(companyNo, "01", goodsNoList[position])
+//
+//                }
+//
+//            })
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
     }
 
 

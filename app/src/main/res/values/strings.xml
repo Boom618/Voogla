@@ -65,6 +65,8 @@
     <string name="send_out_state">状态</string>
     <string name="send_out_detail">发货明细</string>
     <string name="send_amount_wait">待发货数量</string>
+    <string name="send_delivery_num">待发整箱数</string>
+    <string name="send_unit_num">待发散货数</string>
     <string name="box_amount">已扫箱码数</string>
     <string name="product_amount">已扫产品数</string>
     <string name="scan_code">扫码出库</string>

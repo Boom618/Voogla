@@ -21,6 +21,8 @@ class SendOutNextAdapter(val context: Context, layout: Int, datas: MutableList<S
 
         holder.setText(R.id.tv_send_amount_wait, info.deliveryNum)
             .setText(R.id.tv_select_pro_name, info.goodsName)
+            .setText(R.id.tv_box_amount, "${info.outBoxNum} 箱")
+            .setText(R.id.tv_product_amount, "${info.outGoodsNum} 盒")
 
         holder.itemView.findViewById<TextView>(R.id.tv_scan_code_box).setOnClickListener {
 

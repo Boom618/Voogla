@@ -27,7 +27,7 @@ class MainPdaJavaActivity : BaseActivity(), View.OnClickListener, VooglaContract
 
     override fun onBaseCreate(savedInstanceState: Bundle?) {
         // 获取产品列表
-        presenter.getProductListInfo(SimpleCache.userInfo.companyNo)
+        presenter.getProductListInfo(SimpleCache.userInfo.companyNo,"update")
     }
 
     override fun initOneData() {
@@ -45,7 +45,7 @@ class MainPdaJavaActivity : BaseActivity(), View.OnClickListener, VooglaContract
         val IM = userInfo.roleNo.contains(CodeConstant.USER_PDA_IM)
         val OM = userInfo.roleNo.contains(CodeConstant.USER_PDA_OM)
         // 权限管理  IM && OM
-        if (IM || OM) {
+        if (IM && OM) {
             product.visibility = View.VISIBLE
             send.visibility = View.VISIBLE
         } else {
@@ -64,7 +64,7 @@ class MainPdaJavaActivity : BaseActivity(), View.OnClickListener, VooglaContract
 
     // 产品列表数据
     override fun showSuccess(data: ProductListInfoData) {
-        SimpleCache.putProductList(data)
+        // P  层 保存 SimpleCache.putProductList(data)
     }
 
     override fun showError(msg: String?) {

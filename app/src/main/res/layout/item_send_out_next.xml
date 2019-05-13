@@ -28,7 +28,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_select_pro_name"
             android:layout_marginTop="@dimen/space_10"
             app:layout_constraintStart_toStartOf="@+id/tv_select_pro_name"
-            android:text="@string/send_amount_wait"
+            android:text="@string/send_delivery_num"
             android:layout_width="wrap_content"
             android:textSize="@dimen/text_14"
             android:layout_height="wrap_content"/>
