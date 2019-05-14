@@ -3,6 +3,7 @@ package com.ty.voogla.data
 import android.content.Context
 import cc.fussen.cache.Cache
 import com.ty.voogla.bean.sendout.SendOutListInfo
+import com.ty.voogla.util.ResourceUtil
 
 /**
  * @author  TY

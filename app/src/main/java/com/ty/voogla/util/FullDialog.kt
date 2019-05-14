@@ -10,6 +10,7 @@ import com.ty.voogla.widght.LoadingDialog
 object FullDialog {
 
 
+    @JvmStatic
     fun showLoading(context: Context, loadingMsg: String): LoadingDialog {
         val dialog = LoadingDialog.Builder(context)
             .setMessage(loadingMsg)

@@ -162,7 +162,7 @@
                 android:layout_marginTop="@dimen/space_10"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="@dimen/space_15"
-                android:text="商品数量"
+                android:text="待发整箱数"
                 android:layout_width="wrap_content"
                 android:textSize="@dimen/text_14"
                 android:layout_height="wrap_content"/>
@@ -172,7 +172,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/view_line6"
                 android:layout_marginTop="@dimen/space_10"
                 app:layout_constraintEnd_toEndOf="@id/tv_send_out_date"
-                tools:text="商品数量"
+                tools:text="0 箱"
                 android:layout_width="wrap_content"
                 android:textSize="@dimen/text_14"
                 android:paddingBottom="@dimen/x10"
@@ -189,16 +189,17 @@
                 android:layout_marginTop="@dimen/space_10"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="@dimen/space_15"
-                android:text="最小单位合计"
+                android:text="待发散货数"
                 android:layout_width="wrap_content"
                 android:textSize="@dimen/text_14"
                 android:layout_height="wrap_content"/>
 
         <TextView
+                android:id="@+id/tv_unit_number"
                 app:layout_constraintTop_toBottomOf="@+id/view_line7"
                 android:layout_marginTop="@dimen/space_10"
                 app:layout_constraintEnd_toEndOf="@id/tv_send_out_date"
-                android:text="个"
+                android:text="0 个"
                 android:layout_width="wrap_content"
                 android:textSize="@dimen/text_14"
                 android:paddingBottom="@dimen/x10"

@@ -8,6 +8,7 @@ import android.widget.TextView
 import com.ty.voogla.connector.SelectGoods
 import com.ty.voogla.data.SharedP
 import com.ty.voogla.data.SimpleCache
+import com.ty.voogla.data.SparseArrayUtil
 import com.ty.voogla.ui.activity.ProduceIntoDetailActivity
 import com.ty.voogla.util.ToastUtil
 

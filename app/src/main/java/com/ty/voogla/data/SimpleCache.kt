@@ -4,10 +4,13 @@ package com.ty.voogla.data
 import com.ty.voogla.bean.ProStorageData
 import com.ty.voogla.bean.UserInfo
 import com.ty.voogla.bean.produce.ProductListInfoData
+import com.ty.voogla.bean.sendout.CacheAddress
 import com.ty.voogla.bean.sendout.QrCodeListData
+import com.ty.voogla.bean.sendout.SendOutListInfo
 import com.ty.voogla.util.ResourceUtil
 
 import java.util.ArrayList
+import kotlin.math.acos
 
 /**
  * @author PVer on 2018/12/15.
@@ -49,6 +52,15 @@ class SimpleCache {
 
         fun getString(key: String): String? {
             return aCache.getAsString(key)
+        }
+
+        /** ------------------------- 暂存过的数据  出库地址 ------------------------*/
+        fun putAddr(key: String, addr: CacheAddress) {
+            aCache.put(key + "_", addr)
+        }
+
+        fun getAddr(key: String): CacheAddress {
+            return aCache.getAsObject(key + "_") as CacheAddress
         }
 
         val userInfo: UserInfo

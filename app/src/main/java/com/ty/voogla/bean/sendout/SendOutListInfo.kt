@@ -28,21 +28,18 @@ class SendOutListInfo : Serializable {
 
         var companyNo: String? = null
         var deliveryNo: String? = null
-        var customerName: String? = null
-        var deliveryDate: String? = null
         var provinceLevel: String? = null
         var cityLevel: String? = null
         var countyLevel: String? = null
         var deliveryAddress: String? = null
-        var deliveryState: String? = null
-        var deliveryStateName: String? = null
     }
 
     class DeliveryDetailInfosBean : Serializable {
         /**
          * goodsNo : 商品编号
          * goodsName : 商品名称
-         * deliveryNum : 发货数量
+         * deliveryNum : 发货整箱数量
+         * unitNum : 发货散货数量
          * unit : 商品单位
          * unitName : 商品单位中文
          */
@@ -50,6 +47,7 @@ class SendOutListInfo : Serializable {
         var goodsNo: String? = null
         var goodsName: String? = null
         var deliveryNum: String? = null
+        var unitNum: String? = null
         var unit: String? = null
         var unitName: String? = null
 

@@ -17,21 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    <!--<EditText-->
-            <!--android:id="@+id/search_view"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@mipmap/search_input"-->
-            <!--android:paddingStart="@dimen/x66"-->
-            <!--android:layout_marginTop="@dimen/space_6"-->
-            <!--android:layout_marginBottom="@dimen/space_6"-->
-            <!--android:layout_marginStart="@dimen/space_20"-->
-            <!--android:layout_marginEnd="@dimen/space_20"-->
-            <!--android:hint="@string/input_send_out_number"-->
-            <!--android:textColorHint="@color/text_color"-->
-            <!--android:imeOptions="actionSearch"-->
-            <!--android:singleLine="true"/>-->
-
     <android.support.v4.widget.SwipeRefreshLayout
 
             android:id="@+id/refreshLayout_out"

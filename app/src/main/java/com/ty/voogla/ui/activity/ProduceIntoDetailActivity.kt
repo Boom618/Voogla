@@ -3,6 +3,7 @@ package com.ty.voogla.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
+import android.view.KeyEvent
 import android.view.View
 import android.widget.ImageView
 import com.google.gson.Gson
@@ -295,6 +296,16 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        // 扫码按键
+        if (keyCode == CodeConstant.KEY_CODE_223 || keyCode == CodeConstant.KEY_CODE_224) {
+            // 禁用扫码
+
+            return true
+        }
+
+        return super.onKeyDown(keyCode, event)
+    }
 
     /**
      * 构建请求参数

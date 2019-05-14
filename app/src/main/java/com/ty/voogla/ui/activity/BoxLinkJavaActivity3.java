@@ -26,6 +26,7 @@ import com.ty.voogla.constant.TipString;
 import com.ty.voogla.data.*;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.mvp.presenter.VooglaPresenter;
+import com.ty.voogla.util.ResourceUtil;
 import com.ty.voogla.util.ToastUtil;
 import com.ty.voogla.util.scan.PDAUtil;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -78,9 +79,13 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
      */
     private int sendPosition;
     /**
-     * 企业编号
+     * companyNo 企业编号
+     * deliveryNum 整箱数量
+     * unitNum 散货数量
      */
     private String companyNo;
+    private String deliveryNum;
+    private String unitNum;
     /**
      * 商品编号 （出库）
      * deliveryNo : 订单号 （缓存的 key）
@@ -126,12 +131,13 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
 
         sendPosition = getIntent().getIntExtra(CodeConstant.SEND_POSITION, -1);
         goodsNo = getIntent().getStringExtra("goodsNo");
+        unitNum = getIntent().getStringExtra("unitNum");
+        deliveryNum = getIntent().getStringExtra("deliveryNum");
         deliveryNo = SharedP.getKeyString(this);
 
         try {
-            //allCode = SparseArrayUtil.getQrCodeSend(this);
+            cacheData = SparseArrayUtil.getQrCodeSend(ResourceUtil.getContext(), deliveryNo);
             ownProCode = SparseArrayUtil.getOwnProCode(this);
-            //qrCodeInfos = allCode.get(sendPosition);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,10 +157,23 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
                 Intent intent = new Intent();
                 intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
 
+                SendOutListInfo.DeliveryDetailInfosBean infosBean = null;
+                try {
+                    infosBean = cacheData.get(sendPosition);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                SendOutListInfo.DeliveryDetailInfosBean bean = new SendOutListInfo.DeliveryDetailInfosBean();
+                bean.setListCode(qrCodeInfos);
+                if (infosBean == null) {
+                    cacheData.add(bean);
+                } else {
+                    cacheData.set(sendPosition, bean);
+                }
+
                 // 保存出库中所有码（不能互查）
-                //SparseArrayUtil.putQrCodeSend(BoxLinkJavaActivity3.this, allCode);
-                LibraryCache.SendOutCache(BoxLinkJavaActivity3.this, "", deliveryNo, cacheData);
-                // 保存所有产品码及对应的箱码
+                SparseArrayUtil.putQrCodeSend(BoxLinkJavaActivity3.this, deliveryNo, cacheData);
+                // 保存所有产品码及对应的箱码 key  : 产品码  value : 箱码
                 SparseArrayUtil.putOwnProCode(BoxLinkJavaActivity3.this, ownProCode);
 
                 setResult(CodeConstant.RESULT_CODE, intent);
@@ -245,6 +264,9 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
 
     }
 
+    /**
+     * 接收扫码结果 【00】
+     */
     private void handleResult() {
         String barcode = mBarcodeManager.getBarcode();
         if (barcode != null) {
@@ -275,19 +297,30 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
      * 继续扫码
      */
     private void handleStartScaner() {
-        subscribe = Observable.interval(timeScan, TimeUnit.MILLISECONDS, Schedulers.io())
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        Log.i("TAG", "accept aLong = " + aLong);
-                        mBarcodeManager.startScanner();
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        ToastUtil.showError(throwable.getMessage());
-                    }
-                });
+        int deliveryInt = Integer.parseInt(deliveryNum);
+        int unitInt = Integer.parseInt(unitNum);
+        final int count = deliveryInt + unitInt;
+
+        if (qrCodeInfos.size() <= count) {
+            mBarcodeManager.startScanner();
+            subscribe = Observable.interval(timeScan, TimeUnit.MILLISECONDS, Schedulers.io())
+                    .subscribe(new Consumer<Long>() {
+                        @Override
+                        public void accept(Long aLong) throws Exception {
+                            Log.i("TAG", "accept aLong = " + aLong);
+                            if (qrCodeInfos.size() <= count) {
+                                mBarcodeManager.startScanner();
+                            }
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
+                            ToastUtil.showError(throwable.getMessage());
+                        }
+                    });
+        } else {
+            stopScaner();
+        }
     }
 
     /**
@@ -310,35 +343,28 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
 
         final String code = result.getCode();
         String qrCodeType = result.getQrCodeType();
+        // 产品码 所对应的箱码值（为箱码时，等于 null）
+        String ownerCode = result.getOwnerCode();
         // 套码编号
         // 箱码 A0702  产品吗 A0701
         final String codeClass = qrCodeType.equals("2") ? CodeConstant.QR_CODE_0702 : CodeConstant.QR_CODE_0701;
 
-        isContainsCode(code, codeClass);
+        isContainsCode(code, codeClass, ownerCode);
 
     }
 
     /**
      * 检查是否已扫码 code【02】
      *
-     * @param code
+     * @param code      码号
+     * @param codeClass 码类型
+     * @param ownerCode 所属者（产品所属的箱码）
      */
-    private void isContainsCode(String code, String codeClass) {
+    private void isContainsCode(String code, String codeClass, String ownerCode) {
 
         // 方式一：使用 keySet()遍历 Map ( 10 W 数据 31 ms )
-        /*for (Integer key : allCode.keySet()) {
-            ArrayList<QrCodeListData> data = allCode.get(key);
-            for (int j = 0; j < data.size(); j++) {
-                String qrCode = data.get(j).getQrCode();
-                if (qrCode.equals(code)) {
-                    ToastUtil.showToast("重复码请重试");
-                    return;
-                }
-            }
-        }*/
+        // 方式二：迭代器，keySet.iterator() 迭代 （10 W 数据 17 ms）
 
-        // 方式二：迭代器，keySet 迭代 （10 W 数据 17 ms）
-        //Iterator<Integer> iterator = allCode.keySet().iterator();
 
         for (int i = 0; i < cacheData.size(); i++) {
             List<QrCodeListData> listCode = cacheData.get(i).getListCode();
@@ -353,6 +379,13 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
 
         if (CodeConstant.QR_CODE_0701.equals(codeClass)) {
             // 产品码
+            for (int i = 0; i < qrCodeInfos.size(); i++) {
+                boolean contains = qrCodeInfos.contains(ownerCode);
+                if (contains) {
+                    ToastUtil.showWarning("该产品有对应的箱码已出库");
+                    return;
+                }
+            }
             presenter.getQrCodeList(code, CodeConstant.QR_CODE_0701);
             lastCode = code;
         } else {

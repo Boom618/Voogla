@@ -9,7 +9,9 @@ object TipString {
 
     const val tips = "温馨提示"
     const val save = "保存"
-    const val saveData = "保存数据"
+    const val commit = "提交"
+    const val sendOut = "发货"
+    const val saveData = "暂存数据？"
     const val returnGoods = "退货"
     const val scanError = "扫码失败"
     const val repeatCode = "重复码号"

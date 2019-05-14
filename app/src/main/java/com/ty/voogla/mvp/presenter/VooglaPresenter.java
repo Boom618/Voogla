@@ -188,6 +188,7 @@ public class VooglaPresenter {
      * 入库保存
      */
     public void addProduct(RequestBody body){
+        iView.showLoading();
         httpMethods.addProduct(new SingleObserver<ResponseInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -196,6 +197,7 @@ public class VooglaPresenter {
 
             @Override
             public void onSuccess(ResponseInfo responseInfo) {
+                iView.hideLoading();
                 if (CodeConstant.SERVICE_SUCCESS.equals(responseInfo.getMsg())) {
                     // 入库成功（保存）
                     iView.showResponse(responseInfo);
@@ -206,6 +208,7 @@ public class VooglaPresenter {
 
             @Override
             public void onError(Throwable e) {
+                iView.hideLoading();
                 iView.showError(e.getMessage());
             }
         }, body);
@@ -513,9 +516,10 @@ public class VooglaPresenter {
     /**
      * 新增出库
      *
-     * @param body
+     * @param body body
      */
     public void addSendOut(RequestBody body) {
+        iView.showLoading();
         httpMethods.addSendOut(new SingleObserver<ResponseInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -524,6 +528,7 @@ public class VooglaPresenter {
 
             @Override
             public void onSuccess(ResponseInfo response) {
+                iView.hideLoading();
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
                     iView.showResponse(response);
                 } else {
@@ -533,6 +538,7 @@ public class VooglaPresenter {
 
             @Override
             public void onError(Throwable e) {
+                iView.hideLoading();
                 iView.showError(e.getMessage());
             }
         }, body);

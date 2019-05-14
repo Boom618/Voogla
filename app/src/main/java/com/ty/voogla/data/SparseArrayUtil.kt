@@ -4,6 +4,8 @@ import android.content.Context
 import android.support.v4.util.ArrayMap
 import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean
 import com.ty.voogla.bean.sendout.QrCodeListData
+import com.ty.voogla.bean.sendout.SendOutListInfo
+import com.ty.voogla.util.ResourceUtil
 import java.io.*
 import java.util.ArrayList
 
@@ -116,13 +118,13 @@ object SparseArrayUtil {
 
 
     @JvmStatic
-    fun putQrCodeSend(context: Context, boxInfos: HashMap<Int, ArrayList<QrCodeListData>>) {
+//    fun putQrCodeSend(context: Context, boxInfos: HashMap<Int, ArrayList<QrCodeListData>>) {
+    fun putQrCodeSend(context: Context, key: String, boxInfos: MutableList<SendOutListInfo.DeliveryDetailInfosBean>) {
 
         var outputStream: ObjectOutputStream? = null
         try {
-            val file = File(context.getDir("data", Context.MODE_PRIVATE), "sendDetail")
+            val file = File(ResourceUtil.getContext().getDir("data", Context.MODE_PRIVATE), key)
             outputStream = ObjectOutputStream(FileOutputStream(file))
-//            outputStream = ObjectOutputStream(FileOutputStream("code.txt"))
             outputStream.writeObject(boxInfos)
             outputStream.flush()
         } catch (e: IOException) {
@@ -139,20 +141,21 @@ object SparseArrayUtil {
     }
 
     @JvmStatic
-    fun getQrCodeSend(context: Context): HashMap<Int, ArrayList<QrCodeListData>> {
-        val file = File(context.getDir("data", Context.MODE_PRIVATE), "sendDetail")
+//    fun getQrCodeSend(context: Context): HashMap<Int, ArrayList<QrCodeListData>> {
+    fun getQrCodeSend(context: Context, key: String): MutableList<SendOutListInfo.DeliveryDetailInfosBean> {
+        val file = File(ResourceUtil.getContext().getDir("data", Context.MODE_PRIVATE), key)
         val inputStream = ObjectInputStream(FileInputStream(file))
-        val list = inputStream.readObject() as HashMap<Int, ArrayList<QrCodeListData>>
+        val list = inputStream.readObject() as MutableList<SendOutListInfo.DeliveryDetailInfosBean>
         inputStream.close()
         return list
     }
 
     @JvmStatic
-    fun clearCode(context: Context) {
-        val hashMap = HashMap<Int, ArrayList<QrCodeListData>>()
-        val file = File(context.getDir("data", Context.MODE_PRIVATE), "sendDetail")
+    fun clearCode(context: Context, key: String) {
+        val list = mutableListOf<SendOutListInfo.DeliveryDetailInfosBean>()
+        val file = File(ResourceUtil.getContext().getDir("data", Context.MODE_PRIVATE), key)
         val outputStream = ObjectOutputStream(FileOutputStream(file))
-        outputStream.writeObject(hashMap)
+        outputStream.writeObject(list)
         outputStream.flush()
         outputStream.close()
     }
@@ -196,6 +199,41 @@ object SparseArrayUtil {
         outputStream.writeObject(hashMap)
         outputStream.flush()
         outputStream.close()
+    }
+
+    /**  ----------------------------------------------------------- 出库 暂存数据 【区分状态】 */
+    @JvmStatic
+    fun putDeliveryNo(set: MutableSet<String>) {
+        var outputStream: ObjectOutputStream? = null
+        try {
+            val file = File(ResourceUtil.getContext().getDir("data", Context.MODE_PRIVATE), "deliveryNo")
+            outputStream = ObjectOutputStream(FileOutputStream(file))
+            outputStream.writeObject(set)
+            outputStream.flush()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                outputStream?.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    @JvmStatic
+//    fun getQrCodeSend(context: Context): HashMap<Int, ArrayList<QrCodeListData>> {
+    fun getDeliveryNo(): MutableSet<String> {
+        val file = File(ResourceUtil.getContext().getDir("data", Context.MODE_PRIVATE), "deliveryNo")
+        try {
+            val inputStream = ObjectInputStream(FileInputStream(file))
+            val set = inputStream.readObject() as MutableSet<String>
+            inputStream.close()
+            return set
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return mutableSetOf()
     }
 
 }

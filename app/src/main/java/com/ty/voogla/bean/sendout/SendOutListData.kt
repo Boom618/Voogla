@@ -28,7 +28,7 @@ class SendOutListData {
          */
 
         var companyNo: String? = null
-        var deliveryNo: String? = null
+        var deliveryNo  = ""
         var customerName: String? = null
         var deliveryDate: String? = null
         var deliveryState: String? = null

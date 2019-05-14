@@ -3,7 +3,6 @@ package com.ty.voogla.ui.activity
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.AdapterView
 import com.ty.voogla.R
 import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.adapter.SendOutAdapter
@@ -22,8 +21,6 @@ import com.ty.voogla.widght.LoadingDialog
 import com.ty.voogla.widght.SpaceItemDecoration
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import kotlinx.android.synthetic.main.activity_send_out.*
-import android.widget.ArrayAdapter
-
 
 
 /**
@@ -70,20 +67,16 @@ class SendOutActivity : BaseActivity(), VooglaContract.ListView<SendOutListData.
             }
         })
     }
+    private val goodsNameList = mutableListOf<String>()
+    private val goodsNoList = mutableListOf<String>()
 
     override fun initOneData() {
         initToolBar(R.string.send_out)
         companyNo = SimpleCache.userInfo.companyNo
         // 产品列表 （用户添加了 需要更新） update 更新缓存
-        presenter.getProductListInfo(SimpleCache.userInfo.companyNo,"update")
+        presenter.getProductListInfo(SimpleCache.userInfo.companyNo, "update")
         // 全部 list
         presenter.getSendOutList2(companyNo, "01", "")
-
-    }
-
-    private val goodsNameList = mutableListOf<String>()
-    private val goodsNoList = mutableListOf<String>()
-    override fun initTwoView() {
         // 产品列表（登录已存）
         try {
             val productList = SimpleCache.productList
@@ -94,25 +87,17 @@ class SendOutActivity : BaseActivity(), VooglaContract.ListView<SendOutListData.
                 goodsNoList.add(list[i].goodsNo)
             }
             spinner.setItems(goodsNameList)
-            spinner.setOnItemSelectedListener { view, position, id, item ->
+            spinner.setOnItemSelectedListener { _, position, id, item ->
                 presenter.getSendOutList2(companyNo, "01", goodsNoList[position])
             }
-//            spinner_view.attachDataSource(goodsNameList)
-//            spinner_view.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
-//                override fun onNothingSelected(parent: AdapterView<*>?) {
-//
-//                }
-//
-//                override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-//
-//                    presenter.getSendOutList2(companyNo, "01", goodsNoList[position])
-//
-//                }
-//
-//            })
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
+    }
+
+
+    override fun initTwoView() {
 
     }
 
