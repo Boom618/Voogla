@@ -16,10 +16,11 @@ import com.zhy.adapter.recyclerview.base.ViewHolder
 /**
  * @author TY on 2019/1/14.unitNum
  */
-class SendOutAdapter(val context: Context, layout: Int, datas: MutableList<SendOutListData.ListBean>) :
+class SendOutAdapter(val context: Context, layout: Int,private val deliverySet:MutableSet<String>, datas: MutableList<SendOutListData.ListBean>) :
     CommonAdapter<SendOutListData.ListBean>(context, layout, datas) {
 
-    private val deliverySet = SparseArrayUtil.getDeliveryNo()
+    // 缓存的  deliveryNo 集合
+    //private val deliverySet = SparseArrayUtil.getDeliveryNo()
 
     override fun convert(holder: ViewHolder, info: SendOutListData.ListBean, position: Int) {
 
@@ -51,19 +52,18 @@ class SendOutAdapter(val context: Context, layout: Int, datas: MutableList<SendO
 
         holder.itemView.findViewById<TextView>(R.id.tv_state_type).setOnClickListener {
             when (type) {
-                "立即发货" -> {
-                    val intent = Intent(context, SendOutNextActivity2::class.java)
+                "查看明细" -> {
+                    val intent = Intent(context, SendOutLookActivity::class.java)
                     intent.putExtra(CodeConstant.DELIVERY_NO, info.deliveryNo)
                     context.startActivity(intent)
                 }
                 else -> {
-                    val intent = Intent(context, SendOutLookActivity::class.java)
+                    val intent = Intent(context, SendOutNextActivity2::class.java)
                     intent.putExtra(CodeConstant.DELIVERY_NO, info.deliveryNo)
                     context.startActivity(intent)
                 }
             }
         }
-
     }
 
 }

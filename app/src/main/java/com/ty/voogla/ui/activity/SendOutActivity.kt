@@ -12,6 +12,7 @@ import com.ty.voogla.bean.sendout.SendOutListData
 import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.constant.TipString
 import com.ty.voogla.data.SimpleCache
+import com.ty.voogla.data.SparseArrayUtil
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.util.FullDialog
@@ -50,23 +51,25 @@ class SendOutActivity : BaseActivity(), VooglaContract.ListView<SendOutListData.
         LayoutInit.initLayoutManager(this, recyclerView_out)
         recyclerView_out.addItemDecoration(SpaceItemDecoration(ResourceUtil.dip2px(CodeConstant.ITEM_DECORATION)))
 
-        adapter = SendOutAdapter(this, R.layout.item_send_out, listData)
-        recyclerView_out.adapter = adapter
-
-        adapter?.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
-            override fun onItemLongClick(view: View, holder: RecyclerView.ViewHolder, position: Int): Boolean {
-                return true
-            }
-
-            override fun onItemClick(view: View, holder: RecyclerView.ViewHolder, position: Int) {
-                val layout = view.findViewById<View>(R.id.layout)
-                when (layout.visibility) {
-                    View.VISIBLE -> layout.visibility = View.GONE
-                    View.GONE -> layout.visibility = View.VISIBLE
-                }
-            }
-        })
+//        val set = SparseArrayUtil.getDeliveryNo()
+//        adapter = SendOutAdapter(this, R.layout.item_send_out, set, listData)
+//        recyclerView_out.adapter = adapter
+//
+//        adapter?.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
+//            override fun onItemLongClick(view: View, holder: RecyclerView.ViewHolder, position: Int): Boolean {
+//                return true
+//            }
+//
+//            override fun onItemClick(view: View, holder: RecyclerView.ViewHolder, position: Int) {
+//                val layout = view.findViewById<View>(R.id.layout)
+//                when (layout.visibility) {
+//                    View.VISIBLE -> layout.visibility = View.GONE
+//                    View.GONE -> layout.visibility = View.VISIBLE
+//                }
+//            }
+//        })
     }
+
     private val goodsNameList = mutableListOf<String>()
     private val goodsNoList = mutableListOf<String>()
 
@@ -98,7 +101,23 @@ class SendOutActivity : BaseActivity(), VooglaContract.ListView<SendOutListData.
 
 
     override fun initTwoView() {
+        val set = SparseArrayUtil.getDeliveryNo()
+        adapter = SendOutAdapter(this, R.layout.item_send_out, set, listData)
+        recyclerView_out.adapter = adapter
 
+        adapter?.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
+            override fun onItemLongClick(view: View, holder: RecyclerView.ViewHolder, position: Int): Boolean {
+                return true
+            }
+
+            override fun onItemClick(view: View, holder: RecyclerView.ViewHolder, position: Int) {
+                val layout = view.findViewById<View>(R.id.layout)
+                when (layout.visibility) {
+                    View.VISIBLE -> layout.visibility = View.GONE
+                    View.GONE -> layout.visibility = View.VISIBLE
+                }
+            }
+        })
     }
 
 

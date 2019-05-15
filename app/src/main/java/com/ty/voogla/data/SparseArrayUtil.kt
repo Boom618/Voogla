@@ -143,6 +143,7 @@ object SparseArrayUtil {
     @JvmStatic
 //    fun getQrCodeSend(context: Context): HashMap<Int, ArrayList<QrCodeListData>> {
     fun getQrCodeSend(context: Context, key: String): MutableList<SendOutListInfo.DeliveryDetailInfosBean> {
+        // file = /data/data/com.ty.voogla/app_data/XSCKD095024
         val file = File(ResourceUtil.getContext().getDir("data", Context.MODE_PRIVATE), key)
         val inputStream = ObjectInputStream(FileInputStream(file))
         val list = inputStream.readObject() as MutableList<SendOutListInfo.DeliveryDetailInfosBean>

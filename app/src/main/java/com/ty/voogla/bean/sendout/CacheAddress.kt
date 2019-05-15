@@ -14,4 +14,8 @@ class CacheAddress:Serializable {
     var countyLevel = ""
     var provinceLevel = ""
     var deliveryAddress = ""
+
+    // 缓存 goodsNo
+    var unit = ""
+    var goodsNo = ""
 }

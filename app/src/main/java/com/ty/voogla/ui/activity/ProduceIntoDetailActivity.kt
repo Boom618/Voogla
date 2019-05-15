@@ -112,7 +112,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     override fun initTwoView() {
 
 
-        initToolBar(R.string.produce_into, TipString.save, View.OnClickListener {
+        initToolBar(R.string.produce_into, TipString.proInto, View.OnClickListener {
             produceIntoSave(initReqBody())
         })
 //        iv_back.setOnClickListener {
@@ -378,7 +378,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     }
 
     override fun showResponse(response: ResponseInfo) {
-        ToastUtil.showSuccess(response.msg)
+        ToastUtil.showSuccess(TipString.intoSuccess)
         finish()
     }
 

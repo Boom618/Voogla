@@ -52,14 +52,16 @@ class ProduceIntoActivity : BaseSupActivity(), VooglaContract.ListView<ProductIn
 
     override fun initOneData() {
         // 列表 batchNo 传空
-        presenter.getProduceList(companyNo,"")
-        isDelete = false
+//        presenter.getProduceList(companyNo,"")
+//        isDelete = false
     }
 
     override fun initTwoView() {
 
         initToolBar(R.string.produce_into)
-
+        // 列表 batchNo 传空
+        presenter.getProduceList(companyNo, "")
+        isDelete = false
 
         // 搜索
         search_view.setOnEditorActionListener { v, actionId, _ ->
@@ -67,8 +69,8 @@ class ProduceIntoActivity : BaseSupActivity(), VooglaContract.ListView<ProductIn
 
                 val batchNo = v.text.toString().trim { it <= ' ' }
 
-                presenter.getProduceList(companyNo,batchNo)
-                DialogUtil.hideInputWindow(v.context,v)
+                presenter.getProduceList(companyNo, batchNo)
+                DialogUtil.hideInputWindow(v.context, v)
             }
             true
         }
@@ -92,13 +94,17 @@ class ProduceIntoActivity : BaseSupActivity(), VooglaContract.ListView<ProductIn
             adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
                 override fun onItemLongClick(view: View, holder: RecyclerView.ViewHolder, position: Int): Boolean {
 
-                    DialogUtil.leftRightDialog(this@ProduceIntoActivity, TipString.tips,"确认删除", NormalAlertDialog.onNormalOnclickListener {
+                    DialogUtil.leftRightDialog(
+                        this@ProduceIntoActivity,
+                        TipString.tips,
+                        "确认删除",
+                        NormalAlertDialog.onNormalOnclickListener {
 
-                        presenter.deleteProduct(companyNo, data[position].inBatchNo, companyAttr)
-                        isDelete = true
-                        itemPosition = position
-                        it.dismiss()
-                    })
+                            presenter.deleteProduct(companyNo, data[position].inBatchNo, companyAttr)
+                            isDelete = true
+                            itemPosition = position
+                            it.dismiss()
+                        })
                     return true
                 }
 
@@ -120,6 +126,7 @@ class ProduceIntoActivity : BaseSupActivity(), VooglaContract.ListView<ProductIn
         ToastUtil.showError(msg)
 
     }
+
     private var dialog: LoadingDialog? = null
     override fun showLoading() {
         dialog = FullDialog.showLoading(this, TipString.loading)

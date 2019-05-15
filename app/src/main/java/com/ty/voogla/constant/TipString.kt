@@ -10,6 +10,7 @@ object TipString {
     const val tips = "温馨提示"
     const val save = "保存"
     const val commit = "提交"
+    const val proInto = "入库"
     const val sendOut = "发货"
     const val saveData = "暂存数据？"
     const val returnGoods = "退货"

@@ -124,6 +124,9 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
             countyLevel = addr.getCountyLevel();
             deliveryAddress = addr.getDeliveryAddress();
 
+            goodsNo = addr.getGoodsNo();
+            unit = addr.getUnit();
+
             LayoutInit.initLayoutManager(this, recyclerView);
             adapter = new SendOutNextAdapter(this, R.layout.item_send_out_next, deliveryList);
             recyclerView.setAdapter(adapter);
@@ -323,12 +326,12 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
                     @Override
                     public void onNormalClick(NormalAlertDialog dialog) {
                         dialog.dismiss();
-                        finish();
                         // 清除缓存数据
                         SparseArrayUtil.clearCode(SendOutNextActivity2.this, deliveryNo);
                         Set<String> set = SparseArrayUtil.getDeliveryNo();
                         set.remove(deliveryNo);
                         SparseArrayUtil.putDeliveryNo(set);
+                        finish();
                     }
                 })
                 .build()
@@ -351,6 +354,9 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         data.setCountyLevel(countyLevel);
         data.setProvinceLevel(provinceLevel);
         data.setDeliveryAddress(deliveryAddress);
+
+        data.setGoodsNo(goodsNo);
+        data.setUnit(unit);
         SimpleCache.Companion.putAddr(this.deliveryNo, data);
 
     }
