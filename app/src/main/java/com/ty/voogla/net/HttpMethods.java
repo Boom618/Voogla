@@ -42,11 +42,9 @@ public class HttpMethods {
     /**
      * 默认超时时间
      */
-    private static final int DEFAULT_TIMEOUT = 20;
+    private static final int DEFAULT_TIMEOUT = 60;
     private static HttpMethods mInstance;
     private ApiService mService;
-    private static Gson gson;
-
     /**
      * cookie
      */
@@ -350,25 +348,6 @@ public class HttpMethods {
         mService.checkInfoConfirm(companyNo, deliveryNo, fleeFlag)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
-    }
-
-    /**
-     * --------------------------------- Gson  ----------------------------------------
-     */
-
-    private static Gson buildGson() {
-        if (gson == null) {
-            gson = new GsonBuilder()
-                    .registerTypeAdapter(Integer.class, new IntegerDefault0Adapter())
-                    .registerTypeAdapter(int.class, new IntegerDefault0Adapter())
-                    .registerTypeAdapter(Double.class, new DoubleDefault0Adapter())
-                    .registerTypeAdapter(double.class, new DoubleDefault0Adapter())
-                    .registerTypeAdapter(Long.class, new LongDefault0Adapter())
-                    .registerTypeAdapter(long.class, new LongDefault0Adapter())
-                    .registerTypeAdapter(String.class, new StringDefault0Adapter())
-                    .create();
-        }
-        return gson;
     }
 
 }

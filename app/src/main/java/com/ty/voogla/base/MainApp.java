@@ -13,6 +13,7 @@ import com.ty.voogla.data.ACache;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import me.yokeyword.fragmentation.Fragmentation;
 import me.yokeyword.fragmentation.helper.ExceptionHandler;
+import org.litepal.LitePal;
 
 /**
  * @author TY
@@ -54,6 +55,8 @@ public class MainApp extends MultiDexApplication {
 
         // 二维码
         ZXingLibrary.initDisplayOpinion(this);
+        // 数据库
+        LitePal.initialize(this);
 
         // yokeyword 大佬的 Fragment 库
 //        Fragmentation.builder()

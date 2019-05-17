@@ -9,8 +9,6 @@ import okhttp3.RequestBody
  */
 object RequestBodyJson {
 
-    val JSON = MediaType.parse("application/json;charset=UTF-8")
-
     /**
      * RequestBody--json 数据提交
      * Kotlin 没有静态变量与静态方法，采用 @JvmStatic 修饰的方法主要是兼容 Java 代码的调用方式和 Kotlin 一致
@@ -20,7 +18,7 @@ object RequestBodyJson {
     @JvmStatic
     fun requestBody(json: String): RequestBody {
 
-        return RequestBody.create(JSON, json)
+        return RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), json)
     }
 
     // FromBody---表单提交

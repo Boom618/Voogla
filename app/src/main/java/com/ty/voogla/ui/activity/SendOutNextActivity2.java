@@ -237,8 +237,6 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
             bean.setOutBoxNum(deliveryList.get(i).getOutBoxNum() + "");
             bean.setOutGoodsNum(deliveryList.get(i).getOutGoodsNum() + "");
             bean.setUnit(unit);
-            // 箱码集合
-            //ArrayList<QrCodeListData> listData = hashMapCode.get(i);
             List<QrCodeListData> listData = deliveryList.get(i).getListCode();
             bean.setQrCodeInfos(listData);
             if (listData != null) {

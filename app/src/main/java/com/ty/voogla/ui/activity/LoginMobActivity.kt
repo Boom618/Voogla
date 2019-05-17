@@ -16,6 +16,7 @@ import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.util.WindowUtil
 import com.ty.voogla.widght.LoadingDialog
 import kotlinx.android.synthetic.main.activity_login_mob.*
+import com.tencent.mmkv.MMKV
 
 /**
  * @author TY on 2018/12/20.
@@ -29,6 +30,8 @@ class LoginMobActivity : BaseActivity(), VooglaContract.View<UserInfo> {
 
 
     override fun onBaseCreate(savedInstanceState: Bundle?) {
+        MMKV.initialize(this)
+        // rootDir : /data/data/com.ty.voogla/files/mmkv
 
     }
 
