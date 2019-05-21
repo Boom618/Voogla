@@ -10,15 +10,18 @@ import com.ty.voogla.adapter.ProductIntoAdapter
 import com.ty.voogla.base.BaseSupActivity
 import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.bean.produce.ProductIntoData
+import com.ty.voogla.constant.CodeConstant.*
 import com.ty.voogla.constant.TipString
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
 import com.ty.voogla.data.SimpleCache
 import com.ty.voogla.util.FullDialog
+import com.ty.voogla.util.ResourceUtil
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
 import com.ty.voogla.widght.LoadingDialog
 import com.ty.voogla.widght.NormalAlertDialog
+import com.ty.voogla.widght.SpaceItemDecoration
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import kotlinx.android.synthetic.main.activity_product_into.*
 
@@ -47,13 +50,11 @@ class ProduceIntoActivity : BaseSupActivity(), VooglaContract.ListView<ProductIn
 
 
     override fun onBaseCreate(savedInstanceState: Bundle?) {
-
+        LayoutInit.initLayoutManager(this, recycler_view_pro)
+        recycler_view_pro.addItemDecoration(SpaceItemDecoration(ResourceUtil.dip2px(ITEM_DECORATION), false))
     }
 
     override fun initOneData() {
-        // 列表 batchNo 传空
-//        presenter.getProduceList(companyNo,"")
-//        isDelete = false
     }
 
     override fun initTwoView() {
@@ -86,30 +87,32 @@ class ProduceIntoActivity : BaseSupActivity(), VooglaContract.ListView<ProductIn
             adapter.notifyItemRemoved(itemPosition)
             adapter.notifyItemRangeChanged(itemPosition, data.size - itemPosition)
         } else {
-            LayoutInit.initLayoutManager(this, recycler_view_pro)
-
             adapter = ProductIntoAdapter(this, R.layout.item_produce_into, data)
             recycler_view_pro.adapter = adapter
 
             adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
                 override fun onItemLongClick(view: View, holder: RecyclerView.ViewHolder, position: Int): Boolean {
 
-                    DialogUtil.leftRightDialog(
-                        this@ProduceIntoActivity,
-                        TipString.tips,
-                        "确认删除",
-                        NormalAlertDialog.onNormalOnclickListener {
-
-                            presenter.deleteProduct(companyNo, data[position].inBatchNo, companyAttr)
-                            isDelete = true
-                            itemPosition = position
-                            it.dismiss()
-                        })
+//                    DialogUtil.leftRightDialog(
+//                        this@ProduceIntoActivity,
+//                        TipString.tips,
+//                        "确认删除",
+//                        NormalAlertDialog.onNormalOnclickListener {
+//
+//                            presenter.deleteProduct(companyNo, data[position].inBatchNo, companyAttr)
+//                            isDelete = true
+//                            itemPosition = position
+//                            it.dismiss()
+//                        })
                     return true
                 }
 
-                override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
-
+                override fun onItemClick(view: View, holder: RecyclerView.ViewHolder?, position: Int) {
+                    val layout = view.findViewById<View>(R.id.layout)
+                    when (layout.visibility) {
+                        View.VISIBLE -> layout.visibility = View.GONE
+                        View.GONE -> layout.visibility = View.VISIBLE
+                    }
                 }
 
             })

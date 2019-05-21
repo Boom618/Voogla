@@ -222,6 +222,9 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
      */
     private RequestBody initReqBody() {
 
+        // TODO 出库数量和订单要求的数量一致才能发货 出库只有一列
+        //deliveryList.get(0).getOutGoodsNum()
+
         UserInfo userInfo = SimpleCache.Companion.getUserInfo();
         AddSendOutData send = new AddSendOutData();
         AddSendOutData.WareInfoBean info = new AddSendOutData.WareInfoBean();

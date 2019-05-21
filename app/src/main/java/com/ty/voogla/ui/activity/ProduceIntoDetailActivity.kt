@@ -84,27 +84,6 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
     override fun initOneData() {
 
-//        try {
-//            val storageData = SimpleCache.storageData
-//            when (storageData.isStorage) {
-//                true -> {
-//                    // 暂存 有数据
-//                    tv_select_time.text = storageData.inTime
-//                    tv_select_pro_name.text = storageData.nameGoods
-//                    tv_select_spec.text = storageData.specGoods
-//                    et_batch_number.setText(storageData.productBatchNo)
-//                    et_select_house.setText(storageData.nameWare)
-//                    listDetail.addAll(storageData.listDetail)
-//
-//                    tv_number.text = "${listDetail.size}"
-//                    SparseArrayUtil.putQrCodeList(this, listDetail)
-//                }
-//                false -> {
-//                }
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
         // proInto : 是生产入库 实时更新
         presenter.getProductListInfo(SimpleCache.userInfo.companyNo, "proInto")
     }
@@ -115,10 +94,6 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
         initToolBar(R.string.produce_into, TipString.proInto, View.OnClickListener {
             produceIntoSave(initReqBody())
         })
-//        iv_back.setOnClickListener {
-//            // 拦截返回
-//            backIntercept()
-//        }
 
         val format = SimpleDateFormat(CodeConstant.DATE_SIMPLE_H_M_S, Locale.CHINA)
         selectTime = format.format(Date())
@@ -188,41 +163,6 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
                 }
 
             })
-    }
-
-    // back 拦截
-    private fun backIntercept() {
-        if (listDetail.size == 0) {
-            finish()
-            SimpleCache.clearKey("storage")
-            return
-        }
-        DialogUtil.leftRightDialog(this, TipString.tips, TipString.saveData, NormalAlertDialog.onNormalOnclickListener {
-            // 暂时数据
-            storage()
-            finish()
-            it.dismiss()
-        }, true)
-    }
-
-    private fun storage() {
-        val productBatchNo = et_batch_number.text.toString().trim { it <= ' ' }
-        val nameWare = et_select_house.text.toString().trim { it <= ' ' }
-        val inTime = tv_select_time.text.toString().trim { it <= ' ' }
-        val nameGoods = tv_select_pro_name.text.toString()
-        val specGoods = tv_select_spec.text.toString()
-
-        // 暂存数据
-        val storage = ProStorageData()
-        storage.isStorage = true
-        storage.inTime = inTime
-        storage.nameWare = nameWare
-        storage.nameGoods = nameGoods
-        storage.specGoods = specGoods
-        storage.productBatchNo = productBatchNo
-
-        storage.listDetail = listDetail
-        SimpleCache.putStorage(storage)
     }
 
     /**
@@ -394,15 +334,6 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
     override fun hideLoading() {
         dialog?.dismiss()
     }
-
-    /**
-     * 监听拦截 back 键 TODO == 保存扫码
-     */
-//    override fun onBackPressed() {
-////        backIntercept()
-////
-////        return
-////    }
 
     override fun onDestroy() {
         super.onDestroy()

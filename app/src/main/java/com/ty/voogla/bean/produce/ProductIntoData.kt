@@ -25,15 +25,13 @@ class ProductIntoData {
 
         var companyNo: String? = null
         var inBatchNo: String? = null
+        var batchNo: String? = null
         var wareName: String? = null
         var goodsNo: String? = null
-        var inBoxNum: Int = 0
-        var nowBoxNum: Int = 0
+        var inBoxNum: String? = null
         var unit: String? = null
         var inTime: String? = null
-        var inWareDesc: String? = null
         var goodsName: String? = null
-        var unitName: String? = null
         var goodsSpec: String? = null
     }
 }

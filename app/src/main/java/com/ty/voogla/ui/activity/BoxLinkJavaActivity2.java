@@ -141,6 +141,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
             initToolBar(R.string.box_link, TipString.save, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    DialogUtil.hideInputWindow(v.getContext(), v);
                     returnActivity("productIn");
                 }
             });
@@ -170,6 +171,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
             initToolBar(R.string.box_link, TipString.save, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    DialogUtil.hideInputWindow(v.getContext(), v);
                     returnActivity("productChange");
                 }
             });
