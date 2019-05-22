@@ -32,8 +32,11 @@ object DialogUtil {
      * 发货出库
      * 删除该 item
      *
+     * @param activity  Ac 关闭页面
      * @param titleText  标题 "温馨提示"
      * @param pointContent 内容
+     * @param listener 监听
+     * @param finishBack 是否关闭当前 Ac
      */
     @JvmStatic
     fun leftRightDialog(

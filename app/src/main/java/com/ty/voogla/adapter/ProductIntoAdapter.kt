@@ -29,7 +29,7 @@ class ProductIntoAdapter(val context: Context, layout: Int, datas: MutableList<P
 
         holder.itemView.findViewById<TextView>(R.id.image_confirm).setOnClickListener {
             val intent = Intent(context, ProductIntoLookActivity::class.java)
-            intent.putExtra("batchNumber", info.batchNo)
+            intent.putExtra("batchNumber", info.inBatchNo)
             intent.putExtra("productName", info.goodsName)
             intent.putExtra("productHouse", info.wareName)
             intent.putExtra("productTime", info.inTime)

@@ -118,7 +118,7 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
 
         tv_to_box_link.setOnClickListener {
 
-            if (listDetail.size >= 10) {
+            if (listDetail.size >= 100) {
                 ToastUtil.showWarning(TipString.commitPlease)
                 return@setOnClickListener
             }

@@ -159,11 +159,12 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         countyLevel = info.getCountyLevel();
         deliveryAddress = info.getDeliveryAddress();
 
-        goodsNo = deliveryList.get(0).getGoodsNo();
-        unit = deliveryList.get(0).getUnit();
-        goodsName = deliveryList.get(0).getGoodsName();
-        deliveryNum = deliveryList.get(0).getDeliveryNum();
-        unitNum = deliveryList.get(0).getUnitNum();
+        SendOutListInfo.DeliveryDetailInfosBean bean = deliveryList.get(0);
+        goodsNo = bean.getGoodsNo();
+        unit = bean.getUnit();
+        goodsName = bean.getGoodsName();
+        deliveryNum = bean.getDeliveryNum();
+        unitNum = bean.getUnitNum();
 
         LayoutInit.initLayoutManager(this, recyclerView);
         adapter = new SendOutNextAdapter(this, R.layout.item_send_out_next, deliveryList);
@@ -223,7 +224,14 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
     private RequestBody initReqBody() {
 
         // TODO 出库数量和订单要求的数量一致才能发货 出库只有一列
-        //deliveryList.get(0).getOutGoodsNum()
+        if (deliveryList == null) {
+            return null;
+        }
+        if (deliveryList.get(0).getOutGoodsNum() != Integer.parseInt(deliveryNum)
+                || deliveryList.get(0).getOutBoxNum() != Integer.parseInt(unitNum)) {
+            ToastUtil.showWarning("出库数量和订单数量必须一致");
+            return null;
+        }
 
         UserInfo userInfo = SimpleCache.Companion.getUserInfo();
         AddSendOutData send = new AddSendOutData();
