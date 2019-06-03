@@ -1,19 +1,15 @@
 package com.ty.voogla.base;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.multidex.MultiDexApplication;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.ty.voogla.constant.CodeConstant;
-import com.ty.voogla.ui.ActivitiesHelper;
 import com.ty.voogla.data.ACache;
+import com.ty.voogla.ui.ActivitiesHelper;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
-import me.yokeyword.fragmentation.Fragmentation;
-import me.yokeyword.fragmentation.helper.ExceptionHandler;
-import org.litepal.LitePal;
 
 /**
  * @author TY
@@ -56,7 +52,7 @@ public class MainApp extends MultiDexApplication {
         // 二维码
         ZXingLibrary.initDisplayOpinion(this);
         // 数据库
-        LitePal.initialize(this);
+        //LitePal.initialize(this);
 
         // yokeyword 大佬的 Fragment 库
 //        Fragmentation.builder()

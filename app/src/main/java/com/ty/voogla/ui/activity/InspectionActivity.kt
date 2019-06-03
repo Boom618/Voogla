@@ -124,7 +124,6 @@ class InspectionActivity : BaseActivity(), EasyPermissions.PermissionCallbacks,
 
                     adapter = InspectionAdapter(this@InspectionActivity, R.layout.item_inspection, list)
                     recycler_view.adapter = adapter
-                    //                    adapter.notifyDataSetChanged()
 
                     if (list.size == 0) {
                         ToastUtil.showToast("无发货信息")

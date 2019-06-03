@@ -37,7 +37,6 @@ class ProduceIntoActivity : BaseSupActivity(), VooglaContract.ListView<ProductIn
 
     // 企业编号  归属单位
     private val companyNo = SimpleCache.userInfo.companyNo
-    private val companyAttr = SimpleCache.userInfo.companyAttr
 
     // 回调成功标志
     private var isDelete = false

@@ -12,7 +12,6 @@ import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.adapter.ProIntoDetailAdapter
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.base.ResponseInfo
-import com.ty.voogla.bean.ProStorageData
 import com.ty.voogla.bean.produce.AddProduct
 import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean
 import com.ty.voogla.bean.produce.ProductListInfoData
@@ -30,7 +29,6 @@ import com.ty.voogla.util.FullDialog
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
 import com.ty.voogla.widght.LoadingDialog
-import com.ty.voogla.widght.NormalAlertDialog
 import com.ty.voogla.widght.TimeWidght
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import kotlinx.android.synthetic.main.activity_product_into_detail.*
@@ -155,8 +153,12 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
                         listDetail.removeAt(position)
                         SparseArrayUtil.putQrCodeList(view.context, listDetail)
 
-                        adapter.notifyItemRemoved(position)
-                        adapter.notifyItemRangeChanged(position, listDetail.size - position)
+                        try {
+                            adapter.notifyItemRemoved(position)
+                            adapter.notifyItemRangeChanged(position, listDetail.size - position)
+                        } catch (e: Exception) {
+                            adapter.notifyDataSetChanged()
+                        }
 
                         tv_number.text = listDetail.size.toString()
                     }
@@ -280,6 +282,10 @@ class ProduceIntoDetailActivity : BaseActivity(), VooglaContract.View<ProductLis
             ToastUtil.showWarning(TipString.perfectIntoMessage)
             return null
         }
+        for (i in 0 until boxSize){
+            listDetail[i].qrCodeInfos?.clear()
+        }
+
 
         wareInfo.batchNo = productBatchNo
         wareInfo.companyAttr = userInfo.companyAttr

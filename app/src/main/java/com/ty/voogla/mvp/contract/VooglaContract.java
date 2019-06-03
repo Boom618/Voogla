@@ -100,13 +100,4 @@ public interface VooglaContract {
         void showError(String msg);
     }
 
-//    interface Presenter {
-//        /**
-//         * 从服务器拉取数据
-//         *
-//         * @param userName
-//         * @param password
-//         */
-//        void getData(String userName, String password);
-//    }
 }

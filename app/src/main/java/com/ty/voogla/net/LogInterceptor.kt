@@ -2,7 +2,6 @@ package com.ty.voogla.net
 
 import android.content.Intent
 import com.google.gson.Gson
-import com.socks.library.KLog
 import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.constant.CodeConstant
 import com.ty.voogla.constant.TipString
@@ -37,7 +36,6 @@ class LogInterceptor : Interceptor {
             ActivitiesHelper.get().finishAll()
             throw Throwable(TipString.loginRetry)
         }
-        KLog.json(TAG, content)
         return response.newBuilder()
             .body(okhttp3.ResponseBody.create(mediaType, content))
             .build()

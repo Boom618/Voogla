@@ -1,12 +1,9 @@
 package com.ty.voogla.ui.activity
 
 import android.os.Bundle
-import android.view.View
 import com.ty.voogla.R
-import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.base.BaseSupActivity
 import com.ty.voogla.ui.fragment.back.BackGoodsFragment
-import com.ty.voogla.util.ToastUtil
 
 /**
  * @author TY on 2019/4/18.

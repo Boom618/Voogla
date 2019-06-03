@@ -1,16 +1,12 @@
 package com.ty.voogla.data
 
 
-import com.ty.voogla.bean.ProStorageData
 import com.ty.voogla.bean.UserInfo
 import com.ty.voogla.bean.produce.ProductListInfoData
 import com.ty.voogla.bean.sendout.CacheAddress
 import com.ty.voogla.bean.sendout.QrCodeListData
-import com.ty.voogla.bean.sendout.SendOutListInfo
 import com.ty.voogla.util.ResourceUtil
-
-import java.util.ArrayList
-import kotlin.math.acos
+import java.util.*
 
 /**
  * @author PVer on 2018/12/15.
@@ -34,11 +30,6 @@ class SimpleCache {
 
         fun putUserInfo(userInfo: UserInfo) {
             aCache.put("userInfo", userInfo)
-        }
-
-        // 生产入库 暂存数据
-        fun putStorage(data: ProStorageData) {
-            aCache.put("storage", data)
         }
 
         // 产品列表数据
