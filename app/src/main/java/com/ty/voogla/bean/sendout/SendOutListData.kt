@@ -29,16 +29,12 @@ class SendOutListData {
 
         var companyNo: String? = null
         var deliveryNo  = ""
-        var customerName: String? = null
         var deliveryDate: String? = null
         var deliveryState: String? = null
-        var deliveryStateName: String? = null
         var provinceLevel: String? = null
         var cityLevel: String? = null
         var countyLevel: String? = null
         var deliveryAddress: String? = null
-        var outTime: String? = null
-        var outWareDesc: String? = null
 
         var shipperName: String? = null
         var receiverName: String? = null
@@ -46,5 +42,7 @@ class SendOutListData {
         var deliveryNum: String? = null
         var unitName: String? = null
         var unitNum: String? = null
+        // 发货出库批次号
+        var batchNo: String? = null
     }
 }

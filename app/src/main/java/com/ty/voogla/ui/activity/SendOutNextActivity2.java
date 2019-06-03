@@ -227,8 +227,8 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         if (deliveryList == null) {
             return null;
         }
-        if (deliveryList.get(0).getOutGoodsNum() != Integer.parseInt(deliveryNum)
-                || deliveryList.get(0).getOutBoxNum() != Integer.parseInt(unitNum)) {
+        if (deliveryList.get(0).getOutGoodsNum() != Integer.parseInt(unitNum)
+                || deliveryList.get(0).getOutBoxNum() != Integer.parseInt(deliveryNum)) {
             ToastUtil.showWarning("出库数量和订单数量必须一致");
             return null;
         }

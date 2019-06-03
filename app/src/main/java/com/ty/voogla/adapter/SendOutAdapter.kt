@@ -14,7 +14,12 @@ import com.zhy.adapter.recyclerview.base.ViewHolder
 /**
  * @author TY on 2019/1/14.unitNum
  */
-class SendOutAdapter(val context: Context, layout: Int,private val deliverySet:MutableSet<String>, datas: MutableList<SendOutListData.ListBean>) :
+class SendOutAdapter(
+    val context: Context,
+    layout: Int,
+    private val deliverySet: MutableSet<String>,
+    datas: MutableList<SendOutListData.ListBean>
+) :
     CommonAdapter<SendOutListData.ListBean>(context, layout, datas) {
 
     override fun convert(holder: ViewHolder, info: SendOutListData.ListBean, position: Int) {
@@ -44,7 +49,7 @@ class SendOutAdapter(val context: Context, layout: Int,private val deliverySet:M
             .setText(R.id.tv_goods_number, "${info.deliveryNum} ${info.unitName}")
             .setText(R.id.tv_unit_number, "${info.unitNum} 个")
             .setText(R.id.tv_send_out_address, stringAddr)
-            .setText(R.id.tv_bat_no, "")
+            .setText(R.id.tv_bat_no, info.batchNo)
 
         holder.itemView.findViewById<TextView>(R.id.tv_state_type).setOnClickListener {
             when (type) {
