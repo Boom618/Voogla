@@ -392,7 +392,9 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
         if (subscribe != null) {
             subscribe.dispose();
         }
-        mBarcodeManager.stopScanner();
+        if (mBarcodeManager != null) {
+            mBarcodeManager.stopScanner();
+        }
     }
 
     /**
