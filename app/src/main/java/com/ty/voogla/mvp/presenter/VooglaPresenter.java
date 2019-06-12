@@ -11,14 +11,15 @@ import com.ty.voogla.bean.sendout.SendOutListData;
 import com.ty.voogla.bean.sendout.SendOutListInfo;
 import com.ty.voogla.constant.ApiNameConstant;
 import com.ty.voogla.constant.CodeConstant;
+import com.ty.voogla.constant.TipString;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.net.HttpMethods;
 import com.ty.voogla.data.SimpleCache;
-import com.ty.voogla.util.ToastUtil;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import okhttp3.RequestBody;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 /**
@@ -179,7 +180,11 @@ public class VooglaPresenter {
 
             @Override
             public void onError(Throwable e) {
-                iView.showError(e.getMessage());
+                if (e instanceof SocketTimeoutException) {
+                    iView.showError(TipString.outTimeRetry);
+                }else{
+                    iView.showError(e.getMessage());
+                }
             }
         }, companyNo);
     }

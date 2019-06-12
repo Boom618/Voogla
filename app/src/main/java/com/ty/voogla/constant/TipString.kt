@@ -27,6 +27,7 @@ object TipString {
     const val ConfirmDelivery = "确认发货"
     const val gotoBoxLink = "请前往箱码关联"
     const val deleteRepeatBox = "请删除重复箱码"
+    const val outTimeRetry = "连接超时,请重试"
     const val loginRetry = "数据失效,请重新登录"
     const val repeatCodeTryAgain = "重复码请重试"
     const val notPermission = "无权限,请联系管理员"

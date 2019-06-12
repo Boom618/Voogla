@@ -53,8 +53,8 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
     private String goodsNo; // SP20190513034347
     private String unit;
     private String goodsName;
-    private String unitNum;
-    private String deliveryNum;
+    private String unitNum = "0";
+    private String deliveryNum = "0";
 
     // http list 数据
     private List<SendOutListInfo.DeliveryDetailInfosBean> deliveryList;
