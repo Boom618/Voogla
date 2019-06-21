@@ -9,7 +9,7 @@ public class ApiNameConstant {
      * 少杰
      */
 //    public static final String BASE_URL2 = "http://192.168.11.6:4001/";
-//    public static final String BASE_URL2 = "http://192.168.11.29:4001/";
+//    public static final String BASE_URL2 = "http://192.168.21.65:4001/";
     public static final String BASE_URL2 = "http:fej.dkzer.com/";
 
     /**

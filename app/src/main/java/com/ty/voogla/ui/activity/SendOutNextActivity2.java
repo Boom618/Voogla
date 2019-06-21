@@ -45,9 +45,6 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
     private String companyNo;
 
     // 地址信息
-    private String provinceLevel;
-    private String cityLevel;
-    private String countyLevel;
     private String deliveryAddress;
     // 缓存
     private String goodsNo; // SP20190513034347
@@ -119,9 +116,6 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         } else {
             // 有暂存数据
             deliveryList = outCache;
-            provinceLevel = addr.getProvinceLevel();
-            cityLevel = addr.getCityLevel();
-            countyLevel = addr.getCountyLevel();
             deliveryAddress = addr.getDeliveryAddress();
 
             goodsNo = addr.getGoodsNo();
@@ -154,9 +148,6 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         SendOutListInfo.GoodsDeliveryInfoBean info = data.getGoodsDeliveryInfo();
         deliveryList = data.getDeliveryDetailInfos();
 
-        provinceLevel = info.getProvinceLevel();
-        cityLevel = info.getCityLevel();
-        countyLevel = info.getCountyLevel();
         deliveryAddress = info.getDeliveryAddress();
 
         SendOutListInfo.DeliveryDetailInfosBean bean = deliveryList.get(0);
@@ -250,9 +241,7 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
             bean.setUnit(unit);
             List<QrCodeListData> listData = deliveryList.get(i).getListCode();
             bean.setQrCodeInfos(listData);
-            if (listData != null) {
-                list.add(bean);
-            }
+            list.add(bean);
         }
 
         if (list.size() == 0) {
@@ -265,9 +254,6 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         info.setCompanyNo(companyNo);
         info.setCreator(userInfo.getUserNo());
         info.setDeliveryNo(deliveryNo);
-        info.setProvinceLevel(provinceLevel);
-        info.setCityLevel(cityLevel);
-        info.setCountyLevel(countyLevel);
         info.setDeliveryAddress(deliveryAddress);
         info.setOutTime(time);
 
@@ -359,9 +345,6 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         SparseArrayUtil.putDeliveryNo(set);
         // 缓存地址
         CacheAddress data = new CacheAddress();
-        data.setCityLevel(cityLevel);
-        data.setCountyLevel(countyLevel);
-        data.setProvinceLevel(provinceLevel);
         data.setDeliveryAddress(deliveryAddress);
 
         data.setGoodsNo(goodsNo);

@@ -1,15 +1,17 @@
 package com.ty.voogla.bean.sendout
 
+import java.io.Serializable
+
 /**
  * @author TY on 2019/1/19.
  * 新增出库
  */
-class AddSendOutData {
+class AddSendOutData : Serializable {
 
     var outWareInfo: WareInfoBean? = null
     var outQrCodeDetailInfos: List<OutQrCodeDetailInfosBean>? = null
 
-    class WareInfoBean {
+    class WareInfoBean : Serializable {
         /**
          * companyNo : 企业编号
          * creator : 创建者
@@ -22,14 +24,10 @@ class AddSendOutData {
         var creator: String? = null
         var deliveryNo: String? = null
         var outTime: String? = null
-        var provinceLevel: String? = null
-        var cityLevel: String? = null
-        var countyLevel: String? = null
         var deliveryAddress: String? = null
-        var outWareDesc: String? = null
     }
 
-    class OutQrCodeDetailInfosBean {
+    class OutQrCodeDetailInfosBean : Serializable {
         /**
          * inBatchNo : 入库批次号
          * wareName : 仓库名称
@@ -41,7 +39,6 @@ class AddSendOutData {
          */
 
         var inBatchNo: String? = null
-        var wareName: String? = null
         var goodsNo: String? = null
         var outBoxNum: String? = null
         var outGoodsNum: String? = null

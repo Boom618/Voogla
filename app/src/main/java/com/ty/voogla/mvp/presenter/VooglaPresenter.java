@@ -537,7 +537,7 @@ public class VooglaPresenter {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
                     iView.showResponse(response);
                 } else {
-                    iView.showError(response.getMsg());
+                    iView.showError(TipString.outFailure);
                 }
             }
 
