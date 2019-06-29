@@ -1,7 +1,6 @@
 package com.ty.voogla.data
 
 import android.content.Context
-import android.util.SparseArray
 import com.ty.voogla.constant.CodeConstant
 
 /**
@@ -46,7 +45,6 @@ object SharedP {
     /** ---------------------存指定 key 的 position ----------------------------*/
 
 
-
     @JvmStatic
     fun putKeyPosition(context: Context, key: String, position: Int) {
         context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
@@ -75,7 +73,6 @@ object SharedP {
     /** ---------------------存指定 key 的 Boolean 值 ----------------------------*/
 
 
-
     @JvmStatic
     fun putKeyBoolean(context: Context, key: String, boolean: Boolean) {
         context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
@@ -99,5 +96,44 @@ object SharedP {
             .edit()
             .putInt(key, -1)
             .apply()
+    }
+
+    /** ---------------------存指定 key 的 String 值 deliveryNo----------------------------*/
+
+    @JvmStatic
+    fun putKeyString(context: Context, str: String) {
+        context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
+            .edit()
+            .putString("deliveryNo", str)
+            .apply()
+    }
+
+    @JvmStatic
+    fun getKeyString(context: Context): String {
+        return context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
+            .getString("deliveryNo", "1")
+    }
+
+    /**
+     * 重置 key
+     */
+    @JvmStatic
+    fun clearKeyString(context: Context) {
+        context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
+            .edit()
+            .putString("deliveryNo","")
+            .apply()
+    }
+
+    /**
+     * 退出程序，清除所有数据
+     */
+    @JvmStatic
+    fun clearAll(context: Context) {
+        context.getSharedPreferences(CodeConstant.SP_SHARED, Context.MODE_PRIVATE)
+            .edit()
+            .clear()
+            .apply()
+
     }
 }

@@ -18,5 +18,7 @@ class DecodeCode {
         var buApplyNo: String? = null
         // 申请批次
         var applyNo: String? = null
+        // 所属者（产品码 ——> 对应的箱码）
+        var ownerCode: String? = null
     }
 }

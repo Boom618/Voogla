@@ -21,14 +21,17 @@ class SendOutNextAdapter(val context: Context, layout: Int, datas: MutableList<S
 
         holder.setText(R.id.tv_send_amount_wait, info.deliveryNum)
             .setText(R.id.tv_select_pro_name, info.goodsName)
+            .setText(R.id.tv_send_unit_number, info.unitNum)
+            .setText(R.id.tv_box_amount, "${info.outBoxNum} 箱")
+            .setText(R.id.tv_product_amount, "${info.outGoodsNum} 盒")
 
         holder.itemView.findViewById<TextView>(R.id.tv_scan_code_box).setOnClickListener {
 
             val intent = Intent(context, BoxLinkJavaActivity3::class.java)
-            intent.putExtra(CodeConstant.PAGE_STATE_KEY, CodeConstant.PAGE_SCAN_OUT)
             intent.putExtra(CodeConstant.SEND_POSITION,position)
+            intent.putExtra("deliveryNum",info.deliveryNum)
+            intent.putExtra("unitNum",info.unitNum)
             intent.putExtra("goodsNo",info.goodsNo)
-//            (context as SendOutNextActivity).startActivityForResult(intent,CodeConstant.REQUEST_CODE_OUT)
             (context as SendOutNextActivity2).startActivityForResult(intent,CodeConstant.REQUEST_CODE_OUT)
         }
 

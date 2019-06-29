@@ -11,7 +11,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- *  管理所有 Activity 任务栈
+ * 管理所有 Activity 任务栈
+ *
  * @author TY
  */
 public class ActivitiesHelper implements Application.ActivityLifecycleCallbacks {
@@ -58,35 +59,35 @@ public class ActivitiesHelper implements Application.ActivityLifecycleCallbacks 
             }
         }
         activities.addLast(new WeakReference<>(activity));
-        ZBLog.INSTANCE.d(TAG, "onActivityCreated:size:" + activities.size());
+        ZBLog.d(TAG, "onActivityCreated:size:" + activities.size());
     }
 
     @Override
     public void onActivityStarted(Activity activity) {
-        ZBLog.INSTANCE.d(TAG, "onActivityStarted:" + activity.getClass().getSimpleName());
+        ZBLog.d(TAG, "onActivityStarted:" + activity.getClass().getSimpleName());
         lastStartActivity = new WeakReference<>(activity);
-        ZBLog.INSTANCE.d(TAG, "onActivityStarted:size:" + activities.size());
+        ZBLog.d(TAG, "onActivityStarted:size:" + activities.size());
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
-        ZBLog.INSTANCE.d(TAG, "onActivityResumed:" + activity.getClass().getSimpleName());
+        ZBLog.d(TAG, "onActivityResumed:" + activity.getClass().getSimpleName());
         lastResumeActivity = new WeakReference<>(activity);
-        ZBLog.INSTANCE.d(TAG, "onActivityResumed:size:" + activities.size());
+        ZBLog.d(TAG, "onActivityResumed:size:" + activities.size());
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
-        ZBLog.INSTANCE.d(TAG, "onActivityPaused:" + activity.getClass().getSimpleName());
+        ZBLog.d(TAG, "onActivityPaused:" + activity.getClass().getSimpleName());
         lastResumeActivity = null;
-        ZBLog.INSTANCE.d(TAG, "onActivityPaused:size:" + activities.size());
+        ZBLog.d(TAG, "onActivityPaused:size:" + activities.size());
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
-        ZBLog.INSTANCE.d(TAG, "onActivityStopped:" + activity.getClass().getSimpleName());
+        ZBLog.d(TAG, "onActivityStopped:" + activity.getClass().getSimpleName());
         lastStartActivity = null;
-        ZBLog.INSTANCE.d(TAG, "onActivityStopped:size:" + activities.size());
+        ZBLog.d(TAG, "onActivityStopped:size:" + activities.size());
     }
 
     @Override
@@ -96,7 +97,7 @@ public class ActivitiesHelper implements Application.ActivityLifecycleCallbacks 
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        ZBLog.INSTANCE.d(TAG, "onActivityDestroyed:" + activity.getClass().getSimpleName());
+        ZBLog.d(TAG, "onActivityDestroyed:" + activity.getClass().getSimpleName());
         Iterator<WeakReference<Activity>> it = activities.iterator();
         while (it.hasNext()) {
             WeakReference<Activity> ref = it.next();
@@ -104,7 +105,16 @@ public class ActivitiesHelper implements Application.ActivityLifecycleCallbacks 
                 it.remove();
             }
         }
-        ZBLog.INSTANCE.d(TAG, "onActivityDestroyed:size:" + activities.size());
+        ZBLog.d(TAG, "onActivityDestroyed:size:" + activities.size());
+    }
+
+    /**
+     * 获取当前 Activity
+     *
+     * @return Activity
+     */
+    public Activity getLastActivity() {
+        return activities.getLast().get();
     }
 
     public boolean isAppFrontOfUser() {

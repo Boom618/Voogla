@@ -9,9 +9,12 @@ import com.ty.voogla.adapter.LayoutInit
 import com.ty.voogla.base.BaseActivity
 import com.ty.voogla.base.ResponseInfo
 import com.ty.voogla.constant.CodeConstant
+import com.ty.voogla.constant.TipString
 import com.ty.voogla.data.SparseArrayUtil
 import com.ty.voogla.mvp.contract.VooglaContract
 import com.ty.voogla.mvp.presenter.VooglaPresenter
+import com.ty.voogla.util.FullDialog
+import com.ty.voogla.widght.LoadingDialog
 import kotlinx.android.synthetic.main.activity_box_link_code_look.*
 
 /**
@@ -57,6 +60,15 @@ class BoxLinkLookActivity : BaseActivity(),VooglaContract.ListView<String> {
 
     }
     override fun showError(msg: String?) {
+
+    }
+    private var dialog: LoadingDialog? = null
+    override fun showLoading() {
+        dialog = FullDialog.showLoading(this, TipString.loading)
+    }
+
+    override fun hideLoading() {
+        dialog?.dismiss()
     }
 
     override fun initTwoView() {

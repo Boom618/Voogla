@@ -12,20 +12,27 @@ import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 
 /**
- * @author TY on 2019/1/14.
+ * @author TY on 2019/1/14.unitNum
  */
-class SendOutAdapter(val context: Context, layout: Int, datas: MutableList<SendOutListData.ListBean>) :
+class SendOutAdapter(
+    val context: Context,
+    layout: Int,
+    private val deliverySet: MutableSet<String>,
+    datas: MutableList<SendOutListData.ListBean>
+) :
     CommonAdapter<SendOutListData.ListBean>(context, layout, datas) {
 
     override fun convert(holder: ViewHolder, info: SendOutListData.ListBean, position: Int) {
 
-        val type = when {
+        var type = when {
             info.deliveryState.equals("01") -> "立即发货"
             else -> "查看明细"
         }
-        val state = when {
-            info.deliveryState.equals("01") -> "待发货"
-            else -> "已发货"
+
+        deliverySet.forEach {
+            if (it.contains(info.deliveryNo)) {
+                type = "继续发货"
+            }
         }
 
         val addr = info.provinceLevel + info.cityLevel + info.countyLevel
@@ -35,27 +42,29 @@ class SendOutAdapter(val context: Context, layout: Int, datas: MutableList<SendO
             else -> addrAll
         }
         holder.setText(R.id.tv_state_type, type)
-            .setText(R.id.tv_number, info.deliveryNo)
             .setText(R.id.tv_send_out_date, info.deliveryDate)
+            .setText(R.id.tv_responsible, info.shipperName)
+            .setText(R.id.tv_goods_name, info.goodsName)
+            .setText(R.id.tv_receiver_name, info.receiverName)
+            .setText(R.id.tv_goods_number, "${info.deliveryNum} ${info.unitName}")
+            .setText(R.id.tv_unit_number, "${info.unitNum} 个")
             .setText(R.id.tv_send_out_address, stringAddr)
-            .setText(R.id.tv_send_out_state, state)
+            .setText(R.id.tv_bat_no, info.batchNo)
 
         holder.itemView.findViewById<TextView>(R.id.tv_state_type).setOnClickListener {
             when (type) {
-                "立即发货" -> {
-//                    val intent = Intent(context, SendOutNextActivity::class.java)
-                    val intent = Intent(context, SendOutNextActivity2::class.java)
-                    intent.putExtra(CodeConstant.DELIVERY_NO,info.deliveryNo)
+                "查看明细" -> {
+                    val intent = Intent(context, SendOutLookActivity::class.java)
+                    intent.putExtra(CodeConstant.DELIVERY_NO, info.deliveryNo)
                     context.startActivity(intent)
                 }
                 else -> {
-                    val intent = Intent(context,SendOutLookActivity::class.java)
-                    intent.putExtra(CodeConstant.DELIVERY_NO,info.deliveryNo)
+                    val intent = Intent(context, SendOutNextActivity2::class.java)
+                    intent.putExtra(CodeConstant.DELIVERY_NO, info.deliveryNo)
                     context.startActivity(intent)
                 }
             }
         }
-
     }
 
 }

@@ -8,13 +8,14 @@ static def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("GMT+8"))
 }
 android {
-    compileSdkVersion 28
+    compileSdkVersion ZBConfig.compileSdkVersion
+    buildToolsVersion ZBConfig.buildToolsVersion
     defaultConfig {
         applicationId "com.ty.voogla"
-        minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion ZBConfig.minSdkVersion
+        targetSdkVersion ZBConfig.targetSdkVersion
+        versionCode ZBConfig.versionCode
+        versionName ZBConfig.versionName
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -31,8 +32,8 @@ android {
     flavorDimensions "default"
     productFlavors {
         pda {
-            versionCode 1
-            versionName "1.0.0"
+            versionCode ZBConfig.versionCode
+            versionName ZBConfig.versionName
             signingConfig = signingConfigs.Release
 
             // buildConfigField: type name value
@@ -40,8 +41,8 @@ android {
         }
 
         phone {
-            versionCode 1
-            versionName "1.0.0"
+            versionCode ZBConfig.versionCode
+            versionName ZBConfig.versionName
             signingConfig = signingConfigs.Release
 
             // buildConfigField: type name value
@@ -116,16 +117,23 @@ dependencies {
 
     //Gson解析
     implementation "com.google.code.gson:gson:${ZBConfig.googleGsonVersion}"
-
     //日志拦截器
     implementation "com.squareup.okhttp3:logging-interceptor:${ZBConfig.okhttp3Version}"
 
-    //rxjava相关依赖
+    //rxJava相关依赖
     implementation "io.reactivex.rxjava2:rxjava:${ZBConfig.rx2Version}"
     implementation "io.reactivex.rxjava2:rxandroid:${ZBConfig.rx2AndroidVersion}"
 
     // 时间选择框
     implementation "com.contrarywind:Android-PickerView:${ZBConfig.PickerViewVersion}"
+    // spinner 下拉选择
+    implementation 'com.jaredrummler:material-spinner:1.3.1'
+    // DiskLruCache
+    //implementation 'cc.fussen:cachelibrary:1.5.1'
+    // litePal 数据库
+    //implementation 'org.litepal.android:kotlin:3.0.0'
+    // tencent key value 存值
+    implementation 'com.tencent:mmkv:1.0.19'
 
     // TabLayout 库
     implementation "com.flyco.tablayout:FlycoTabLayout_Lib:${ZBConfig.tablayout_version}"
@@ -133,13 +141,9 @@ dependencies {
     implementation 'me.yokeyword:fragmentation:1.3.6'
 
     // log
-    //implementation 'com.elvishew:xlog:1.6.1'
     implementation "com.orhanobut:logger:${ZBConfig.loggerVersion}"
     // toasty
     implementation 'com.github.GrenderG:Toasty:1.4.1'
-
-    // progressbar
-    //implementation "com.mikhaellopez:circularprogressbar:${ZBConfig.CircleProgressBarVersion}"
 
     //1.1.0 API改动过大，老用户升级需谨慎 listView 刷新 {ZBConfig.SmartRefreshVersion}
     implementation "com.scwang.smartrefresh:SmartRefreshLayout:${ZBConfig.SmartRefreshVersion}"
@@ -149,7 +153,6 @@ dependencies {
 
     // adapter
     implementation "com.zhy:base-rvadapter:${ZBConfig.rvadapterVersion}"
-//    implementation project(":DataCollectionLib")
     implementation files('libs/ScanerLibrary V1.5.jar')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"

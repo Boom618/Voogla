@@ -39,6 +39,8 @@ ext {
             iconDevelop     : "",
     ]
 
+    versionCode                 = 2
+    versionName                 = '1.1.0'
     minSdkVersion               = 19
     targetSdkVersion            = 28
     compileSdkVersion           = 28

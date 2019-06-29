@@ -27,19 +27,13 @@ class CheckInfoList {
          */
 
         var companyNo: String? = null
-        var customerType: String? = null
         var deliveryNo: String? = null
         var customerName: String? = null
         var companyName: String? = null
-        var deliveryDate: String? = null
-        var deliveryState: String? = null
-        var deliveryStateName: String? = null
         var provinceLevel: String? = null
         var cityLevel: String? = null
         var countyLevel: String? = null
         var deliveryAddress: String? = null
-        var outTime: String? = null
-        var outWareDesc: String? = null
         var fleeFlag: String? = null
     }
 }

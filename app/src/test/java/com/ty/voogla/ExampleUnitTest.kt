@@ -1,5 +1,6 @@
 package com.ty.voogla
 
+import com.ty.voogla.data.RemoveDupData
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -21,23 +22,16 @@ class ExampleUnitTest {
         list.add("1")
         list.add("1")
         list.add("2")
-        val size = list.size
-        val size1 = list.distinct().size
+        println(list)
+        val set = list.toMutableSet()
+        println(set)
+        val mutableList = set.toMutableList()
 
-        val timeMillis = System.currentTimeMillis()
+        val removeDup = RemoveDupData.removeDupString(list)
 
-        var temp = 0
-        for (i in 0..100000000){
-//            for (j in 0..10000){
-//               temp = i + j
-//            }
-            temp = i
-        }
-        println(temp)
+        println(removeDup)
+        println(mutableList::class.java)
 
-        val millis = System.currentTimeMillis()
-
-        println(millis - timeMillis)
 
 
     }

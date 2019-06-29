@@ -1,16 +1,18 @@
 package com.ty.voogla.bean.sendout
 
+import java.io.Serializable
+
 /**
  * @author TY on 2019/1/18.
  *
  * 发货单详情
  */
-class SendOutListInfo {
+class SendOutListInfo : Serializable {
 
     var goodsDeliveryInfo: GoodsDeliveryInfoBean? = null
     var deliveryDetailInfos: MutableList<DeliveryDetailInfosBean>? = null
 
-    class GoodsDeliveryInfoBean {
+    class GoodsDeliveryInfoBean : Serializable {
         /**
          * companyNo : 企业编号
          * deliveryNo : 发货单号
@@ -26,21 +28,18 @@ class SendOutListInfo {
 
         var companyNo: String? = null
         var deliveryNo: String? = null
-        var customerName: String? = null
-        var deliveryDate: String? = null
         var provinceLevel: String? = null
         var cityLevel: String? = null
         var countyLevel: String? = null
         var deliveryAddress: String? = null
-        var deliveryState: String? = null
-        var deliveryStateName: String? = null
     }
 
-    class DeliveryDetailInfosBean {
+    class DeliveryDetailInfosBean : Serializable {
         /**
          * goodsNo : 商品编号
          * goodsName : 商品名称
-         * deliveryNum : 发货数量
+         * deliveryNum : 发货整箱数量
+         * unitNum : 发货散货数量
          * unit : 商品单位
          * unitName : 商品单位中文
          */
@@ -48,16 +47,17 @@ class SendOutListInfo {
         var goodsNo: String? = null
         var goodsName: String? = null
         var deliveryNum: String? = null
+        var unitNum: String? = null
         var unit: String? = null
         var unitName: String? = null
 
+        // 缓存箱码数、产品数 字段
+        var outBoxNum = 0
+        var outGoodsNum = 0
+
         // 箱码信息
-        var qrCode:ArrayList<String>? = null
-//        var qrCode:MutableSet<QrCodeListData>? = null
+//        var qrCode:ArrayList<String>? = null
+        var listCode = mutableListOf<QrCodeListData>()
 
     }
-
-    /**
-     * 箱码信息
-     */
 }

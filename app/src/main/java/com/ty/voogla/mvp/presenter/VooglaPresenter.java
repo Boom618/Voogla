@@ -11,20 +11,21 @@ import com.ty.voogla.bean.sendout.SendOutListData;
 import com.ty.voogla.bean.sendout.SendOutListInfo;
 import com.ty.voogla.constant.ApiNameConstant;
 import com.ty.voogla.constant.CodeConstant;
+import com.ty.voogla.constant.TipString;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.net.HttpMethods;
 import com.ty.voogla.data.SimpleCache;
-import com.ty.voogla.util.ToastUtil;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import okhttp3.RequestBody;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 /**
  * @author TY on 2018/12/20.
  */
-public class VooglaPresenter implements VooglaContract.Presenter {
+public class VooglaPresenter {
 
     private HttpMethods httpMethods;
 
@@ -63,9 +64,8 @@ public class VooglaPresenter implements VooglaContract.Presenter {
     }
 
 
-    @Override
-    public void getData(String username, String password) {
-
+    public void login(String username, String password) {
+        iView.showLoading();
         httpMethods.userLogin(new SingleObserver<BaseResponse<UserInfo>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -74,9 +74,10 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onSuccess(BaseResponse<UserInfo> response) {
+                iView.hideLoading();
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
                     UserInfo userInfo = response.getData();
-                    SimpleCache.putUserInfo(userInfo);
+                    SimpleCache.Companion.putUserInfo(userInfo);
                     iView.showSuccess(userInfo);
                 } else {
                     iView.showError(response.getMsg());
@@ -85,7 +86,8 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onError(Throwable e) {
-                iView.showError("登录失败");
+                iView.hideLoading();
+                iView.showError(e.getMessage());
             }
         }, username, password);
     }
@@ -152,8 +154,9 @@ public class VooglaPresenter implements VooglaContract.Presenter {
      * 获取产品列表信息
      *
      * @param companyNo 编号
+     * @param type 生产入库 or 出库
      */
-    public void getProductListInfo(String companyNo) {
+    public void getProductListInfo(String companyNo, final String type) {
         httpMethods.getProductListInfo(new SingleObserver<BaseResponse<ProductListInfoData>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -163,7 +166,13 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             @Override
             public void onSuccess(BaseResponse<ProductListInfoData> response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
-                    iView.showSuccess(response.getData());
+                    if (type.equals("proInto")) {
+                        iView.showSuccess(response.getData());
+                    }else{
+                        // 用户可能手动添加了 产品，需要更新数据
+                        SimpleCache.Companion.clearKey("product");
+                        SimpleCache.Companion.putProductList(response.getData());
+                    }
                 } else {
                     iView.showError(response.getMsg());
                 }
@@ -171,9 +180,44 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onError(Throwable e) {
-                iView.showError(e.getMessage());
+                if (e instanceof SocketTimeoutException) {
+                    iView.showError(TipString.outTimeRetry);
+                }else{
+                    iView.showError(e.getMessage());
+                }
             }
         }, companyNo);
+    }
+
+    /**
+     * 入库保存
+     */
+    public void addProduct(RequestBody body){
+        iView.showLoading();
+        httpMethods.addProduct(new SingleObserver<ResponseInfo>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onSuccess(ResponseInfo responseInfo) {
+                iView.hideLoading();
+                if (CodeConstant.SERVICE_SUCCESS.equals(responseInfo.getMsg())) {
+                    // 入库成功（保存）
+                    iView.showResponse(responseInfo);
+                } else {
+                    iView.showError(responseInfo.getMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                iView.hideLoading();
+                iView.showError(e.getMessage());
+            }
+        }, body);
+
     }
 
     /**
@@ -244,7 +288,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onError(Throwable e) {
                 if (boxView == null) {
                     iView.showError(e.getMessage());
-                }else{
+                } else {
                     boxView.showError(e.getMessage());
                 }
             }
@@ -288,7 +332,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
      *
      * @param qrCode
      */
-    public void getQrCodeList(String qrCode,String qrCodeType) {
+    public void getQrCodeList(String qrCode, String qrCodeType) {
         httpMethods.getQrCodeList(new SingleObserver<BaseResponse<ArrayList<String>>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -321,7 +365,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
                     boxView.showError(e.getMessage());
                 }
             }
-        }, qrCode,qrCodeType);
+        }, qrCode, qrCodeType);
 
     }
 
@@ -332,7 +376,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
      *
      * @param companyNo
      */
-    public void getSendOutList2(String companyNo,String deliveryState) {
+    public void getSendOutList2(String companyNo, String deliveryState,String goodsNo) {
         httpMethods.getSendOutList2(new SingleObserver<BaseResponse<SendOutListData>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -355,7 +399,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
                 iListView.showError(e.getMessage());
 
             }
-        }, companyNo,deliveryState);
+        }, companyNo, deliveryState,goodsNo);
     }
 
     /**
@@ -477,9 +521,10 @@ public class VooglaPresenter implements VooglaContract.Presenter {
     /**
      * 新增出库
      *
-     * @param body
+     * @param body body
      */
     public void addSendOut(RequestBody body) {
+        iView.showLoading();
         httpMethods.addSendOut(new SingleObserver<ResponseInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -488,15 +533,17 @@ public class VooglaPresenter implements VooglaContract.Presenter {
 
             @Override
             public void onSuccess(ResponseInfo response) {
+                iView.hideLoading();
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
                     iView.showResponse(response);
                 } else {
-                    iView.showError(response.getMsg());
+                    iView.showError(TipString.outFailure);
                 }
             }
 
             @Override
             public void onError(Throwable e) {
+                iView.hideLoading();
                 iView.showError(e.getMessage());
             }
         }, body);
@@ -509,10 +556,10 @@ public class VooglaPresenter implements VooglaContract.Presenter {
     /**
      * 稽查确认
      *
-     * @param companyNo companyNo
+     * @param companyNo  companyNo
      * @param deliveryNo deliveryNo
      */
-    public void checkInfoConfirm(String companyNo, String deliveryNo,String fleeFlag) {
+    public void checkInfoConfirm(String companyNo, String deliveryNo, String fleeFlag) {
         httpMethods.checkInfoConfirm(new SingleObserver<ResponseInfo>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -532,7 +579,7 @@ public class VooglaPresenter implements VooglaContract.Presenter {
             public void onError(Throwable e) {
                 iView.showError(e.getMessage());
             }
-        }, companyNo, deliveryNo,fleeFlag);
+        }, companyNo, deliveryNo, fleeFlag);
     }
 
 }

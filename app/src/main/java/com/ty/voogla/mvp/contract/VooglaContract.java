@@ -17,13 +17,15 @@ public interface VooglaContract {
         /**
          * Presenter 完成数据加载,该方法展示在 view 上
          * 返回回调数据
+         *
+         * @param data obj 数据
          */
         void showSuccess(T data);
 
         /**
          * 错误信息
          *
-         * @param msg
+         * @param msg msg
          */
         void showError(String msg);
 
@@ -33,6 +35,16 @@ public interface VooglaContract {
          * @param response
          */
         void showResponse(ResponseInfo response);
+
+        /**
+         * 保存加载 dialog
+         */
+        void showLoading();
+
+        /**
+         * 隐藏 dialog
+         */
+        void hideLoading();
     }
 
     /**
@@ -49,7 +61,7 @@ public interface VooglaContract {
         /**
          * 错误信息
          *
-         * @param msg
+         * @param msg msg
          */
         void showError(String msg);
 
@@ -59,12 +71,20 @@ public interface VooglaContract {
          * @param response
          */
         void showResponse(ResponseInfo response);
+
+        /**
+         * 保存加载 dialog
+         */
+        void showLoading();
+
+        /**
+         * 隐藏 dialog
+         */
+        void hideLoading();
     }
 
     /**
      * 扫码页面单独接口
-     *
-     * @param
      */
     interface BoxLinkView {
 
@@ -80,13 +100,4 @@ public interface VooglaContract {
         void showError(String msg);
     }
 
-    interface Presenter {
-        /**
-         * 从服务器拉取数据
-         *
-         * @param userName
-         * @param password
-         */
-        void getData(String userName, String password);
-    }
 }

@@ -42,11 +42,9 @@ public class HttpMethods {
     /**
      * 默认超时时间
      */
-    private static final int DEFAULT_TIMEOUT = 20;
+    private static final int DEFAULT_TIMEOUT = 60;
     private static HttpMethods mInstance;
     private ApiService mService;
-    private static Gson gson;
-
     /**
      * cookie
      */
@@ -69,7 +67,7 @@ public class HttpMethods {
         final HttpLoggingInterceptor log = new HttpLoggingInterceptor();
         log.setLevel(HttpLoggingInterceptor.Level.BODY);
         // 创建OKHttpClient
-        OkHttpClient.Builder client = new OkHttpClient.Builder()
+        OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .cookieJar(new CookieJar() {
                     @Override
@@ -91,14 +89,14 @@ public class HttpMethods {
                         return cookies != null ? cookies : new ArrayList<Cookie>();
                     }
                 })
-                //.addInterceptor(new SessionInterceptor()) // 用 cookies 不用 session
                 // 日志拦截器
-//                .addInterceptor(new LogInterceptor())
-                .addInterceptor(log);
+                .addInterceptor(new LogInterceptor())
+                .addInterceptor(log)
+                .build();
 
         Retrofit mRetrofit = new Retrofit.Builder()
-                .client(client.build())
-                .addConverterFactory(GsonConverterFactory.create(buildGson()))
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .baseUrl(url)
                 .build();
@@ -259,8 +257,9 @@ public class HttpMethods {
      * @param observer
      * @param companyNo
      */
-    public void getSendOutList2(SingleObserver<BaseResponse<SendOutListData>> observer, String companyNo,String deliveryState) {
-        mService.getSendOutList2(companyNo, deliveryState)
+    public void getSendOutList2(SingleObserver<BaseResponse<SendOutListData>> observer,
+                                String companyNo,String deliveryState,String goodsNo) {
+        mService.getSendOutList2(companyNo, deliveryState,goodsNo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
@@ -349,25 +348,6 @@ public class HttpMethods {
         mService.checkInfoConfirm(companyNo, deliveryNo, fleeFlag)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
-    }
-
-    /**
-     * --------------------------------- Gson  ----------------------------------------
-     */
-
-    private static Gson buildGson() {
-        if (gson == null) {
-            gson = new GsonBuilder()
-                    .registerTypeAdapter(Integer.class, new IntegerDefault0Adapter())
-                    .registerTypeAdapter(int.class, new IntegerDefault0Adapter())
-                    .registerTypeAdapter(Double.class, new DoubleDefault0Adapter())
-                    .registerTypeAdapter(double.class, new DoubleDefault0Adapter())
-                    .registerTypeAdapter(Long.class, new LongDefault0Adapter())
-                    .registerTypeAdapter(long.class, new LongDefault0Adapter())
-                    .registerTypeAdapter(String.class, new StringDefault0Adapter())
-                    .create();
-        }
-        return gson;
     }
 
 }

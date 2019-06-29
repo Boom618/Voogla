@@ -36,7 +36,7 @@
                 app:layout_constraintStart_toEndOf="@id/tv_product_batch"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="0dp"
-                android:text="1234567890987654"
+                android:text="1234554"
                 android:textSize="@dimen/text_16"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_product_batch"
                 android:layout_height="wrap_content"/>

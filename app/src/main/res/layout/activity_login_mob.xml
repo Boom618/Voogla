@@ -26,7 +26,7 @@
             android:text="@string/app_name_mob"
             android:layout_height="wrap_content"/>
 
-    <!--测试：18800000001 正式：13621749172-->
+    <!--测试：13512345680 正式：13621749172-->
     <EditText android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:id="@+id/et_user_name"
@@ -39,7 +39,7 @@
               android:textSize="@dimen/text_14"
               android:layout_marginTop="@dimen/space_50"
               android:drawablePadding="@dimen/space_10"
-              android:text="18800000001"
+              android:text="13621749172"
               app:layout_constraintLeft_toLeftOf="parent"
               app:layout_constraintRight_toRightOf="parent"
               app:layout_constraintTop_toBottomOf="@+id/image_logo"
@@ -57,14 +57,12 @@
               android:layout_marginTop="@dimen/x17"
               android:textSize="@dimen/text_14"
               android:drawablePadding="@dimen/space_10"
-              android:text="000001"
+              android:text="124578"
               app:layout_constraintLeft_toLeftOf="parent"
               app:layout_constraintRight_toRightOf="parent"
               app:layout_constraintTop_toBottomOf="@+id/et_user_name"
               android:inputType="textPassword"
               android:layout_height="wrap_content"/>
-
-    <!-- android:background="@mipmap/log_btn"   @drawable/button_color -->
 
     <Button android:layout_width="wrap_content"
             android:id="@+id/login_mob"

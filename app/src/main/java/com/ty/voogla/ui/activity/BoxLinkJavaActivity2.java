@@ -24,10 +24,7 @@ import com.ty.voogla.bean.produce.InBoxCodeDetailInfosBean;
 import com.ty.voogla.bean.sendout.QrCodeListData;
 import com.ty.voogla.constant.CodeConstant;
 import com.ty.voogla.constant.TipString;
-import com.ty.voogla.data.RepeatCode;
-import com.ty.voogla.data.SharedP;
-import com.ty.voogla.data.SimpleCache;
-import com.ty.voogla.data.SparseArrayUtil;
+import com.ty.voogla.data.*;
 import com.ty.voogla.mvp.contract.VooglaContract;
 import com.ty.voogla.mvp.presenter.VooglaPresenter;
 import com.ty.voogla.util.ToastUtil;
@@ -90,7 +87,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
     /**
      * 套码
      */
-    private boolean isPackageCode = true;
+    private boolean isPackageCode = false;
     /**
      * 更换类型（套码和卷码）
      */
@@ -116,11 +113,6 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
     private TextView numberCode;
 
     /**
-     * 检测 重复码
-     */
-    ArrayList<String> repeatCodeList = new ArrayList<String>();
-
-    /**
      * 所有已扫过的码,校验
      */
     private List<InBoxCodeDetailInfosBean> allCode;
@@ -138,7 +130,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
     protected void onBaseCreate(@Nullable Bundle savedInstanceState) {
 
         String type = getIntent().getStringExtra(CodeConstant.PAGE_STATE_KEY);
-        companyNo = SimpleCache.getUserInfo().getCompanyNo();
+        companyNo = SimpleCache.Companion.getUserInfo().getCompanyNo();
 
         tvBox = findViewById(R.id.box_code);
         deleteView = findViewById(R.id.img_delete);
@@ -149,16 +141,18 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
             initToolBar(R.string.box_link, TipString.save, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    DialogUtil.hideInputWindow(v.getContext(), v);
                     returnActivity("productIn");
                 }
             });
-            String spec = SimpleCache.getString(CodeConstant.GOODS_SPEC);
+            String spec = SimpleCache.Companion.getString(CodeConstant.GOODS_SPEC);
             specNumber = Integer.parseInt(spec);
             // 全部码
             allCode = SparseArrayUtil.getQrCodeList(this);
         } else if (CodeConstant.PAGE_BOX_LINK_EDIT.equals(type)) {
             // 修改编辑
-            String spec = SimpleCache.getString(CodeConstant.GOODS_SPEC);
+            String spec = SimpleCache.Companion.getString(CodeConstant.GOODS_SPEC);
+            assert spec != null;
             specNumber = Integer.parseInt(spec);
             sendPosition = getIntent().getIntExtra("position", 0);
             comBoxCode = getIntent().getStringExtra("comBoxCode");
@@ -177,6 +171,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
             initToolBar(R.string.box_link, TipString.save, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    DialogUtil.hideInputWindow(v.getContext(), v);
                     returnActivity("productChange");
                 }
             });
@@ -190,22 +185,19 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
 
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, final int position) {
+            public void onItemClick(final View view, RecyclerView.ViewHolder holder, final int position) {
 
-                ImageView deleteView = holder.itemView.findViewById(R.id.image_delete);
+                final ImageView deleteView = holder.itemView.findViewById(R.id.image_delete);
 
-                // 套码 【默认 true 】
+                // 非套码
                 if (buApplyNo == null) {
 
                     deleteView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
-                            numberCode.setText(String.valueOf(qrCodeInfos.size()));
-
                             qrCodeInfos.remove(position);
-                            // 重复码集合
-                            repeatCodeList.remove(position);
+                            numberCode.setText(String.valueOf(qrCodeInfos.size()));
                             adapter.notifyItemRemoved(position);
                             adapter.notifyItemRangeChanged(position, qrCodeInfos.size() - position);
                             ToastUtil.showSuccess(TipString.deleteSuccess);
@@ -219,7 +211,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
                             numberCode.setText("0");
                             tvBox.setText("");
                             qrCodeInfos.clear();
-                            repeatCodeList.clear();
+                            deleteView.setVisibility(View.GONE);
                             adapter.notifyDataSetChanged();
                         }
                     });
@@ -272,6 +264,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
         if (barcode != null) {
             int size = barcode.length();
             Log.d("TAG", "---->>heww handleResult() barcode =" + barcode + ",size=" + size);
+            // 【开始解析扫码结果 00】
             presenter.decodeUrlCode(barcode);
         } else {
             ToastUtil.showError(TipString.scanError);
@@ -286,7 +279,6 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
                 if (isPackageCode) {
                     numberCode.setText("0");
                     qrCodeInfos.clear();
-                    repeatCodeList.clear();
                     adapter.notifyDataSetChanged();
                 }
                 tvBox.setText("");
@@ -317,7 +309,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
         final String boxString = tvBox.getText().toString().trim();
         // 企业箱号
         final String companyString = companyView.getText().toString().trim();
-        if (boxString.isEmpty() || companyString.isEmpty()) {
+        if (boxString.isEmpty()) {
             ToastUtil.showWarning(TipString.boxCodeNotNull);
             return;
         }
@@ -328,50 +320,48 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
 
         //  规格大小
         if (size == specNumber) {
-            Intent intent = new Intent();
-            intent.putExtra(CodeConstant.BOX_CODE, boxString);
-            intent.putExtra(CodeConstant.RESULT_TYPE, type);
-            intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
-            intent.putExtra("buApplyNo", buApplyNo);
-            intent.putExtra("comBoxCode", companyString);
-            SimpleCache.putQrCode(qrCodeInfos);
-            setResult(CodeConstant.RESULT_CODE, intent);
+            gotoProductActivity(type, boxString, companyString);
             finish();
         } else {
             // 该产品规格为24，实际为10，是否继续绑定
-            String tip = "该产品规格" + specNumber + ",实际为 " + size + " 继续绑定";
-            DialogUtil.deleteItemDialog(this, TipString.tips, tip, new NormalAlertDialog.onNormalOnclickListener() {
+            String tip = "该产品规格" + specNumber + ",实际为 " + size + " 是否继续绑定";
+            DialogUtil.leftRightDialog(this, TipString.tips, tip, new NormalAlertDialog.onNormalOnclickListener() {
                 @Override
                 public void onNormalClick(NormalAlertDialog dialog) {
-                    Intent intent = new Intent();
-                    intent.putExtra(CodeConstant.BOX_CODE, boxString);
-                    intent.putExtra(CodeConstant.RESULT_TYPE, type);
-                    intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
-                    intent.putExtra("buApplyNo", buApplyNo);
-                    intent.putExtra("comBoxCode", companyString);
-                    SimpleCache.putQrCode(qrCodeInfos);
-                    setResult(CodeConstant.RESULT_CODE, intent);
+                    gotoProductActivity(type, boxString, companyString);
                     dialog.dismiss();
                     finish();
                 }
-            });
+            },false);
         }
     }
+
+    private void gotoProductActivity(String type, String boxString, String companyString) {
+        Intent intent = new Intent();
+        intent.putExtra(CodeConstant.BOX_CODE, boxString);
+        intent.putExtra(CodeConstant.RESULT_TYPE, type);
+        intent.putExtra(CodeConstant.SEND_POSITION, sendPosition);
+        intent.putExtra("buApplyNo", buApplyNo);
+        intent.putExtra("comBoxCode", companyString);
+        SimpleCache.Companion.putQrCode(qrCodeInfos);
+        setResult(CodeConstant.RESULT_CODE, intent);
+    }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // 扫码按键
         if (keyCode == CodeConstant.KEY_CODE_223 || keyCode == CodeConstant.KEY_CODE_224) {
             companyView.clearFocus();
-            // DialogUtil.hideInputWindow(v.getContext(), v);
             // 在扫码中
             if (isScanIng) {
                 stopScaner();
             } else {
                 handleStartScaner();
             }
+            isScanIng = !isScanIng;
+            return true;
         }
-        isScanIng = !isScanIng;
 
         return super.onKeyDown(keyCode, event);
     }
@@ -402,13 +392,15 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
         if (subscribe != null) {
             subscribe.dispose();
         }
-        mBarcodeManager.stopScanner();
+        if (mBarcodeManager != null) {
+            mBarcodeManager.stopScanner();
+        }
     }
 
     /**
      * 解码成功 【 01 】
      *
-     * @param result
+     * @param result 解码结果
      */
     @Override
     public void decodeCode(DecodeCode.ResultBean result) {
@@ -422,14 +414,13 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
         // 箱码 A0702  产品码 A0701
         final String codeClass = qrCodeType.equals("2") ? CodeConstant.QR_CODE_0702 : CodeConstant.QR_CODE_0701;
 
-        int size = repeatCodeList.size();
+        int size = qrCodeInfos.size();
 
         // 有数据的时候判断套码 和 卷码
         if (size != 0) {
             if (isPackageCode != currentPackage) {
                 // 码类型不一致提示( 套码和卷码更换 )
                 typeSwitch = true;
-                //deleteSwitchDialog(code, qrCodeType, codeClass, currentPackage);
             }
         }
         isPackage(currentPackage, code, qrCodeType, codeClass);
@@ -465,7 +456,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
     /**
      * 检查是否已扫码 code 【 02 】
      *
-     * @param code
+     * @param code 码号
      */
     private void isContainsCode(String code, String codeClass) {
 
@@ -475,19 +466,8 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
         if (repeatCode) {
             ToastUtil.showWarning(TipString.repeatCode);
         } else {
-            int size = qrCodeInfos.size();
-            if (size == 0) {
-                //第一次
-                httpJudegCode(code, codeClass);
-            } else {
-                if (repeatCodeList.contains(code)) {
-                    ToastUtil.showWarning(TipString.repeatCode);
-                    //ScanSoundUtil.showSound(getApplicationContext(), R.raw.scan_already);
-                } else {
-                    // 入库校验
-                    httpJudegCode(code, codeClass);
-                }
-            }
+
+            httpJudegCode(code, codeClass);
         }
 
     }
@@ -510,7 +490,7 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
     /**
      * 入库码校验 【 04 】
      *
-     * @param response
+     * @param response response
      */
     @Override
     public void produceJudegCode(String response) {
@@ -533,14 +513,17 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
                     //箱码
                     tvBox.setText(currentCode);
                     deleteView.setVisibility(View.VISIBLE);
-                } else {
+                } else{
                     // 产品码
                     qrCodeInfos.add(qrCode);
-                    repeatCodeList.add(currentCode);
+                    List<QrCodeListData> listData = RemoveDupData.removeDupQrCode(qrCodeInfos);
+                    qrCodeInfos.clear();
+                    qrCodeInfos.addAll(listData);
 
-                    numberCode.setText(String.valueOf(qrCodeInfos.size()));
-                    adapter.notifyItemInserted(qrCodeInfos.size());
-                    adapter.notifyItemRangeChanged(qrCodeInfos.size(), qrCodeInfos.size());
+                    int size = qrCodeInfos.size();
+                    numberCode.setText(String.valueOf(size));
+                    adapter.notifyItemInserted(size);
+                    adapter.notifyItemRangeChanged(size, size);
                 }
             }
         }
@@ -551,12 +534,11 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
      * 切换了码类型 套码 -> 切换成卷码
      */
     private void deleteSwitchDialog(final QrCodeListData qrCode) {
-        DialogUtil.deleteItemDialog(this, TipString.tips, TipString.resetData, new NormalAlertDialog.onNormalOnclickListener() {
+        DialogUtil.leftRightDialog(this, TipString.tips, TipString.resetData, new NormalAlertDialog.onNormalOnclickListener() {
             @Override
             public void onNormalClick(NormalAlertDialog dialog) {
                 // 更换了码类型
                 qrCodeInfos.clear();
-                repeatCodeList.clear();
                 if (Objects.equals(qrCode.getQrCodeClass(), CodeConstant.QR_CODE_0702)) {
                     //箱码
                     tvBox.setText(qrCode.getQrCode());
@@ -564,20 +546,23 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
                 } else {
                     //产品码
                     qrCodeInfos.add(qrCode);
-                    repeatCodeList.add(currentCode);
+                    List<QrCodeListData> listData = RemoveDupData.removeDupQrCode(qrCodeInfos);
+                    qrCodeInfos.clear();
+                    qrCodeInfos.addAll(listData);
+
                     numberCode.setText(String.valueOf(qrCodeInfos.size()));
                     adapter.notifyDataSetChanged();
                 }
 
                 dialog.dismiss();
             }
-        });
+        },false);
     }
 
     /**
      * 出库码校验
      *
-     * @param response
+     * @param response response
      */
     @Override
     public void sendJudegCode(String response) {
@@ -588,14 +573,12 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
     /**
      * 根据套码获取产品码
      *
-     * @param codeList
+     * @param codeList 产品码列表
      */
     @Override
     public void getCodeList(ArrayList<String> codeList) {
 
         qrCodeInfos.clear();
-        repeatCodeList.clear();
-//        ArrayList<String> data = codeList;
         int qrCodeSize = codeList.size();
         if (qrCodeSize != specNumber) {
             ToastUtil.showWarning(TipString.scanCompleteSpecCode);
@@ -605,8 +588,6 @@ public class BoxLinkJavaActivity2 extends BaseActivity implements VooglaContract
                 qrCodeList.setQrCodeClass(CodeConstant.QR_CODE_0701);
                 qrCodeList.setQrCode(codeList.get(i));
                 qrCodeInfos.add(qrCodeList);
-                //
-                repeatCodeList.add(codeList.get(i));
             }
             tvBox.setText(currentCode);
             deleteView.setVisibility(View.VISIBLE);

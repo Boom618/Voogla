@@ -19,6 +19,8 @@ public final class CodeConstant {
      */
     public static final String SERVICE_SUCCESS = "success";
     public static final int SERVICE_STATUS = 200;
+    public static final String SERVICE_401 = "401";
+    public static final String SERVICE_500 = "500";
 
     /**
      * 区分箱码绑定页面
@@ -26,7 +28,6 @@ public final class CodeConstant {
     public static final String PAGE_STATE_KEY = "state";
     public static final String PAGE_BOX_LINK = "boxLink";
     public static final String PAGE_BOX_LINK_EDIT = "boxLinkEdit";
-    public static final String PAGE_SCAN_OUT = "scanOut";
 
     /**
      * 腾讯 bug ID
@@ -53,11 +54,6 @@ public final class CodeConstant {
      * 产品码 qr_CodeInfos
      */
     public static final String BOX_CODE = "boxCode";
-    public static final String QR_CODE_INFOS = "qrCodeInfos";
-    /**
-     * 发货出库 箱码或产品码集合
-     */
-    public static final String QR_CODE_LIST = "qrCodeList";
 
     /**
      * 发货明细列表 position
@@ -73,14 +69,9 @@ public final class CodeConstant {
      */
     public static final String SCANNER_READ = "SCANNER_READ";
 
+    // item 分割线
+    public static final int ITEM_DECORATION = 6;
 
-    /**
-     * 用户 sessionId 全局
-     */
-
-    public static final String SYSTEM_KEY = "system";
-    public static final String SYSTEM_VALUE = "android";
-    public static final String SESSION_ID_KEY = "sessionId";
 
     /**
      * SharedPreferences 文件名
@@ -104,9 +95,11 @@ public final class CodeConstant {
 
     /**
      * 用户数据 check@corp 稽查  im@corp PDA
+     * 入库权限字符：im@corp；出库权限字符：om@corp
      */
-    public static final String USER_DATA = "userData";
     public static final String USER_PHONE = "check@corp";
-    public static final String USER_PDA = "im@corp";
+    public static final String USER_PDA = "m@corp";
+    public static final String USER_PDA_IM = "im@corp";
+    public static final String USER_PDA_OM = "om@corp";
 
 }

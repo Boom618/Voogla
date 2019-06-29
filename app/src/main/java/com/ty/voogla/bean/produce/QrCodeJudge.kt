@@ -26,14 +26,10 @@ class QrCodeJudge {
 
         var companyNo: String? = null
         var inBatchNo: String? = null
-        var wareName: String? = null
         var batchNo: String? = null
         var goodsNo: String? = null
         var goodsName: String? = null
-        var qrCodeStart: String? = null
-        var qrCodeEnd: String? = null
         var qrCode: String? = null
         var qrCodeClass: String? = null
-        var generateNo: String? = null
     }
 }

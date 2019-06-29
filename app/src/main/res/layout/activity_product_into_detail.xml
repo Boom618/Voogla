@@ -40,6 +40,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="0dp"
+                android:maxLength="15"
+                android:maxLines="1"
                 android:layout_height="wrap_content"/>
 
 
@@ -62,6 +64,8 @@
                 app:layout_constraintStart_toEndOf="@id/tv_select_house"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="0dp"
+                android:maxLength="15"
+                android:maxLines="1"
                 android:layout_height="wrap_content"/>
 
         <TextView
