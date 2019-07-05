@@ -20,7 +20,6 @@ import com.ty.voogla.util.ResourceUtil
 import com.ty.voogla.util.ToastUtil
 import com.ty.voogla.widght.DialogUtil
 import com.ty.voogla.widght.LoadingDialog
-import com.ty.voogla.widght.NormalAlertDialog
 import com.ty.voogla.widght.SpaceItemDecoration
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import kotlinx.android.synthetic.main.activity_product_into.*

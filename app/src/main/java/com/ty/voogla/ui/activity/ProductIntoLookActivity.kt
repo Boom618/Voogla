@@ -38,7 +38,9 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
     override fun initOneData() {
         initToolBar(R.string.produce_into)
 
-        // 入库批次号
+        // 入库批次号（生产入库手动输入）
+        val batchNo = intent.getStringExtra("batchNo")
+        // 系统自动生成的
         val batchNumber = intent.getStringExtra("batchNumber")
         val productName = intent.getStringExtra("productName")
         val productHouse = intent.getStringExtra("productHouse")
@@ -46,7 +48,7 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
         val productSpec = intent.getStringExtra("productSpec")
         val userName = SimpleCache.userInfo.userName
 
-        tv_batch_number.text = batchNumber
+        tv_batch_number.text = batchNo
         tv_select_pro_name.text = "产品名称：$productName"
         tv_select_house.text = "所在仓库：$productHouse"
         tv_select_time.text = "入库时间：$productTime"
@@ -54,7 +56,6 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
         tv_select_user.text = "操作员：$userName"
 
         presenter.getInputProductInfo(SimpleCache.userInfo.companyNo, batchNumber)
-
 
     }
 
@@ -71,6 +72,7 @@ class ProductIntoLookActivity : BaseActivity(), VooglaContract.View<ProductInput
         house_look_recycler.adapter = ProIntoLookAdapter(this, R.layout.item_house_look, list)
 
     }
+
     override fun showResponse(response: ResponseInfo) {
 
     }
