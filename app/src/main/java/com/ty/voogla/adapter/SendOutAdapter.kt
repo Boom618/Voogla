@@ -42,6 +42,7 @@ class SendOutAdapter(
             else -> addrAll
         }
         holder.setText(R.id.tv_state_type, type)
+            .setText(R.id.tv_order_number, info.deliveryNo)
             .setText(R.id.tv_send_out_date, info.deliveryDate)
             .setText(R.id.tv_responsible, info.shipperName)
             .setText(R.id.tv_goods_name, info.goodsName)

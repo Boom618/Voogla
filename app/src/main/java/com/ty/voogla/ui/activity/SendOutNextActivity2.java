@@ -274,7 +274,7 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
 
     @Override
     public void showResponse(ResponseInfo response) {
-        ToastUtil.showSuccess(response.getMsg());
+        ToastUtil.showSuccess(TipString.sendOutSuccess);
         SparseArrayUtil.clearCode(this, deliveryNo);
         finish();
 

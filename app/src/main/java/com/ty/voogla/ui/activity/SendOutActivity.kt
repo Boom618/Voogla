@@ -34,6 +34,7 @@ class SendOutActivity : BaseActivity(), VooglaContract.ListView<SendOutListData.
     private val listData: MutableList<SendOutListData.ListBean> = mutableListOf()
 
     private var companyNo: String? = null
+    private var goodsNo: String = ""
 
     private var adapter: SendOutAdapter? = null
 
@@ -62,7 +63,7 @@ class SendOutActivity : BaseActivity(), VooglaContract.ListView<SendOutListData.
         // 产品列表 （用户添加了 需要更新） update 更新缓存
         presenter.getProductListInfo(SimpleCache.userInfo.companyNo, "update")
         // 全部 list
-        presenter.getSendOutList2(companyNo, "01", "")
+        //presenter.getSendOutList2(companyNo, "01", "")
         // 产品列表（登录已存）
         try {
             val productList = SimpleCache.productList
@@ -74,7 +75,8 @@ class SendOutActivity : BaseActivity(), VooglaContract.ListView<SendOutListData.
             }
             spinner.setItems(goodsNameList)
             spinner.setOnItemSelectedListener { _, position, id, item ->
-                presenter.getSendOutList2(companyNo, "01", goodsNoList[position])
+                goodsNo = goodsNoList[position]
+                presenter.getSendOutList2(companyNo, "01", goodsNo)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -84,6 +86,9 @@ class SendOutActivity : BaseActivity(), VooglaContract.ListView<SendOutListData.
 
 
     override fun initTwoView() {
+        // 获取列表
+        presenter.getSendOutList2(companyNo, "01", goodsNo)
+
         val set = SparseArrayUtil.getDeliveryNo()
         adapter = SendOutAdapter(this, R.layout.item_send_out, set, listData)
         recyclerView_out.adapter = adapter

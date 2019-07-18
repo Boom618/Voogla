@@ -20,6 +20,7 @@ object TipString {
     const val intoFailure = "入库失败"
     const val outFailure = "出库失败"
     const val intoSuccess = "入库成功"
+    const val sendOutSuccess = "发货成功"
     const val resetData = "重置数据吗"
     const val loading = "加载中。。。"
     const val scanPlease = "请先扫码"
