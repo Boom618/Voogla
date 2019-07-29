@@ -448,7 +448,9 @@ public class VooglaPresenter {
             public void onSuccess(BaseResponse<QrCodeJudge> response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
 
-                    boxView.sendJudegCode(response.getMsg());
+                    //boxView.sendJudegCode(response.getMsg());
+                    // 7.29 修改 出库和入库批次需一致
+                    boxView.sendJudegCode(response.getData().getQrCodeInfo().getBatchNo());
 
                 } else {
                     boxView.showError(response.getMsg());

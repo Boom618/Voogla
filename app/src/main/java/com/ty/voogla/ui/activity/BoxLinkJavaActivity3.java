@@ -433,10 +433,15 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
     /**
      * 出库码校验【04】
      *
-     * @param response
+     * @param batchNo 入库批次
      */
     @Override
-    public void sendJudegCode(String response) {
+    public void sendJudegCode(String batchNo) {
+
+        if (!deliveryNo.equals(batchNo)) {
+            ToastUtil.showWarning("入库批次和出库批次不一致");
+            return;
+        }
 
         ownProCode.put(lastCode, pro2BoxCode);
         // 校验成功直接添加数据
