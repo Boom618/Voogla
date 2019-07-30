@@ -41,8 +41,10 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
 
     // 发货单号
     // 企业编号
+    // 生产批次
     private String deliveryNo;
     private String companyNo;
+    private String batchNo;
 
     // 地址信息
     private String deliveryAddress;
@@ -101,6 +103,7 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         companyNo = SimpleCache.Companion.getUserInfo().getCompanyNo();
         // deliveryNo 发货单号
         deliveryNo = getIntent().getStringExtra(CodeConstant.DELIVERY_NO);
+        batchNo = getIntent().getStringExtra("batchNo");
         SharedP.putKeyString(this, deliveryNo);
 
         List<SendOutListInfo.DeliveryDetailInfosBean> outCache = null;
@@ -122,7 +125,7 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
             unit = addr.getUnit();
 
             LayoutInit.initLayoutManager(this, recyclerView);
-            adapter = new SendOutNextAdapter(this, R.layout.item_send_out_next, deliveryList);
+            adapter = new SendOutNextAdapter(this, R.layout.item_send_out_next, deliveryList,batchNo);
             recyclerView.setAdapter(adapter);
             // TODO SB 了,清除了 ，在扫码页面中不能取值
             //SparseArrayUtil.clearCode(this, deliveryNo);
@@ -158,7 +161,7 @@ public class SendOutNextActivity2 extends BaseActivity implements VooglaContract
         unitNum = bean.getUnitNum();
 
         LayoutInit.initLayoutManager(this, recyclerView);
-        adapter = new SendOutNextAdapter(this, R.layout.item_send_out_next, deliveryList);
+        adapter = new SendOutNextAdapter(this, R.layout.item_send_out_next, deliveryList,batchNo);
         recyclerView.setAdapter(adapter);
 
     }

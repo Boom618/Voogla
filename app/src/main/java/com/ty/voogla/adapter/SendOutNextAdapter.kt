@@ -14,7 +14,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder
 /**
  * @author TY on 2019/1/14.
  */
-class SendOutNextAdapter(val context: Context, layout: Int, datas: MutableList<SendOutListInfo.DeliveryDetailInfosBean>) :
+class SendOutNextAdapter(val context: Context, layout: Int, datas: MutableList<SendOutListInfo.DeliveryDetailInfosBean>,val batchNo:String) :
     CommonAdapter<SendOutListInfo.DeliveryDetailInfosBean>(context, layout, datas) {
 
     override fun convert(holder: ViewHolder, info: SendOutListInfo.DeliveryDetailInfosBean, position: Int) {
@@ -32,6 +32,7 @@ class SendOutNextAdapter(val context: Context, layout: Int, datas: MutableList<S
             intent.putExtra("deliveryNum",info.deliveryNum)
             intent.putExtra("unitNum",info.unitNum)
             intent.putExtra("goodsNo",info.goodsNo)
+            intent.putExtra("batchNo",batchNo)
             (context as SendOutNextActivity2).startActivityForResult(intent,CodeConstant.REQUEST_CODE_OUT)
         }
 

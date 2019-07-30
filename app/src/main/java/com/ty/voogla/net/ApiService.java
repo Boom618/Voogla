@@ -127,16 +127,6 @@ public interface ApiService {
      */
     @FormUrlEncoded
     @POST(ApiNameConstant.SEND_OUT_LIST)
-    Single<BaseResponse<SendOutListData>> getSendOutList(@Field("companyNo") String companyNo,
-                                                         @Field("flag") String flag);
-
-    /**
-     * 获取发货单列表
-     *
-     * @return
-     */
-    @FormUrlEncoded
-    @POST(ApiNameConstant.SEND_OUT_LIST)
     Single<BaseResponse<SendOutListData>> getSendOutList2(@Field("companyNo") String companyNo,
                                                           @Field("deliveryState") String deliveryState,
                                                           @Field("goodsNo") String goodsNo);
@@ -186,6 +176,7 @@ public interface ApiService {
      * @param qrCodeClass
      * @param goodsNo
      * @param qrCode
+     * @param bacthNo 生产批次
      * @return
      */
     @FormUrlEncoded
@@ -193,6 +184,7 @@ public interface ApiService {
     Single<BaseResponse<QrCodeJudge>> sendOutjudegCode(@Field("companyNo") String companyNo,
                                                        @Field("qrCodeClass") String qrCodeClass,
                                                        @Field("goodsNo") String goodsNo,
+                                                       @Field("bacthNo") String bacthNo,
                                                        @Field("qrCode") String qrCode);
 
     /**

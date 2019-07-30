@@ -82,10 +82,12 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
      * companyNo 企业编号
      * deliveryNum 整箱数量
      * unitNum 散货数量
+     * batchNo 生产批次
      */
     private String companyNo;
     private String deliveryNum;
     private String unitNum;
+    private String batchNo;
     /**
      * 商品编号 （出库）
      * deliveryNo : 订单号 （缓存的 key）
@@ -132,6 +134,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
         sendPosition = getIntent().getIntExtra(CodeConstant.SEND_POSITION, -1);
         goodsNo = getIntent().getStringExtra("goodsNo");
         unitNum = getIntent().getStringExtra("unitNum");
+        batchNo = getIntent().getStringExtra("batchNo");
         deliveryNum = getIntent().getStringExtra("deliveryNum");
         deliveryNo = SharedP.getKeyString(this);
 
@@ -415,7 +418,7 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
      */
     private void sendOutjudegCode(String companyNo, String qrCodeClass, String goodsNo, String qrCode) {
 
-        presenter.sendOutjudegCode(companyNo, qrCodeClass, goodsNo, qrCode);
+        presenter.sendOutjudegCode(companyNo, qrCodeClass, goodsNo, batchNo, qrCode);
         lastCodeClass = qrCodeClass;
         lastCode = qrCode;
     }
@@ -433,15 +436,10 @@ public class BoxLinkJavaActivity3 extends BaseActivity implements VooglaContract
     /**
      * 出库码校验【04】
      *
-     * @param batchNo 入库批次
+     * @param msg 入库批次
      */
     @Override
-    public void sendJudegCode(String batchNo) {
-
-        if (!deliveryNo.equals(batchNo)) {
-            ToastUtil.showWarning("入库批次和出库批次不一致");
-            return;
-        }
+    public void sendJudegCode(String msg) {
 
         ownProCode.put(lastCode, pro2BoxCode);
         // 校验成功直接添加数据

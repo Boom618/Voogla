@@ -62,6 +62,7 @@ class SendOutAdapter(
                 else -> {
                     val intent = Intent(context, SendOutNextActivity2::class.java)
                     intent.putExtra(CodeConstant.DELIVERY_NO, info.deliveryNo)
+                    intent.putExtra("batchNo", info.batchNo)
                     context.startActivity(intent)
                 }
             }

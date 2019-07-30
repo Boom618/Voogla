@@ -81,9 +81,9 @@ public class HttpMethods {
                         // 加载新的 cookie
                         List<Cookie> cookies = cookieStore.get(url.host());
                         if (cookies != null) {
-                            Log.e("cookies",cookies.toString());
-                        }else{
-                            Log.e("cookies","cookies is null");
+                            Log.e("cookies", cookies.toString());
+                        } else {
+                            Log.e("cookies", "cookies is null");
                         }
 
                         return cookies != null ? cookies : new ArrayList<Cookie>();
@@ -216,8 +216,8 @@ public class HttpMethods {
      * @param companyNo
      * @param qrCode
      */
-    public void judegCode(SingleObserver<BaseResponse<QrCodeJudge>> observer, String companyNo, String qrCode,String qrCodeClass) {
-        mService.judegCode(companyNo, qrCode,qrCodeClass)
+    public void judegCode(SingleObserver<BaseResponse<QrCodeJudge>> observer, String companyNo, String qrCode, String qrCodeClass) {
+        mService.judegCode(companyNo, qrCode, qrCodeClass)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
@@ -228,8 +228,8 @@ public class HttpMethods {
      * @param qrCode
      * @return
      */
-    public void getQrCodeList(SingleObserver<BaseResponse<ArrayList<String>>> observer, String qrCode,String qrCodeType) {
-        mService.getQrCodeList(qrCode,qrCodeType)
+    public void getQrCodeList(SingleObserver<BaseResponse<ArrayList<String>>> observer, String qrCode, String qrCodeType) {
+        mService.getQrCodeList(qrCode, qrCodeType)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
 
@@ -246,20 +246,9 @@ public class HttpMethods {
      * @param observer
      * @param companyNo
      */
-    public void getSendOutList(SingleObserver<BaseResponse<SendOutListData>> observer, String companyNo) {
-        mService.getSendOutList(companyNo, "02")
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
-    }
-    /**
-     * 发货单信息
-     *
-     * @param observer
-     * @param companyNo
-     */
     public void getSendOutList2(SingleObserver<BaseResponse<SendOutListData>> observer,
-                                String companyNo,String deliveryState,String goodsNo) {
-        mService.getSendOutList2(companyNo, deliveryState,goodsNo)
+                                String companyNo, String deliveryState, String goodsNo) {
+        mService.getSendOutList2(companyNo, deliveryState, goodsNo)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
@@ -320,8 +309,8 @@ public class HttpMethods {
      * @param qrCode
      */
     public void sendOutjudegCode(SingleObserver<BaseResponse<QrCodeJudge>> observer, String companyNo,
-                                 String qrCodeClass, String goodsNo, String qrCode) {
-        mService.sendOutjudegCode(companyNo, qrCodeClass, goodsNo, qrCode)
+                                 String qrCodeClass, String goodsNo, String bacthNo, String qrCode) {
+        mService.sendOutjudegCode(companyNo, qrCodeClass, goodsNo, bacthNo, qrCode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
@@ -342,9 +331,9 @@ public class HttpMethods {
      * @param observer
      * @param companyNo
      * @param deliveryNo
-     * @param fleeFlag 01 正常 02 窜货
+     * @param fleeFlag   01 正常 02 窜货
      */
-    public void checkInfoConfirm(SingleObserver<ResponseInfo> observer, String companyNo, String deliveryNo,String fleeFlag) {
+    public void checkInfoConfirm(SingleObserver<ResponseInfo> observer, String companyNo, String deliveryNo, String fleeFlag) {
         mService.checkInfoConfirm(companyNo, deliveryNo, fleeFlag)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);

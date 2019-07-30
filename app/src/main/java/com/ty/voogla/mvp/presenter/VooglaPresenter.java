@@ -437,7 +437,7 @@ public class VooglaPresenter {
      * @param goodsNo
      * @param qrCode
      */
-    public void sendOutjudegCode(String companyNo, final String qrCodeClass, String goodsNo, final String qrCode) {
+    public void sendOutjudegCode(String companyNo, final String qrCodeClass, String goodsNo,String bacthNo, final String qrCode) {
         httpMethods.sendOutjudegCode(new SingleObserver<BaseResponse<QrCodeJudge>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -448,9 +448,9 @@ public class VooglaPresenter {
             public void onSuccess(BaseResponse<QrCodeJudge> response) {
                 if (CodeConstant.SERVICE_SUCCESS.equals(response.getMsg())) {
 
-                    //boxView.sendJudegCode(response.getMsg());
+                    boxView.sendJudegCode(response.getMsg());
                     // 7.29 修改 出库和入库批次需一致
-                    boxView.sendJudegCode(response.getData().getQrCodeInfo().getBatchNo());
+                    //boxView.sendJudegCode(response.getData().getQrCodeInfo().getBatchNo());
 
                 } else {
                     boxView.showError(response.getMsg());
@@ -462,7 +462,7 @@ public class VooglaPresenter {
                 boxView.showError(e.getMessage());
 
             }
-        }, companyNo, qrCodeClass, goodsNo, qrCode);
+        }, companyNo, qrCodeClass, goodsNo,bacthNo, qrCode);
     }
 
 
