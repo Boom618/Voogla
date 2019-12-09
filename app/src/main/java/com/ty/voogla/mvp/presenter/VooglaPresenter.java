@@ -437,7 +437,7 @@ public class VooglaPresenter {
      * @param goodsNo
      * @param qrCode
      */
-    public void sendOutjudegCode(String companyNo, final String qrCodeClass, String goodsNo,String bacthNo, final String qrCode) {
+    public void sendOutjudegCode(String companyNo, final String qrCodeClass, String goodsNo,String batchNo, final String qrCode) {
         httpMethods.sendOutjudegCode(new SingleObserver<BaseResponse<QrCodeJudge>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -462,7 +462,7 @@ public class VooglaPresenter {
                 boxView.showError(e.getMessage());
 
             }
-        }, companyNo, qrCodeClass, goodsNo,bacthNo, qrCode);
+        }, companyNo, qrCodeClass, goodsNo,batchNo, qrCode);
     }
 
 

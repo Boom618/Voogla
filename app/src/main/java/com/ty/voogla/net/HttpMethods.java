@@ -309,8 +309,8 @@ public class HttpMethods {
      * @param qrCode
      */
     public void sendOutjudegCode(SingleObserver<BaseResponse<QrCodeJudge>> observer, String companyNo,
-                                 String qrCodeClass, String goodsNo, String bacthNo, String qrCode) {
-        mService.sendOutjudegCode(companyNo, qrCodeClass, goodsNo, bacthNo, qrCode)
+                                 String qrCodeClass, String goodsNo, String batchNo, String qrCode) {
+        mService.sendOutjudegCode(companyNo, qrCodeClass, goodsNo, batchNo, qrCode)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }

@@ -176,7 +176,7 @@ public interface ApiService {
      * @param qrCodeClass
      * @param goodsNo
      * @param qrCode
-     * @param bacthNo 生产批次
+     * @param batchNo 生产批次
      * @return
      */
     @FormUrlEncoded
@@ -184,7 +184,7 @@ public interface ApiService {
     Single<BaseResponse<QrCodeJudge>> sendOutjudegCode(@Field("companyNo") String companyNo,
                                                        @Field("qrCodeClass") String qrCodeClass,
                                                        @Field("goodsNo") String goodsNo,
-                                                       @Field("bacthNo") String bacthNo,
+                                                       @Field("batchNo") String batchNo,
                                                        @Field("qrCode") String qrCode);
 
     /**
