@@ -3,10 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 def ZBConfig = rootProject.ext
+
 static def releaseTime() {
     //return new Date().format("yyyy-MM-dd-HH.mm", TimeZone.getTimeZone("GMT+8"))
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("GMT+8"))
 }
+
 android {
     compileSdkVersion ZBConfig.compileSdkVersion
     buildToolsVersion ZBConfig.buildToolsVersion
@@ -166,6 +168,9 @@ dependencies {
 
     // bugly 管理
     implementation "com.tencent.bugly:crashreport:${bugly_version}"
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
+//    implementation "org.projectlombok.lombok:1.18.10"
 
     // leak canary 内存检测
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${leakcanary_version}"
